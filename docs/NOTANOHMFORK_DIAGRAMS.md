@@ -11,24 +11,24 @@ graph TB
     subgraph "User Layer"
         U1[Bonders]
         U2[RBT Holders]
-        U3[$MEGA Holders]
-    end
-    
-    subgraph "notanohmfork Protocol"
-        BOND[Bond Contract]
-        RBT[RBT Token<br/>Reserve-Backed Token]
-        TREAS[Treasury<br/>120% Backing]
-        RBS[RBS Mechanism<br/>Upper Bound Only]
+        U3[$MEGA Holders / OHM Holders]
     end
     
     subgraph "MegaETH Ecosystem"
+        subgraph "notanohmfork Protocol - Built on MegaETH"
+            BOND[Bond Contract]
+            RBT[RBT Token<br/>Reserve-Backed Token]
+            TREAS[Treasury<br/>120% Backing]
+            RBS[RBS Mechanism<br/>Upper Bound Only]
+        end
+        
         MEGA[$MEGA Token]
         USDM[USDm Stablecoin]
         AVON[Avon Lending]
-        MNOTE[megaNOTE<br/>Yield Vault]
+        MNOTE[megaNOTE Vault]
     end
     
-    subgraph "External"
+    subgraph "External to MegaETH"
         OHM[$OHM<br/>10% allocation]
     end
     
@@ -37,10 +37,10 @@ graph TB
     BOND -->|0.2 to Treasury| TREAS
     
     TREAS -->|Backs| RBT
-    TREAS -.->|Holds| MEGA
-    TREAS -.->|Holds| MNOTE
-    TREAS -.->|Holds| USDM
-    TREAS -.->|Holds 10%| OHM
+    TREAS -->|Holds| MEGA
+    TREAS -->|Holds| MNOTE
+    TREAS -->|Holds| USDM
+    TREAS -->|Holds 10%| OHM
     
     RBS -->|Premium Price?| RBT
     RBS -->|Sell RBT| TREAS
@@ -50,7 +50,7 @@ graph TB
     MNOTE -->|Passive Yield| TREAS
     
     U2 -.->|Trade| RBT
-    U3 -.->|Bond| MEGA
+    U3 -.->|Bond $MEGA or $OHM| BOND
 ```
 
 ---
@@ -169,64 +169,54 @@ graph LR
 
 ---
 
-## 5. MegaETH Integration Points
+## 5. MegaETH Ecosystem Integration
 
 ```mermaid
 graph TB
-    subgraph "notanohmfork"
-        RBT[RBT Token]
-        TREAS[Treasury]
+    subgraph "MegaETH Network"
+        subgraph "$MEGA Token Utility"
+            M1[Sequencer Rotation<br/>Operators stake $MEGA]
+            M2[Proximity Markets<br/>Apps lock $MEGA for speed]
+        end
+        
+        subgraph "USDm - Native Stablecoin"
+            U1[Backed by BUIDL<br/>via Ethena]
+            U2[Yield from reserves<br/>funds sequencer]
+            U3[At-cost gas pricing]
+        end
+        
+        subgraph "Avon - Lending Market"
+            A1[Order Book Lending]
+            A2[USDm → megaNOTE vault]
+            A3[Yield-bearing collateral]
+        end
+        
+        subgraph "notanohmfork - Liquidity Engine"
+            TREAS[Treasury 120%]
+            RBT[RBT Token]
+            RBS[RBS Upper Bound]
+        end
     end
     
-    subgraph "$MEGA Integration"
-        M1[Sequencer Rotation<br/>Stake $MEGA]
-        M2[Proximity Markets<br/>Lock $MEGA]
-        M3[Demand Driver]
-        M4[notanohmfork bonds $MEGA]
-        M5[Reduces circulating supply]
-    end
+    M1 --> DEMAND[Network Demand]
+    M2 --> DEMAND
+    DEMAND -->|$MEGA appreciation| VALUE[Value Growth]
     
-    subgraph "USDm Integration"
-        U1[Native Stablecoin]
-        U2[Backed by BUIDL]
-        U3[Yield from reserves]
-        U4[Deposit to Avon]
-    end
-    
-    subgraph "Avon Integration"
-        A1[Order Book Lending]
-        A2[Deposit USDm]
-        A3[Mint megaNOTE]
-        A4[Yield-bearing]
-    end
-    
-    subgraph "megaNOTE"
-        N1[Receipt Token]
-        N2[Auto-accrues yield]
-        N3[Standard collateral]
-    end
-    
-    M3 -->|Growth| M1
-    M3 -->|Growth| M2
-    TREAS -->|Holds| M4
-    M4 --> M5
-    M5 -.->|"blackhole-style<br/>liquidity capture"| M3
+    TREAS -->|Bonds & holds $MEGA| LOCK[Locks supply]
+    LOCK -.->|"blackhole effect"| VALUE
     
     U1 --> U2
     U2 --> U3
-    TREAS -->|Holds| U1
-    U1 --> U4
-    U4 --> A1
+    TREAS -->|Holds USDm| U1
+    U1 -->|Deposit to Avon| A1
     
     A1 --> A2
     A2 --> A3
-    A3 --> A4
+    A3 -->|megaNOTE to Treasury| TREAS
+    TREAS -.->|Passive yield growth| RBT
     
-    A3 --> N1
-    N1 --> N2
-    N2 --> N3
-    TREAS -->|Holds| N1
-    N1 -.->|Passive growth| TREAS
+    VALUE -->|Price > backing| RBS
+    RBS -->|Sell RBT, capture premium| TREAS
 ```
 
 ---
