@@ -8,108 +8,44 @@
 
 ```mermaid
 graph TB
-    subgraph USERS["USERS"]
-        U1["$MEGA Holder"]
-        U2["Missed ICO"]
-        U3["$OHM Holder"]
+    subgraph MEGAETH["MegaETH Ecosystem"]
+        direction TB
+        
+        U1["User: Has $MEGA"] -->|"Don't want to sell"| BOND
+        U2["User: Missed ICO"] -->|"Want exposure"| BOND
+        U3["User: Has $OHM"] -->|"10% allocation"| BOND
+        
+        BOND["notanohmfork Bond"] -->|"Deposit 1.2 units"| SPLIT
+        SPLIT["Split"] -->|"1.0 RBT"| USER["User gets RBT"]
+        SPLIT -->|"0.2 excess"| TREAS["Treasury"]
+        
+        TREAS -->|"Holds"| MEGA["$MEGA<br/>Blackhole"]
+        TREAS -->|"Holds"| MNOTE["megaNOTE<br/>Yield"]
+        TREAS -->|"Holds"| USDM["USDm<br/>Stable"]
+        TREAS -->|"Holds"| OHM["$OHM<br/>10%"]
+        
+        TREAS -.->|"Backs 1.2:1"| USER
+        
+        USDM -->|"Deposit"| AVON["Avon Lending"]
+        AVON -->|"Mint megaNOTE"| MNOTE
+        AVON -->|"Interest accrues"| MNOTE
+        
+        USER -->|"Trades"| MARKET["Market"]
+        MARKET -->|"Price check"| RBS_CHECK{Price > Backing?}
+        
+        RBS_CHECK -->|"Yes"| RBS["RBS Activates"]
+        RBS_CHECK -->|"No"| WAIT["No action"]
+        
+        RBS -->|"Sell RBT"| CAP["Capture Premium"]
+        CAP -->|"Buy more assets"| TREAS
+        
+        MEGA -.->|"Locks supply"| DEMAND["Network Demand"]
+        DEMAND -->|"$MEGA appreciates"| MEGA
+        MNOTE -.->|"Yields compound"| TREAS
+        
+        SEQ["Sequencer Rotation"] -->|"Stake $MEGA"| DEMAND
+        PROX["Proximity Markets"] -->|"Lock $MEGA"| DEMAND
     end
-    
-    subgraph MEGAETH["MegaETH Network"]
-        SEQ["Sequencer Rotation"]
-        PROX["Proximity Markets"]
-        NETWORK_DEMAND["Network Demand"]
-    end
-    
-    subgraph BONDING["Bonding"]
-        DEPOSIT["User Deposit"]
-        MINT["Mint RBT"]
-        EXCESS["Treasury Cut"]
-    end
-    
-    subgraph TREASURY["Treasury"]
-        HOLDINGS["Holdings"]
-        MEGA_T["$MEGA"]
-        MNOTE_T["megaNOTE"]
-        USDM_T["USDm"]
-        OHM_T["$OHM"]
-        OTHER_T["Other"]
-    end
-    
-    subgraph AVON["Avon"]
-        AVON_VAULT["Vault"]
-        AVON_LEND["Lending"]
-    end
-    
-    subgraph RBT_TOKEN["RBT"]
-        RBT["RBT Token"]
-        MARKET["Market"]
-    end
-    
-    subgraph RBS_SYSTEM["RBS"]
-        MONITOR["Monitor"]
-        ABOVE["Premium"]
-        SELL["Sell"]
-        REINVEST["Reinvest"]
-    end
-    
-    subgraph REVENUE["Revenue"]
-        REV1["Appreciation"]
-        REV2["Yield"]
-        REV3["Staking"]
-        REV6["Premium"]
-    end
-    
-    %% User Flow
-    U1 -->|"Don't want to sell"| DEPOSIT
-    U2 -->|"Want exposure"| DEPOSIT
-    U3 -->|"Want to participate"| DEPOSIT
-    
-    %% Bonding
-    DEPOSIT -->|"1.2 units ($MEGA, $OHM, stables)"| MINT
-    DEPOSIT -->|"0.2 excess"| EXCESS
-    MINT -->|"1.0 RBT to user"| RBT
-    EXCESS -->|"Strengthens backing"| HOLDINGS
-    
-    %% Treasury Holdings
-    HOLDINGS -->|"Priority: MegaETH"| MEGA_T
-    HOLDINGS -->|"Passive yield"| MNOTE_T
-    HOLDINGS -->|"Stable backing"| USDM_T
-    HOLDINGS -->|"10% allocation"| OHM_T
-    HOLDINGS -->|"Diversification"| OTHER_T
-    
-    %% Avon Flow
-    USDM_T -->|"Deposit USDm"| AVON_VAULT
-    AVON_VAULT -->|"Mint megaNOTE"| MNOTE_T
-    AVON_VAULT -->|"Lend to borrowers"| AVON_LEND
-    AVON_LEND -->|"Interest accrues"| MNOTE_T
-    
-    %% Treasury backs RBT
-    HOLDINGS -.->|"1.2:1 backing"| RBT
-    
-    %% RBT Market
-    RBT -->|"Trades"| MARKET
-    MARKET -->|"Check price"| MONITOR
-    
-    %% RBS Logic
-    MONITOR -->|"If price > backing"| ABOVE
-    ABOVE -->|"Activate RBS"| SELL
-    SELL -->|"Capture premium"| REINVEST
-    REINVEST -->|"Buy more assets"| HOLDINGS
-    
-    %% Revenue Streams
-    REV1 -->|"$MEGA price up"| HOLDINGS
-    REV2 -->|"megaNOTE compounds"| HOLDINGS
-    REV3 -->|"Ecosystem rewards"| HOLDINGS
-    REV6 -->|"From RBS"| HOLDINGS
-    
-    %% MegaETH Integration
-    SEQ -->|"Operators stake $MEGA"| NETWORK_DEMAND
-    PROX -->|"Apps lock $MEGA"| NETWORK_DEMAND
-    NETWORK_DEMAND -->|"Demand drives price"| MEGA_T
-    
-    %% Blackhole Effect
-    MEGA_T -->|"Locks supply"| NETWORK_DEMAND
-    MEGA_T -->|"Price appreciates"| REV1
 ```
 
 **Key Points:**
