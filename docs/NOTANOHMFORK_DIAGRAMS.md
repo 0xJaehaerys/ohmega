@@ -51,11 +51,6 @@ graph TB
     
     U2 -.->|Trade| RBT
     U3 -.->|Bond| MEGA
-
-    style RBT fill:#00ff41,stroke:#000,stroke-width:3px
-    style TREAS fill:#00d4aa,stroke:#000,stroke-width:2px
-    style RBS fill:#ff6b35,stroke:#000,stroke-width:2px
-    style MNOTE fill:#ffd23f,stroke:#000,stroke-width:2px
 ```
 
 ---
@@ -79,10 +74,7 @@ sequenceDiagram
     Bond->>Treasury: Transfer 0.2 excess
     
     Note over Treasury: Every circulating RBT<br/>backed between 1.0 - 1.2
-    
-    rect rgb(0, 255, 65, 0.1)
-        Note right of Treasury: ✓ User has 1.0 RBT<br/>✓ Backed by 1.2 assets<br/>✓ 0.2 strengthens treasury
-    end
+    Note right of Treasury: ✓ User has 1.0 RBT<br/>✓ Backed by 1.2 assets<br/>✓ 0.2 strengthens treasury
 ```
 
 ---
@@ -173,10 +165,6 @@ graph LR
     Y1 --> Y2
     Y2 --> Y3
     Y3 -.->|Grows reserve| T
-    
-    style T fill:#00d4aa,stroke:#000,stroke-width:3px
-    style H2 fill:#ffd23f,stroke:#000,stroke-width:2px
-    style Y2 fill:#00ff41,stroke:#000,stroke-width:2px
 ```
 
 ---
@@ -239,10 +227,6 @@ graph TB
     N2 --> N3
     TREAS -->|Holds| N1
     N1 -.->|Passive growth| TREAS
-    
-    style M5 fill:#ff6b35,stroke:#000,stroke-width:2px
-    style N2 fill:#ffd23f,stroke:#000,stroke-width:2px
-    style TREAS fill:#00d4aa,stroke:#000,stroke-width:2px
 ```
 
 ---
@@ -319,10 +303,6 @@ flowchart TD
     ARB --> STRENGTHEN
     
     STRENGTHEN -->|Compounds| START
-    
-    style STRENGTHEN fill:#00ff41,stroke:#000,stroke-width:3px
-    style RBS fill:#ff6b35,stroke:#000,stroke-width:2px
-    style YIELD fill:#ffd23f,stroke:#000,stroke-width:2px
 ```
 
 ---
@@ -363,10 +343,6 @@ graph TB
     M3 --> M4
     M4 -.->|Reinvest| T1
     
-    style T2 fill:#ff6b35,stroke:#000,stroke-width:3px
-    style M1 fill:#00d4aa,stroke:#000,stroke-width:2px
-    style M3 fill:#ffd23f,stroke:#000,stroke-width:2px
-    
     Note1[Quote: Obviously this requires<br/>MegaETH ecosystem to work together<br/>to create blackhole-style liquidity<br/>capture mechanism]
     
     M1 -.-> Note1
@@ -396,11 +372,6 @@ graph LR
     T2 -.->|vs| N2
     T3 -.->|vs| N3
     T4 -.->|vs| N4
-    
-    style N1 fill:#00ff41,stroke:#000,stroke-width:2px
-    style N2 fill:#00d4aa,stroke:#000,stroke-width:2px
-    style N3 fill:#ffd23f,stroke:#000,stroke-width:2px
-    style N4 fill:#00ff41,stroke:#000,stroke-width:2px
 ```
 
 ---
@@ -449,11 +420,6 @@ flowchart TB
     
     HOLD --> USER2[User holds RBT]
     USER2 --> EXPOSURE[Exposure to MegaETH ecosystem]
-    
-    style MINT fill:#00ff41,stroke:#000,stroke-width:3px
-    style RBS2 fill:#ff6b35,stroke:#000,stroke-width:2px
-    style YIELD2 fill:#ffd23f,stroke:#000,stroke-width:2px
-    style EXPOSURE fill:#00d4aa,stroke:#000,stroke-width:2px
 ```
 
 ---
