@@ -325,13 +325,13 @@ sequenceDiagram
     
     Borrower->>OrderBook: Borrow $50K (deposits collateral)
     
-    OrderBook->>Borrower: Match at 12% APY
+    OrderBook->>Borrower: Match at market rate
     
     Note over OrderBook: Utilization: 50%<br/>($50K borrowed / $100K total)
     
     loop Interest Accrues
-        Borrower->>OrderBook: Pay 12% APY on $50K
-        OrderBook->>Vault: Distribute interest
+        Borrower->>OrderBook: Pay interest on $50K
+        OrderBook->>Vault: Distribute interest to lenders
     end
     
     deactivate OrderBook
@@ -339,10 +339,10 @@ sequenceDiagram
     Note over Vault: Interest accrues to megaNOTE<br/>Value grows automatically
     
     Vault->>Vault: megaNOTE appreciates
-    Note over Vault: Was: 1 megaNOTE = $1.00<br/>Now: 1 megaNOTE = $1.12
+    Note over Vault: Was: 1 megaNOTE = $1.00<br/>Now: 1 megaNOTE = $1.0X
     
     activate Vault
-    Note over Treasury: Treasury has 100K megaNOTE<br/>Worth: $112K<br/>Profit: +$12K (12% gain)
+    Note over Treasury: Treasury has 100K megaNOTE<br/>Worth: $10X,XXX<br/>Profit: Passive yield gain
     deactivate Vault
     
     deactivate Avon
@@ -417,13 +417,13 @@ RBT becomes more valuable
 - **Passive:** No active management needed
 - **MegaETH native:** Built for the ecosystem
 
-**Real Numbers Example:**
+**Concept:**
+- Higher utilization → Higher interest rates for borrowers
+- Interest paid by borrowers → Distributed to lenders (megaNOTE holders)
+- megaNOTE value increases automatically
+- Treasury passively earns yield without any action
 
-| Scenario | USDm Deposited | Utilization | Interest Rate | Annual Yield | megaNOTE Value |
-|----------|----------------|-------------|---------------|--------------|----------------|
-| Low Demand | $100K | 30% | 8% | $2.4K (2.4%) | $102.4K |
-| Medium Demand | $100K | 60% | 12% | $7.2K (7.2%) | $107.2K |
-| High Demand | $100K | 85% | 18% | $15.3K (15.3%) | $115.3K |
+**Note:** Specific APY rates depend on Avon's interest rate curve and market demand. Not specified in source materials.
 
 ---
 
