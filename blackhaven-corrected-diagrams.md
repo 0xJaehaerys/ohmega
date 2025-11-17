@@ -41,7 +41,7 @@ graph LR
     RATIO --> MINT
     MINT --> RBT
     
-    Note over RBT: Can be used across<br/>MegaETH DeFi ecosystem
+    RBT -->|Used in| DEFI[MegaETH DeFi<br/>Ecosystem]
 ```
 
 ## Treasury Operations
@@ -80,8 +80,6 @@ graph TD
     DEFI_STRATEGIES --> RBT_BACKING
     
     TREASURY --> SHVN_REWARDS
-    
-    Note over MEGA_ALLOCATION: Every single MEGA token<br/>staked in MegaETH Sequencer
 ```
 
 ## HPN (Haven Protected Notes) Lifecycle
@@ -132,7 +130,7 @@ sequenceDiagram
 graph TB
     subgraph "Bond Types"
         REGULAR[Regular Bonds]
-        LP[LP Bonds<br/>(Aligned Bonds)]
+        LP[LP Bonds<br/>Aligned Bonds]
     end
     
     subgraph "Regular Bond Flow"
@@ -151,10 +149,6 @@ graph TB
         VESTING2 -->|Daily unlock| USER2
         POL -->|Trading fees| TREASURY2[Treasury Forever]
     end
-    
-    Note over POL: LP tokens can NEVER<br/>be withdrawn
-    
-    Note over VESTING1,VESTING2: Early exit forfeits<br/>unvested tokens
 ```
 
 ## HVN Governance Token System
@@ -181,8 +175,6 @@ graph LR
     HVN --> GOVERNANCE
     HVN --> PROXIMITY
     HVN --> BASELINE
-    
-    Note over BASELINE: Guaranteed price floor<br/>Non-liquidatable loans
 ```
 
 ## Complete System Flow
