@@ -140,7 +140,7 @@ graph TB
     NORMAL --> BORROW
     BEAR --> ARB
     
-    Note over ARB: Impossible scenario<br/>BLV prevents price<br/>from going below floor
+    ARB -->|BLV prevents| IMPOSSIBLE[Impossible Scenario<br/>Price cannot go below BLV floor]
 ```
 
 ## Baseline Integration Benefits
@@ -204,7 +204,7 @@ graph TD
     M6 --> Y1
     Y1 --> LEVERAGE
     
-    Note over LEVERAGE: Even in worst case<br/>HVN worth at least $7<br/>vs $0.90 at start
+    LEVERAGE --> PROTECTION[Worst Case Protection<br/>HVN worth at least $7<br/>vs $0.90 at start]
 ```
 
 ---
