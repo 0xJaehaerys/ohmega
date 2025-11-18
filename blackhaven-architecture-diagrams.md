@@ -160,8 +160,8 @@ graph TD
     MEGA_STAKING -->|staking rewards| ACCOUNTING
     DEFI_STRATEGIES -->|lending/yield| ACCOUNTING
     
-    ACCOUNTING --> RBT_BACKING
-    ACCOUNTING --> SHVN_REWARDS
+    ACCOUNTING -->|Distribution configured<br/>via HVN governance| RBT_BACKING
+    ACCOUNTING -->|Distribution configured<br/>via HVN governance| SHVN_REWARDS
 ```
 
 ## LP Bonds (Aligned Bonds) Detailed Flow
