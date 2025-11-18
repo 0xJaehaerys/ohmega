@@ -53,6 +53,7 @@ graph TB
         YIELD_INCOME[MegaETH DeFi<br/>━━━━━━━━━━━<br/>Lending yields<br/>Strategy returns]
         POL_FEES[POL Trading Fees<br/>━━━━━━━━━━━<br/>RBT-USDM Pool<br/>LP locked forever<br/>Swap fees]
         MEGA_REWARDS[MEGA System<br/>━━━━━━━━━━━<br/>MEGA Points from TVL<br/>Sequencer staking<br/>Proximity Markets]
+        PRM[Premium Range<br/>Mechanism<br/>━━━━━━━━━━━<br/>Coming Soon<br/>RBT price premiums]
     end
     
     subgraph "BOTTOM RIGHT - FEES & PENALTIES"
@@ -81,6 +82,7 @@ graph TB
     MEGA_REWARDS -->|converted MEGA| TREASURY
     EXIT_FEES -->|penalty fees| TREASURY
     FORFEIT -->|forfeited yield<br/>and points| TREASURY
+    PRM -.->|future revenue<br/>price premiums| TREASURY
     
     TREASURY -->|mints proportionally<br/>maintains reserve ratio| RBT_OUT
     
