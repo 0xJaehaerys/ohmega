@@ -251,11 +251,11 @@ sequenceDiagram
         Harvester->>Treasury: Harvest yields
         
         Treasury->>Calculator: Calculate distribution
-        Note over Calculator: 70% backing, 20% rewards, 10% ops
+        Note over Calculator: Distribution configured<br/>via HVN governance
         
-        Calculator->>Backing: Allocate 70%
-        Calculator->>Rewards: Allocate 20%
-        Calculator->>Ops: Allocate 10%
+        Calculator->>Backing: Allocate to RBT backing
+        Calculator->>Rewards: Allocate to sHVN pool
+        Calculator->>Ops: Allocate to operations
         
         Backing->>Backing: Increase RBT backing value
         Rewards->>Rewards: Add to sHVN pool

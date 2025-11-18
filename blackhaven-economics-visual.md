@@ -7,7 +7,7 @@ graph TB
     subgraph "The Trinity of Value"
         HVN["⚡ HVN<br/>Governance Power<br/>100M Supply<br/>Controls Everything"]
         RBT["💎 RBT (BLK)<br/>Treasury Backed<br/>Elastic Supply<br/>Value Storage"]
-        sHVN["🔒 sHVN<br/>Staked Governance<br/>Earns Treasury Growth<br/>Long-term Aligned"]
+        sHVN["🔒 sHVN<br/>Staked HVN<br/>Earns Treasury Growth<br/>Long-term Aligned"]
     end
     
     subgraph "Value Flows"

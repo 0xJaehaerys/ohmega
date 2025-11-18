@@ -117,11 +117,10 @@ sequenceDiagram
         User->>HPN: Convert to RBT
         HPN->>NFT: Burn NFT
         HPN->>Treasury: Forfeit ALL rewards
-        HPN->>Cooldown: Start 7-day cooldown
-        Cooldown-->>User: RBT = Principal value
+        HPN-->>User: RBT = Principal value<br/>Immediate (no cooldown)
     end
     
-    Note over Cooldown: ALL exits require<br/>7-day cooldown
+    Note over Cooldown: Maturity and early exit<br/>require 7-day cooldown<br/>RBT conversion is immediate
 ```
 
 ## Fixed-Term Bonds Mechanism

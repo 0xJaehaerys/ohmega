@@ -417,7 +417,8 @@ graph LR
     
     MEGAETH --> TREASURY_CORE
     TREASURY_CORE -->|stakes 100% MEGA| SEQUENCER
-    HVN_GOVERNANCE -->|controls allocation| PROXIMITY
+    HVN_GOVERNANCE -->|controls MEGA allocation| PROXIMITY
+    Note over PROXIMITY: HVN governance controls<br/>how staked MEGA is used<br/>in Proximity Markets
     
     HPN_PRODUCT --> TREASURY_CORE
     REGULAR_BONDS_PRODUCT --> TREASURY_CORE

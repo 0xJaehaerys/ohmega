@@ -55,11 +55,13 @@ graph TB
     classDef product fill:#1a1a2e,stroke:#16213e,stroke-width:3px,color:#eee
     classDef treasury fill:#0f3460,stroke:#16213e,stroke-width:3px,color:#eee
     classDef governance fill:#e94560,stroke:#16213e,stroke-width:3px,color:#eee
+    classDef rewards fill:#f39c12,stroke:#16213e,stroke-width:3px,color:#eee
     classDef mega fill:#533483,stroke:#16213e,stroke-width:3px,color:#eee
     
     class HPN,BONDS,HVN_MARKET product
     class TREASURY,RBT,POL treasury
-    class HVN,sHVN governance
+    class HVN governance
+    class sHVN rewards
     class SEQUENCER,PROXIMITY,DEFI mega
 ```
 

@@ -15,7 +15,7 @@ notanohmfork was the original concept (GitHub repo only). Blackhaven is the prod
 ### Blackhaven (Evolution)
 - Reserve-backed treasury with self-reinforcing flywheel
 - Value-accruing instruments: principal-protected convertible notes + fixed-term bonds
-- Triple token system: HVN (governance) + sHVN (staked governance) + RBT/BLK (reserve-backed)
+- Triple token system: HVN (governance) + sHVN (staked HVN, receives rewards) + RBT/BLK (reserve-backed)
 - Captures treasury premiums from MegaETH ecosystem assets
 
 ## Key Changes
