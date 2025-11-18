@@ -4,82 +4,150 @@
 
 ```mermaid
 graph TB
-    subgraph "Day 1: HVN Launch"
-        LAUNCH[You Buy HVN<br/>Price: $1.00]
-        BLV_START[BLV Floor Set<br/>$0.90<br/>Your Protection]
-        RESERVES[Reserves Locked<br/>Backs BLV]
+    subgraph "BLV Formula"
+        FORMULA[BLV = Locked Reserve / Token Supply<br/>Guaranteed Price Floor]
+        EXAMPLE[Example:<br/>Reserve: $100,000<br/>Supply: 100,000 HVN<br/>BLV = $1.00]
     end
     
-    subgraph "What BLV Means For You"
+    subgraph "How BLV Protects You"
         PROTECTION[Price Protection<br/>HVN can NEVER go below BLV<br/>Even in worst case]
-        BORROW[Safe Borrowing<br/>Borrow up to BLV value<br/>NO liquidation risk]
-        GROWTH[BLV Only Goes Up<br/>More trading = Higher BLV<br/>Your floor rises]
+        BUYBACK[Automatic Buyback<br/>When price drops to BLV<br/>Protocol buys and burns tokens]
+        GROWTH[BLV Only Goes Up<br/>Every trade increases reserve<br/>BLV rises over time]
     end
     
-    subgraph "Example: 6 Months Later"
-        MARKET_PRICE[Market Price<br/>$8.00]
-        BLV_NOW[BLV Floor<br/>$3.50<br/>Still Protected]
-        BORROW_NOW[You Can Borrow<br/>$3.50 per HVN<br/>Still Safe]
+    subgraph "What Happens When Price Drops"
+        DROP[Market Price Drops<br/>to $0.50]
+        CHECK[Price approaches BLV<br/>$1.00]
+        ACTION[Protocol Activates<br/>Buyback at BLV]
+        BURN[Tokens Bought<br/>and Burned]
+        NEW_BLV[New BLV Calculated<br/>Higher than before]
     end
     
-    subgraph "Why This Matters"
-        COMPARE[Compare to Normal Tokens]
-        NORMAL[Normal Token<br/>Price can crash to $0<br/>Loans get liquidated]
-        HVN_BLV[HVN with BLV<br/>Price protected at $3.50<br/>Loans never liquidated]
-    end
-    
-    LAUNCH --> BLV_START
-    BLV_START --> RESERVES
-    RESERVES --> PROTECTION
-    
-    PROTECTION --> BORROW
+    FORMULA --> EXAMPLE
+    EXAMPLE --> PROTECTION
+    PROTECTION --> BUYBACK
     PROTECTION --> GROWTH
     
-    GROWTH --> MARKET_PRICE
-    GROWTH --> BLV_NOW
-    BLV_NOW --> BORROW_NOW
-    
-    COMPARE --> NORMAL
-    COMPARE --> HVN_BLV
-    
+    DROP --> CHECK
+    CHECK --> ACTION
+    ACTION --> BURN
+    BURN --> NEW_BLV
 ```
 
-## BLV Growth Over Time - Visual Timeline
+## BLV Price Dynamics - Visual Graph
 
 ```mermaid
 graph LR
-    subgraph "Month 1"
-        M1_PRICE[Market: $2.50]
-        M1_BLV[BLV: $1.20<br/>Protected]
-        M1_BORROW[Borrow: $1.20<br/>Safe]
+    subgraph "Price vs BLV Over Time"
+        T0[Day 0<br/>Price: $1.00<br/>BLV: $0.90]
+        T1[Month 1<br/>Price: $2.50<br/>BLV: $1.20]
+        T2[Month 3<br/>Price: $5.00<br/>BLV: $2.10]
+        T3[Month 6<br/>Price: $8.00<br/>BLV: $3.50]
+        T4[Year 1<br/>Price: $15.00<br/>BLV: $7.00]
     end
     
-    subgraph "Month 3"
-        M3_PRICE[Market: $5.00]
-        M3_BLV[BLV: $2.10<br/>Protected]
-        M3_BORROW[Borrow: $2.10<br/>Safe]
+    subgraph "BLV Floor Protection"
+        FLOOR[BLV Floor<br/>Only Goes Up<br/>Never Down]
+    end
+    
+    T0 -->|BLV Rises| T1
+    T1 -->|BLV Rises| T2
+    T2 -->|BLV Rises| T3
+    T3 -->|BLV Rises| T4
+    
+    T0 -.->|Protected by| FLOOR
+    T1 -.->|Protected by| FLOOR
+    T2 -.->|Protected by| FLOOR
+    T3 -.->|Protected by| FLOOR
+    T4 -.->|Protected by| FLOOR
+```
+
+## BLV Growth Mechanism - How It Works
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Market
+    participant Baseline
+    participant Reserve
+    participant BLV
+    
+    Note over User,BLV: Every Trade Increases BLV
+    
+    User->>Market: Buy HVN at $2.00
+    Market->>Baseline: Process trade
+    Baseline->>Reserve: Add portion to locked reserve
+    Reserve->>BLV: Calculate new BLV
+    BLV-->>User: BLV increased from $1.20 to $1.25
+    
+    Note over User,BLV: Price Drops Near BLV
+    
+    Market->>User: Price drops to $1.10
+    User->>Baseline: Check BLV protection
+    Baseline->>BLV: Current BLV = $1.20
+    BLV-->>Baseline: Price above BLV, no action
+    
+    Note over User,BLV: Price Hits BLV - Buyback Activates
+    
+    Market->>User: Price drops to $1.20 (BLV)
+    User->>Baseline: Sell at BLV
+    Baseline->>Reserve: Pay $1.20 per HVN
+    Baseline->>Baseline: Burn purchased tokens
+    Reserve->>BLV: Recalculate BLV
+    BLV-->>User: New BLV = $1.25 (increased!)
+    
+    Note over User,BLV: BLV Can Never Go Down
+```
+
+## BLV Zones - How Baseline Market Maker Works
+
+```mermaid
+graph TB
+    subgraph "Price Zones Relative to BLV"
+        PREMIUM[Premium Zone<br/>Price > BLV × 1.5<br/>Protocol may sell<br/>Capture premium]
+        NEUTRAL[Neutral Zone<br/>BLV × 1.1 < Price < BLV × 1.5<br/>Market driven<br/>Normal trading]
+        BLV_ZONE[BLV Zone<br/>Price < BLV × 1.1<br/>Buyback active<br/>Defend floor]
+    end
+    
+    subgraph "BLV Floor"
+        FLOOR[BLV Floor<br/>Price = BLV<br/>Guaranteed buyback<br/>Tokens burned]
+    end
+    
+    PREMIUM --> NEUTRAL
+    NEUTRAL --> BLV_ZONE
+    BLV_ZONE --> FLOOR
+    
+    FLOOR -.->|Can never go below| IMPOSSIBLE[Price Below BLV<br/>Impossible]
+```
+
+## Example: BLV Growth Timeline
+
+```mermaid
+graph LR
+    subgraph "Launch"
+        L0[Day 0<br/>Reserve: $100K<br/>Supply: 100K HVN<br/>BLV: $1.00<br/>Price: $1.00]
+    end
+    
+    subgraph "Month 1"
+        L1[Trading Volume<br/>Reserve: $120K<br/>Supply: 100K HVN<br/>BLV: $1.20<br/>Price: $2.50]
     end
     
     subgraph "Month 6"
-        M6_PRICE[Market: $8.00]
-        M6_BLV[BLV: $3.50<br/>Protected]
-        M6_BORROW[Borrow: $3.50<br/>Safe]
+        L6[More Trading<br/>Reserve: $350K<br/>Supply: 100K HVN<br/>BLV: $3.50<br/>Price: $8.00]
     end
     
     subgraph "Year 1"
-        Y1_PRICE[Market: $15.00]
-        Y1_BLV[BLV: $7.00<br/>Protected]
-        Y1_BORROW[Borrow: $7.00<br/>Safe]
+        L12[Steady Growth<br/>Reserve: $700K<br/>Supply: 100K HVN<br/>BLV: $7.00<br/>Price: $15.00]
     end
     
-    M1_BLV -->|BLV Rises| M3_BLV
-    M3_BLV -->|BLV Rises| M6_BLV
-    M6_BLV -->|BLV Rises| Y1_BLV
+    subgraph "Buyback Event"
+        BUYBACK[Price drops to $7.00<br/>Protocol buys 10K HVN<br/>Burns 10K HVN<br/>New Supply: 90K HVN<br/>New BLV: $7.78]
+    end
     
-    M1_BORROW -->|More Safe Borrowing| M3_BORROW
-    M3_BORROW -->|More Safe Borrowing| M6_BORROW
-    M6_BORROW -->|More Safe Borrowing| Y1_BORROW
-    
+    L0 -->|Trades increase reserve| L1
+    L1 -->|Trades increase reserve| L6
+    L6 -->|Trades increase reserve| L12
+    L12 -->|Buyback + burn| BUYBACK
 ```
 
 ## BLV vs Traditional Tokens - Side by Side
@@ -87,138 +155,99 @@ graph LR
 ```mermaid
 graph TB
     subgraph "Traditional Token (No BLV)"
-        TRAD_USER[You Buy Token<br/>$1.00]
+        TRAD_BUY[You Buy Token<br/>$1.00]
         TRAD_DROP[Market Crashes<br/>Price: $0.20]
+        TRAD_LOSS[You Lose 80%<br/>No Protection]
         TRAD_LOAN[Your Loan<br/>Liquidated]
-        TRAD_LOSS[You Lose Everything]
     end
     
     subgraph "HVN with BLV"
-        HVN_USER[You Buy HVN<br/>$1.00]
-        HVN_BLV[BLV Floor<br/>$0.90 Protected]
+        HVN_BUY[You Buy HVN<br/>$1.00<br/>BLV: $0.90]
         HVN_DROP[Market Crashes<br/>Price: $0.20]
-        HVN_SAFE[BLV Still $0.90<br/>You're Protected]
-        HVN_BORROW[You Can Still Borrow<br/>Up to $0.90<br/>No Liquidation]
+        HVN_BLV[BLV Still $0.90<br/>Protected Floor]
+        HVN_BUYBACK[Protocol Buys<br/>at BLV $0.90]
+        HVN_SAFE[You're Protected<br/>Can sell at BLV<br/>Loan Safe]
     end
     
-    TRAD_USER --> TRAD_DROP
+    TRAD_BUY --> TRAD_DROP
+    TRAD_DROP --> TRAD_LOSS
     TRAD_DROP --> TRAD_LOAN
-    TRAD_LOAN --> TRAD_LOSS
     
-    HVN_USER --> HVN_BLV
-    HVN_BLV --> HVN_DROP
-    HVN_DROP --> HVN_SAFE
-    HVN_SAFE --> HVN_BORROW
-    
+    HVN_BUY --> HVN_DROP
+    HVN_DROP --> HVN_BLV
+    HVN_BLV --> HVN_BUYBACK
+    HVN_BUYBACK --> HVN_SAFE
 ```
 
-## How BLV Protects You - Step by Step
+## Safe Borrowing Against BLV
 
 ```mermaid
 sequenceDiagram
     participant You
     participant Baseline
     participant BLV
-    participant Market
+    participant Lending
     
-    Note over You,Market: Day 1 - You Buy HVN
+    Note over You,Lending: You Want to Borrow Safely
     
-    You->>Baseline: Buy HVN at $1.00
-    Baseline->>BLV: Set initial floor at $0.90
-    BLV-->>You: You're protected!
-    
-    Note over You,Market: Market goes up and down...
-    
-    Market->>You: Price drops to $0.50
-    You->>BLV: Check my protection
-    BLV-->>You: Still protected at $0.90<br/>Price can't go below BLV
-    
-    Note over You,Market: You want to borrow safely
-    
-    You->>Baseline: Can I borrow against my HVN?
+    You->>Baseline: I have 1000 HVN
     Baseline->>BLV: Check current BLV
-    BLV-->>Baseline: BLV = $1.50
-    Baseline-->>You: Yes! Borrow up to $1.50<br/>NO liquidation risk
+    BLV-->>Baseline: BLV = $3.50 per HVN
+    Baseline->>Lending: Collateral value = $3,500
+    Lending-->>You: Borrow up to $3,500<br/>0% interest possible<br/>NO liquidation risk
     
-    Note over You,Market: Even if market crashes
+    Note over You,Lending: Even if Market Crashes
     
-    Market->>You: Price crashes to $0.30
-    You->>BLV: Am I still safe?
-    BLV-->>You: Yes! BLV still $1.50<br/>Your loan is safe
+    You->>You: Market crashes<br/>Price: $0.50
+    You->>BLV: Check my protection
+    BLV-->>You: BLV still $3.50<br/>Your collateral still worth $3,500<br/>Loan is safe
+    
+    Note over You,Lending: BLV Can Only Go Up
+    
+    You->>BLV: What if BLV increases?
+    BLV-->>You: BLV now $4.00<br/>Your collateral worth $4,000<br/>Can borrow more!
 ```
 
-## Key Benefits Visual
+## Key Benefits Summary
 
 ```mermaid
 graph TD
     subgraph "BLV Benefits"
-        BENEFIT1[Protected Entry<br/>You know the worst case<br/>BLV = minimum price]
-        BENEFIT2[Safe Leverage<br/>Borrow up to BLV<br/>Never get liquidated]
-        BENEFIT3[Rising Floor<br/>BLV only goes UP<br/>More trading = Higher BLV]
-        BENEFIT4[Locked Liquidity<br/>Can't be pulled<br/>Permanent protection]
+        BENEFIT1[Guaranteed Floor<br/>Price can never go below BLV<br/>Know your worst case]
+        BENEFIT2[Automatic Buyback<br/>Protocol defends BLV<br/>Buys and burns when needed]
+        BENEFIT3[Rising Floor<br/>BLV only increases<br/>Every trade helps]
+        BENEFIT4[Safe Leverage<br/>Borrow up to BLV value<br/>No liquidation risk]
+        BENEFIT5[Locked Liquidity<br/>Reserve cannot be removed<br/>Permanent protection]
     end
     
     subgraph "What This Means"
-        MEANING1[You Can Plan Ahead<br/>Know your downside]
-        MEANING2[Use Leverage Safely<br/>No liquidation fear]
-        MEANING3[Floor Keeps Rising<br/>Your protection grows]
-        MEANING4[Stable Foundation<br/>No rug pulls]
+        MEANING1[You Can Plan<br/>Know minimum value]
+        MEANING2[Downside Protected<br/>Automatic defense]
+        MEANING3[Floor Grows<br/>Protection increases]
+        MEANING4[Use Leverage<br/>Without fear]
+        MEANING5[Stable Foundation<br/>No rug pulls]
     end
     
     BENEFIT1 --> MEANING1
     BENEFIT2 --> MEANING2
     BENEFIT3 --> MEANING3
     BENEFIT4 --> MEANING4
-    
-```
-
-## Simple Example: Your HVN Journey
-
-```mermaid
-graph LR
-    subgraph "You Start"
-        BUY[You Buy<br/>100 HVN<br/>at $1.00<br/>Total: $100]
-    end
-    
-    subgraph "BLV Protection"
-        BLV_INIT[BLV Floor<br/>$0.90<br/>Worst Case Value<br/>$90]
-    end
-    
-    subgraph "6 Months Later"
-        MARKET[Market Price<br/>$8.00<br/>Your Value<br/>$800]
-        BLV_NOW[BLV Floor<br/>$3.50<br/>Worst Case<br/>$350]
-        BORROW[You Borrow<br/>$350<br/>Still Safe]
-    end
-    
-    subgraph "Worst Case Scenario"
-        CRASH[Market Crashes<br/>Price: $0.50]
-        PROTECTED[You're Still Protected<br/>BLV: $3.50<br/>Value: $350<br/>Loan Safe]
-    end
-    
-    BUY --> BLV_INIT
-    BLV_INIT --> MARKET
-    MARKET --> BLV_NOW
-    BLV_NOW --> BORROW
-    
-    MARKET --> CRASH
-    CRASH --> PROTECTED
-    
+    BENEFIT5 --> MEANING5
 ```
 
 ---
 
 ## Simple Explanation
 
-**BLV (Baseline Value) = Your Safety Net**
+**BLV (Baseline Value) = Your Guaranteed Safety Net**
 
-- **What it is**: A guaranteed minimum price for HVN that can NEVER go down
-- **How it works**: The more people trade HVN, the higher BLV goes
-- **Why it matters**: Even if the market crashes, you're protected at BLV level
-- **Bonus**: You can borrow money using HVN as collateral, up to BLV value, and NEVER get liquidated
+- **What it is**: BLV = Locked Reserve / Token Supply. A guaranteed minimum price that can NEVER go down
+- **How it grows**: Every trade adds to the locked reserve, increasing BLV. When price drops to BLV, protocol buys tokens and burns them, reducing supply and increasing BLV further
+- **Why it matters**: Even if the market crashes, you're protected at BLV level. You can always sell at BLV price
+- **Bonus**: You can borrow money using HVN as collateral, up to BLV value, with NO liquidation risk because BLV can only go up
 
-**Think of it like**: A house with a guaranteed minimum value. Even if the market crashes, you know your house is worth at least BLV amount. And you can borrow against that guaranteed value safely.
+**Think of it like**: A house with a guaranteed minimum value that only increases. Even if the market crashes, you know your house is worth at least BLV amount. And you can borrow against that guaranteed value safely, with no risk of losing your house.
 
 ---
 
-*Simple visual guide to understanding BLV protection for HVN holders*
-
+*Simple visual guide to understanding BLV protection for HVN holders based on Baseline Markets mechanism*
