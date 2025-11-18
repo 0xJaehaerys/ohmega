@@ -4,34 +4,43 @@
 
 ```mermaid
 graph TB
-    subgraph "USER PRODUCTS"
-        HPN[HPN<br/>━━━━━━━━━━━━━━━<br/>Deposit: USDM/USDMy<br/>ERC-721 NFT<br/>Principal protected<br/>━━━━━━━━━━━━━━━<br/>Exit: Maturity 7d cooldown<br/>Exit: Early 2-3 percent fee<br/>Exit: Convert to RBT instant]
+    subgraph "LEFT - DEPOSITS"
+        USER_HPN[User<br/>USDM/USDMy]
+        USER_USDM[User<br/>USDM]
+        USER_MEGA[User<br/>MEGA]
+        USER_LP[User<br/>RBT-USDM LP]
         
-        BOND_USDM[USDM Bond<br/>━━━━━━━━━━━━━━━<br/>Discounted RBT<br/>Linear vesting<br/>Early exit: 3.3 percent fee]
+        HPN[HPN<br/>Principal Protected<br/>ERC-721]
+        BOND_USDM[USDM<br/>Bond]
+        BOND_MEGA[MEGA<br/>Bond]
+        LP_BOND[LP Bond<br/>POL Forever]
         
-        BOND_MEGA[MEGA Bond<br/>━━━━━━━━━━━━━━━<br/>Discounted RBT<br/>Linear vesting<br/>Early exit: 3.3 percent fee]
-        
-        LP_BOND[LP Bond<br/>━━━━━━━━━━━━━━━<br/>Deposit: RBT-USDM LP<br/>LP locked FOREVER<br/>Becomes POL<br/>Discounted RBT + rewards]
+        USER_HPN --> HPN
+        USER_USDM --> BOND_USDM
+        USER_MEGA --> BOND_MEGA
+        USER_LP --> LP_BOND
     end
     
-    subgraph "TREASURY CORE"
-        TREASURY[TREASURY<br/>━━━━━━━━━━━━━━━<br/>USDM Reserve → DeFi<br/>MEGA Reserve → Sequencer<br/>POL → RBT-USDM forever<br/>━━━━━━━━━━━━━━━<br/>Backs RBT proportionally]
+    subgraph "CENTER - TREASURY"
+        TREASURY[TREASURY<br/>═════════════<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>═════════════<br/>RBT Backing]
     end
     
-    subgraph "VALUE GENERATION"
-        MEGAETH_DEFI[MegaETH DeFi<br/>━━━━━━━━━━━━━━━<br/>Whitelisted strategies<br/>Lending & Yield<br/>Generates returns]
+    subgraph "RIGHT - OUTPUTS"
+        RBT[RBT<br/>Reserve-Backed]
+        ARBT[aRBT<br/>Lock 0-2yr<br/>Revenue Share]
         
-        POL_VAULT[POL Vault<br/>━━━━━━━━━━━━━━━<br/>RBT-USDM Pool<br/>LP locked FOREVER<br/>Trading fees to treasury<br/>No sell pressure]
-        
-        MEGA_POINTS[MEGA Points<br/>━━━━━━━━━━━━━━━<br/>From TVL contributions<br/>Amplified via HPN<br/>Converted to MEGA]
-    end
-    
-    subgraph "RBT SYSTEM"
-        RBT[RBT Token<br/>━━━━━━━━━━━━━━━<br/>Reserve-Backed<br/>Transferable<br/>Used in MegaETH DeFi]
-        
-        ARBT[aRBT Token<br/>━━━━━━━━━━━━━━━<br/>Non-transferable<br/>aRBT = RBT × T_lock / T_max<br/>T_max = 2 years<br/>Revenue sharing<br/>Protocol fees distribution]
+        DEFI_USE[MegaETH<br/>DeFi Usage]
         
         RBT --> ARBT
+        RBT --> DEFI_USE
+    end
+    
+    subgraph "BOTTOM - VALUE GENERATION"
+        POL_VAULT[Protocol Owned Liquidity<br/>━━━━━━━━━━━━━━━━━━━━━━<br/>RBT-USDM Pool<br/>LP locked FOREVER<br/>Trading fees → Treasury]
+        
+        DEFI_YIELD[MegaETH DeFi Strategies<br/>━━━━━━━━━━━━━━━━━━━━━━<br/>Whitelisted protocols<br/>Yields → Treasury]
+        
+        MEGA_SYS[MEGA System<br/>━━━━━━━━━━━━━━━━━━━━━━<br/>Points from TVL<br/>Sequencer staking<br/>Proximity Markets]
     end
     
     HPN --> TREASURY
@@ -39,20 +48,21 @@ graph TB
     BOND_MEGA --> TREASURY
     LP_BOND --> TREASURY
     
-    LP_BOND --> POL_VAULT
-    
-    TREASURY --> MEGAETH_DEFI
-    MEGAETH_DEFI --> TREASURY
-    
-    POL_VAULT --> TREASURY
-    MEGA_POINTS --> TREASURY
+    LP_BOND -.->|LP locked forever| POL_VAULT
     
     TREASURY --> RBT
     
-    HPN --> RBT
-    BOND_USDM --> RBT
-    BOND_MEGA --> RBT
-    LP_BOND --> RBT
+    HPN -.->|can convert| RBT
+    BOND_USDM -.->|vests to| RBT
+    BOND_MEGA -.->|vests to| RBT
+    LP_BOND -.->|vests to| RBT
+    
+    POL_VAULT -->|fees| TREASURY
+    DEFI_YIELD -->|yields| TREASURY
+    MEGA_SYS -->|rewards| TREASURY
+    
+    TREASURY -.->|deploys| DEFI_YIELD
+    TREASURY -.->|stakes| MEGA_SYS
 ```
 
 ---
