@@ -43,14 +43,19 @@ graph TB
         USER_LP --> LP_BONDS
     end
     
-    subgraph "BOTTOM - TREASURY INFLOWS"
+    subgraph "BOTTOM LEFT - USER DEPOSITS TO TREASURY"
         HPN_DEPOSIT[HPN Deposits<br/>USDM/USDMy]
         BOND_DEPOSIT[Bond Deposits<br/>USDM/MEGA]
         LP_DEPOSIT[LP Bond<br/>RBT-USDM LP]
-        
+    end
+    
+    subgraph "BOTTOM CENTER - PROTOCOL REVENUE"
         YIELD_INCOME[Yield from<br/>MegaETH DeFi]
         POL_FEES[Trading Fees<br/>from POL]
         MEGA_REWARDS[MEGA Points<br/>Sequencer rewards]
+    end
+    
+    subgraph "BOTTOM RIGHT - FEES & PENALTIES"
         EXIT_FEES[Exit Fees<br/>2-3 percent HPN<br/>3.3 percent Bonds]
         FORFEIT[Forfeited Rewards<br/>Early exits]
     end
