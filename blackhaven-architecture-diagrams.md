@@ -82,56 +82,87 @@ graph TB
     HVN -->|governs| DEFI_STRAT
 ```
 
-## 2. HPN (Haven Protected Notes) Architecture
+## 2A. HPN Deposit Flow - Simple
+
+```mermaid
+graph LR
+    subgraph "You Start Here"
+        USER[You have<br/>USDM or USDMy]
+    end
+    
+    subgraph "Step 1: Deposit"
+        DEPOSIT[Deposit to HPN<br/>Select lock period<br/>e.g. 3 months, 6 months, 1 year]
+    end
+    
+    subgraph "Step 2: Receive NFT"
+        NFT[Receive HPN NFT<br/>ERC-721<br/>Unique to your position]
+        NFT_DETAILS[NFT shows:<br/>• Principal amount<br/>• Lock end date<br/>• Accrued rewards]
+    end
+    
+    subgraph "What Happens"
+        TREASURY[Your funds go to Treasury]
+        EARNING[Treasury deploys to:<br/>• MegaETH DeFi strategies<br/>• Earning yield<br/>• Earning MEGA Points amplified]
+    end
+    
+    subgraph "Your Dashboard"
+        DASHBOARD[Track your HPN:<br/>• Principal protected<br/>• Daily yield accrual<br/>• MEGA Points growing<br/>• Days remaining]
+    end
+    
+    USER -->|deposit USDM/USDMy| DEPOSIT
+    DEPOSIT -->|mint| NFT
+    NFT --> NFT_DETAILS
+    
+    DEPOSIT -->|forwards funds| TREASURY
+    TREASURY -->|deploys| EARNING
+    EARNING -->|accrues to| NFT
+    
+    NFT_DETAILS -->|view anytime| DASHBOARD
+```
+
+## 2B. HPN Exit Options - Three Ways Out
 
 ```mermaid
 graph TB
-    subgraph "User Actions"
-        USER[User]
-        WALLET[User Wallet<br/>USDM/USDMy]
+    subgraph "Your HPN NFT"
+        NFT[Your HPN NFT<br/>Principal + Accrued Rewards]
     end
     
-    subgraph "HPN Contract"
-        DEPOSIT_HANDLER[Deposit Handler<br/>Mints ERC-721 NFT]
-        NFT_STORAGE[NFT Storage<br/>Principal + Terms<br/>+ Accrued Rewards]
-        EXIT_HANDLER[Exit Handler<br/>3 Options]
+    subgraph "Option A: Hold to Maturity - Best Rewards"
+        MAT_ACTION[Wait until lock period ends]
+        MAT_COOLDOWN[Start 7-day cooldown]
+        MAT_CLAIM[Claim everything]
+        MAT_RESULT[You get:<br/>✓ Full principal<br/>✓ ALL accrued yield<br/>✓ ALL MEGA Points]
     end
     
-    subgraph "Exit Options"
-        MATURITY[Hold to Maturity<br/>7-day cooldown<br/>Principal + ALL Rewards]
-        EARLY_EXIT[Early Exit<br/>7-day cooldown<br/>Principal - 2-3 percent fee<br/>Forfeit rewards]
-        RBT_CONVERT[Convert to RBT<br/>NO cooldown<br/>Instant conversion<br/>Forfeit rewards]
+    subgraph "Option B: Early Exit - Keep Principal"
+        EARLY_ACTION[Exit before maturity]
+        EARLY_FEE[Pay 2-3 percent fee]
+        EARLY_COOLDOWN[Start 7-day cooldown]
+        EARLY_RESULT[You get:<br/>✓ Principal minus fee<br/>✗ Lose ALL rewards<br/>✗ Lose ALL MEGA Points]
     end
     
-    subgraph "Treasury Integration"
-        TREASURY[Treasury]
-        DEFI[MegaETH DeFi<br/>Strategies]
-        YIELD[Yield Accrual<br/>MEGA Points<br/>Amplified]
+    subgraph "Option C: Convert to RBT - Instant"
+        CONVERT_ACTION[Convert to RBT<br/>anytime]
+        CONVERT_BURN[NFT burns immediately]
+        CONVERT_RBT[Receive RBT]
+        CONVERT_RESULT[You get:<br/>✓ RBT instantly NO cooldown<br/>✗ Lose ALL rewards<br/>✗ Lose ALL MEGA Points]
     end
     
-    subgraph "RBT System"
-        RBT[RBT Token]
-        BURN[Burn NFT<br/>on conversion]
-    end
+    NFT -->|choose| MAT_ACTION
+    NFT -->|choose| EARLY_ACTION
+    NFT -->|choose| CONVERT_ACTION
     
-    USER -->|1. Connect wallet| WALLET
-    WALLET -->|2. Deposit USDM/USDMy<br/>select lock period| DEPOSIT_HANDLER
-    DEPOSIT_HANDLER -->|3. Mint NFT| NFT_STORAGE
-    DEPOSIT_HANDLER -->|4. Forward funds| TREASURY
+    MAT_ACTION --> MAT_COOLDOWN
+    MAT_COOLDOWN -->|after 7 days| MAT_CLAIM
+    MAT_CLAIM --> MAT_RESULT
     
-    TREASURY -->|5. Deploy capital| DEFI
-    DEFI -->|6. Generate yield + points| YIELD
-    YIELD -->|7. Accrue to NFT| NFT_STORAGE
+    EARLY_ACTION --> EARLY_FEE
+    EARLY_FEE --> EARLY_COOLDOWN
+    EARLY_COOLDOWN -->|after 7 days| EARLY_RESULT
     
-    NFT_STORAGE -->|8a. At maturity| MATURITY
-    NFT_STORAGE -->|8b. Before maturity| EARLY_EXIT
-    NFT_STORAGE -->|8c. Anytime| RBT_CONVERT
-    
-    MATURITY -->|wait 7 days| USER
-    EARLY_EXIT -->|charge fee, wait 7 days| USER
-    RBT_CONVERT -->|immediate| BURN
-    BURN -->|instant RBT| RBT
-    RBT --> USER
+    CONVERT_ACTION --> CONVERT_BURN
+    CONVERT_BURN -->|immediate| CONVERT_RBT
+    CONVERT_RBT --> CONVERT_RESULT
 ```
 
 ## 3. Fixed-Term Bonds Architecture
