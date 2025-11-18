@@ -434,7 +434,7 @@ graph LR
     ARBT_SYSTEM -->|strengthens| RBT_SYSTEM
     
     SEQUENCER -->|rewards| TREASURY_CORE
-    PROXIMITY -->|MEV revenue| TREASURY_CORE
+    PROXIMITY -->|Yield opportunities<br/>Network utility| TREASURY_CORE
     DEFI_PROTOCOLS -->|yield| TREASURY_CORE
     
     TREASURY_CORE -->|growth rewards| SHVN_STAKING

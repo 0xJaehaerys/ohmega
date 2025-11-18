@@ -24,7 +24,7 @@ graph TB
         
         subgraph "MegaETH Integration"
             SEQUENCER["🚀 MegaETH Sequencer<br/>100% MEGA Staked<br/>Yield → Treasury"]
-            PROXIMITY["📡 Proximity Markets<br/>HVN Controls Allocation<br/>MEV Capture"]
+            PROXIMITY["📡 Proximity Markets<br/>HVN Controls Allocation<br/>Yield Opportunities"]
             DEFI["🏗️ MegaETH DeFi<br/>USDm Integration<br/>Real-Time Execution"]
         end
     end
@@ -47,7 +47,7 @@ graph TB
     
     %% Value flows
     SEQUENCER -->|Yield| TREASURY
-    PROXIMITY -->|MEV Revenue| TREASURY
+    PROXIMITY -->|Yield opportunities<br/>Network utility| TREASURY
     DEFI -->|Strategy Yields| TREASURY
     POL -->|Trading Fees| TREASURY
     
@@ -179,7 +179,7 @@ graph TD
         
         GOVERNANCE["🗳️ Governance<br/>• Treasury Strategy<br/>• Reward Rates<br/>• DeFi Whitelist<br/>• MEGA Allocation"]
         
-        PROXIMITY["📡 Proximity Control<br/>• Bid Strategy<br/>• Slot Selection<br/>• MEV Capture<br/>• Execution Priority"]
+        PROXIMITY["📡 Proximity Control<br/>• Bid Strategy<br/>• Slot Selection<br/>• Yield Opportunities<br/>• Network Utility"]
         
         BASELINE["🛡️ Baseline Launch<br/>• BLV Price Floor<br/>• Non-Liquidatable Loans<br/>• Autonomous Liquidity"]
         

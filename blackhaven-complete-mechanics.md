@@ -117,7 +117,7 @@ graph TB
     
     %% Proximity Markets
     HVN_TOKEN -->|Governance controls| PROXIMITY
-    PROXIMITY -.->|MEV Revenue| TREASURY
+    PROXIMITY -.->|Yield opportunities<br/>Network utility| TREASURY
     
     %% Styling
     style TREASURY fill:#fff,stroke:#000,stroke-width:3px
@@ -173,7 +173,7 @@ graph TB
 ### MegaETH Integration
 - **Sequencer Staking**: 100% of MEGA staked, rewards compound to treasury
 - **DeFi Strategies**: Whitelisted strategies for USDM/USDMy
-- **Proximity Markets**: HVN governance controls how staked MEGA is used
+- **Proximity Markets**: HVN governance controls how staked MEGA is used for yield opportunities and network utility
 
 ---
 

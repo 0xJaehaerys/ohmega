@@ -8,7 +8,7 @@ graph TB
         subgraph "Core Infrastructure"
             MEGA_CHAIN["⚡ MegaETH Chain<br/>100k TPS<br/>10ms blocks"]
             SEQUENCER["🚀 Sequencer<br/>Rotates globally<br/>Stake MEGA"]
-            PROXIMITY["📡 Proximity Markets<br/>Pay for priority<br/>MEV opportunities"]
+            PROXIMITY["📡 Proximity Markets<br/>Pay for priority<br/>Yield opportunities"]
         end
         
         subgraph "Native Assets"

@@ -192,8 +192,8 @@ sequenceDiagram
     
     loop Each Trading Window
         HVN->>Proximity: Allocate MEGA to slots
-        Proximity->>MEV: Capture opportunities
-        MEV-->>Blackhaven: Revenue to treasury
+        Proximity->>Yield: Generate opportunities
+        Yield-->>Blackhaven: Yield to treasury
         Blackhaven-->>Trader: sHVN rewards share
     end
     

@@ -216,7 +216,7 @@ pie title "Blackhaven Revenue Sources"
     "DeFi Strategy Returns" : 25
     "Trading Fees (POL)" : 20
     "Exit Penalties" : 10
-    "Proximity Market MEV" : 10
+    "Proximity Market Yield" : 10
 ```
 
 ## 8. Token Velocity Analysis
