@@ -82,87 +82,42 @@ graph TB
     HVN -->|governs| DEFI_STRAT
 ```
 
-## 2A. HPN Deposit Flow - Simple
+## 2A. HPN Deposit Flow
 
 ```mermaid
 graph LR
-    subgraph "You Start Here"
-        USER[You have<br/>USDM or USDMy]
-    end
+    USER[User]
+    HPN[HPN Contract]
+    NFT[HPN NFT]
+    TREASURY[Treasury]
     
-    subgraph "Step 1: Deposit"
-        DEPOSIT[Deposit to HPN<br/>Select lock period<br/>e.g. 3 months, 6 months, 1 year]
-    end
-    
-    subgraph "Step 2: Receive NFT"
-        NFT[Receive HPN NFT<br/>ERC-721<br/>Unique to your position]
-        NFT_DETAILS[NFT shows:<br/>• Principal amount<br/>• Lock end date<br/>• Accrued rewards]
-    end
-    
-    subgraph "What Happens"
-        TREASURY[Your funds go to Treasury]
-        EARNING[Treasury deploys to:<br/>• MegaETH DeFi strategies<br/>• Earning yield<br/>• Earning MEGA Points amplified]
-    end
-    
-    subgraph "Your Dashboard"
-        DASHBOARD[Track your HPN:<br/>• Principal protected<br/>• Daily yield accrual<br/>• MEGA Points growing<br/>• Days remaining]
-    end
-    
-    USER -->|deposit USDM/USDMy| DEPOSIT
-    DEPOSIT -->|mint| NFT
-    NFT --> NFT_DETAILS
-    
-    DEPOSIT -->|forwards funds| TREASURY
-    TREASURY -->|deploys| EARNING
-    EARNING -->|accrues to| NFT
-    
-    NFT_DETAILS -->|view anytime| DASHBOARD
+    USER -->|deposit USDM/USDMy<br/>select lock period| HPN
+    HPN -->|mint NFT<br/>tracks principal + rewards| USER
+    HPN -->|forward deposits| TREASURY
+    TREASURY -->|deploy to MegaETH DeFi<br/>earn yield + MEGA Points| NFT
 ```
 
-## 2B. HPN Exit Options - Three Ways Out
+## 2B. HPN Exit Options
 
 ```mermaid
 graph TB
-    subgraph "Your HPN NFT"
-        NFT[Your HPN NFT<br/>Principal + Accrued Rewards]
-    end
+    NFT[HPN NFT]
     
-    subgraph "Option A: Hold to Maturity - Best Rewards"
-        MAT_ACTION[Wait until lock period ends]
-        MAT_COOLDOWN[Start 7-day cooldown]
-        MAT_CLAIM[Claim everything]
-        MAT_RESULT[You get:<br/>✓ Full principal<br/>✓ ALL accrued yield<br/>✓ ALL MEGA Points]
-    end
+    MATURITY[Hold to Maturity]
+    EARLY[Early Exit]
+    CONVERT[Convert to RBT]
     
-    subgraph "Option B: Early Exit - Keep Principal"
-        EARLY_ACTION[Exit before maturity]
-        EARLY_FEE[Pay 2-3 percent fee]
-        EARLY_COOLDOWN[Start 7-day cooldown]
-        EARLY_RESULT[You get:<br/>✓ Principal minus fee<br/>✗ Lose ALL rewards<br/>✗ Lose ALL MEGA Points]
-    end
+    USER_MAT[User]
+    USER_EARLY[User]
+    USER_CONVERT[User]
     
-    subgraph "Option C: Convert to RBT - Instant"
-        CONVERT_ACTION[Convert to RBT<br/>anytime]
-        CONVERT_BURN[NFT burns immediately]
-        CONVERT_RBT[Receive RBT]
-        CONVERT_RESULT[You get:<br/>✓ RBT instantly NO cooldown<br/>✗ Lose ALL rewards<br/>✗ Lose ALL MEGA Points]
-    end
+    NFT -->|wait until lock ends<br/>7-day cooldown| MATURITY
+    NFT -->|exit anytime<br/>2-3 percent fee<br/>7-day cooldown| EARLY
+    NFT -->|instant conversion<br/>NO cooldown| CONVERT
     
-    NFT -->|choose| MAT_ACTION
-    NFT -->|choose| EARLY_ACTION
-    NFT -->|choose| CONVERT_ACTION
-    
-    MAT_ACTION --> MAT_COOLDOWN
-    MAT_COOLDOWN -->|after 7 days| MAT_CLAIM
-    MAT_CLAIM --> MAT_RESULT
-    
-    EARLY_ACTION --> EARLY_FEE
-    EARLY_FEE --> EARLY_COOLDOWN
-    EARLY_COOLDOWN -->|after 7 days| EARLY_RESULT
-    
-    CONVERT_ACTION --> CONVERT_BURN
-    CONVERT_BURN -->|immediate| CONVERT_RBT
-    CONVERT_RBT --> CONVERT_RESULT
+    MATURITY -->|receive principal<br/>+ ALL rewards<br/>+ ALL MEGA Points| USER_MAT
+    EARLY -->|receive principal<br/>- fee<br/>lose all rewards| USER_EARLY
+    CONVERT -->|receive RBT<br/>lose all rewards<br/>NFT burns| USER_CONVERT
 ```
 
 ## 3. Fixed-Term Bonds Architecture
