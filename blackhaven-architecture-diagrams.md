@@ -328,64 +328,121 @@ graph LR
     COOLDOWNS -->|after 7 days| USER
 ```
 
-## Fixed-Term Bonds Architecture
+## Fixed-Term Bonds Architecture (Olympus DAO Style)
 
 ```mermaid
 graph TB
-    subgraph "Bond Types"
-        REGULAR_BOND[Regular Bond<br/>USDM/MEGA -> RBT<br/>Discounted + Vested]
-        LP_BOND[LP Bond<br/>LP Token -> RBT<br/>Aligned Bonds<br/>POL Creation]
+    subgraph "User Entry - Regular Bonds"
+        USER_USDM[User with USDM]
+        USER_MEGA[User with MEGA]
+        BOND_USDM[USDM Bond<br/>Deposit USDM]
+        BOND_MEGA[MEGA Bond<br/>Deposit MEGA]
+    end
+    
+    subgraph "User Entry - LP Bonds"
+        USER_LP_CREATOR[User Creates LP]
+        RBT_USDM_POOL[RBT-USDM Pool<br/>DEX]
+        LP_TOKEN_HOLDER[LP Token Holder]
+        BOND_LP[LP Bond<br/>Deposit LP Token]
     end
     
     subgraph "Bond Depository"
-        PRICING_ENGINE[Bond Pricing Engine<br/>Market Price - Discount]
-        VESTING_CONTROLLER[Vesting Controller<br/>Linear Release]
-        BOND_REGISTRY[Bond Registry<br/>User Positions]
+        BOND_CONTROLLER[Bond Controller<br/>Pricing & Vesting]
+        DISCOUNT_CALC[Discount Calculator<br/>Market Price vs Bond Price]
+        VESTING_SCHEDULE[Vesting Schedule<br/>Linear Release<br/>User-selected period]
     end
     
-    subgraph "Vesting Mechanism"
-        VESTING_POSITIONS[(Vesting Positions<br/>Daily Unlock)]
-        LINEAR_RELEASE[Linear Release Logic<br/>User-selected period]
-        CLAIM_HANDLER[Claim Handler<br/>Vested RBT]
-        EARLY_EXIT[Early Exit Handler<br/>3.3% fee + forfeit]
+    subgraph "Treasury Core"
+        TREASURY_VAULT[Treasury Vault]
+        USDM_RESERVE[USDM Reserve]
+        MEGA_RESERVE[MEGA Reserve<br/>100% to Sequencer]
+        POL_VAULT[POL Vault<br/>LP Locked Forever]
     end
     
-    subgraph "Treasury Integration"
-        TREASURY_DEPOSITS[Treasury Deposits<br/>Quote assets]
-        POL_MANAGER[POL Manager<br/>LP locked forever]
-        LP_LOCKER[LP Token Locker<br/>Permanent]
+    subgraph "RBT Minting Engine"
+        RBT_MINTER[RBT Minter<br/>Proportional to Treasury]
+        BACKING_RATIO[Backing Ratio<br/>Treasury Value / RBT Supply]
+        DISCOUNT_RBT[Discounted RBT<br/>Below Market Price]
     end
     
-    subgraph "User Flow"
-        USER_REGULAR[User A<br/>Regular Bond]
-        USER_LP[User B<br/>LP Bond]
+    subgraph "Vesting & Distribution"
+        VESTING_VAULT[Vesting Vault<br/>User Positions]
+        DAILY_UNLOCK[Daily Unlock<br/>Linear Vesting]
+        CLAIMABLE_RBT[Claimable RBT<br/>Vested Amount]
+        UNVESTED_RBT[Unvested RBT<br/>Subject to Forfeit]
     end
     
-    USER_REGULAR -->|deposits USDM/MEGA| REGULAR_BOND
-    REGULAR_BOND --> PRICING_ENGINE
+    subgraph "Exit Mechanisms"
+        MATURITY_CLAIM[Maturity Claim<br/>Full RBT + Rewards]
+        EARLY_EXIT_HANDLER[Early Exit<br/>3.3% Fee<br/>Forfeit Unvested]
+        FORFEIT_TO_TREASURY[Forfeited RBT<br/>Back to Treasury]
+    end
     
-    USER_LP -->|1. creates LP| LP_CREATION[RBT-USDM Pool]
-    LP_CREATION -->|2. LP Token| USER_LP
-    USER_LP -->|3. deposits LP| LP_BOND
-    LP_BOND --> PRICING_ENGINE
+    subgraph "Protocol Owned Liquidity"
+        POL_REGISTRY[POL Registry<br/>Permanent LP Lock]
+        TRADING_FEE_COLLECTOR[Trading Fees<br/>0.3% per swap]
+        POL_TO_TREASURY[Fees to Treasury<br/>Forever]
+    end
     
-    PRICING_ENGINE -->|calculates discount| VESTING_CONTROLLER
-    VESTING_CONTROLLER -->|creates position| BOND_REGISTRY
-    BOND_REGISTRY --> VESTING_POSITIONS
+    subgraph "Value Accrual Loop"
+        TREASURY_GROWTH[Treasury Growth]
+        RBT_BACKING_INCREASE[RBT Backing Increase]
+        DEEPER_LIQUIDITY[Deeper RBT Liquidity]
+        MORE_BONDS[More Bond Demand]
+    end
     
-    REGULAR_BOND -->|assets to treasury| TREASURY_DEPOSITS
-    LP_BOND -->|LP tokens| LP_LOCKER
-    LP_LOCKER -->|locked forever| POL_MANAGER
+    USER_USDM --> BOND_USDM
+    USER_MEGA --> BOND_MEGA
     
-    VESTING_POSITIONS --> LINEAR_RELEASE
-    LINEAR_RELEASE -->|daily unlock| CLAIM_HANDLER
-    LINEAR_RELEASE -->|if early exit| EARLY_EXIT
+    USER_LP_CREATOR --> RBT_USDM_POOL
+    RBT_USDM_POOL --> LP_TOKEN_HOLDER
+    LP_TOKEN_HOLDER --> BOND_LP
     
-    CLAIM_HANDLER -->|vested RBT| USER_REGULAR
-    CLAIM_HANDLER -->|vested RBT| USER_LP
+    BOND_USDM --> BOND_CONTROLLER
+    BOND_MEGA --> BOND_CONTROLLER
+    BOND_LP --> BOND_CONTROLLER
     
-    EARLY_EXIT -->|3.3% fee + forfeit| TREASURY_DEPOSITS
-    POL_MANAGER -->|trading fees| TREASURY_DEPOSITS
+    BOND_CONTROLLER --> DISCOUNT_CALC
+    BOND_CONTROLLER --> VESTING_SCHEDULE
+    
+    BOND_USDM -->|deposits| USDM_RESERVE
+    BOND_MEGA -->|deposits| MEGA_RESERVE
+    BOND_LP -->|locks forever| POL_VAULT
+    
+    USDM_RESERVE --> TREASURY_VAULT
+    MEGA_RESERVE --> TREASURY_VAULT
+    POL_VAULT --> POL_REGISTRY
+    
+    TREASURY_VAULT --> BACKING_RATIO
+    BACKING_RATIO --> RBT_MINTER
+    DISCOUNT_CALC --> DISCOUNT_RBT
+    RBT_MINTER --> DISCOUNT_RBT
+    
+    DISCOUNT_RBT --> VESTING_VAULT
+    VESTING_SCHEDULE --> VESTING_VAULT
+    
+    VESTING_VAULT --> DAILY_UNLOCK
+    DAILY_UNLOCK --> CLAIMABLE_RBT
+    DAILY_UNLOCK --> UNVESTED_RBT
+    
+    CLAIMABLE_RBT --> MATURITY_CLAIM
+    UNVESTED_RBT --> EARLY_EXIT_HANDLER
+    EARLY_EXIT_HANDLER --> FORFEIT_TO_TREASURY
+    FORFEIT_TO_TREASURY --> TREASURY_VAULT
+    
+    MATURITY_CLAIM -->|full vested RBT| USER_USDM
+    MATURITY_CLAIM -->|full vested RBT| USER_MEGA
+    MATURITY_CLAIM -->|full vested RBT| LP_TOKEN_HOLDER
+    
+    POL_REGISTRY --> TRADING_FEE_COLLECTOR
+    TRADING_FEE_COLLECTOR --> POL_TO_TREASURY
+    POL_TO_TREASURY --> TREASURY_VAULT
+    
+    TREASURY_VAULT --> TREASURY_GROWTH
+    TREASURY_GROWTH --> RBT_BACKING_INCREASE
+    RBT_BACKING_INCREASE --> DEEPER_LIQUIDITY
+    DEEPER_LIQUIDITY --> MORE_BONDS
+    MORE_BONDS --> BOND_CONTROLLER
 ```
 
 ## Complete System Integration
