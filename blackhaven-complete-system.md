@@ -4,70 +4,82 @@
 
 ```mermaid
 graph TB
-    subgraph "TOP - HPN"
-        USER_HPN[User deposits<br/>USDM or USDMy]
-        HPN[HPN<br/>━━━━━━━━━━━━━━<br/>ERC-721 NFT<br/>Principal Protected<br/>Earns Yield<br/>Earns MEGA Points]
-        USER_HPN_OUT[User receives:<br/>NFT<br/>Yield<br/>MEGA Points<br/>━━━━━━━━━━━━━━<br/>OR instant RBT]
+    subgraph "TOP - RBT STAKING"
+        RBT_TOP[RBT]
+        LOCK_BTN[LOCK]
+        UNLOCK_BTN[UNLOCK]
+        ARBT_STAKED[aRBT<br/>locked RBT<br/>0-2 years]
         
-        USER_HPN --> HPN
-        HPN --> USER_HPN_OUT
+        RBT_TOP --> LOCK_BTN
+        LOCK_BTN --> ARBT_STAKED
+        ARBT_STAKED --> UNLOCK_BTN
+        UNLOCK_BTN --> RBT_TOP
     end
     
-    subgraph "LEFT - BONDS"
-        USER_BONDS[User deposits<br/>━━━━━━━━━━━━━━<br/>USDM or MEGA]
+    subgraph "LEFT TOP - HPN"
+        USER_HPN[User<br/>USDM/USDMy]
+        HPN[HPN<br/>━━━━━━━━━━━<br/>NFT<br/>Principal Protected]
         
-        BONDS[Fixed-Term Bonds<br/>━━━━━━━━━━━━━━<br/>Discounted RBT<br/>Linear vesting<br/>Daily unlock]
+        USER_HPN --> HPN
+    end
+    
+    subgraph "LEFT BOTTOM - BONDS"
+        USER_BONDS[User<br/>USDM or MEGA]
         
-        USER_BONDS_OUT[User receives:<br/>━━━━━━━━━━━━━━<br/>Discounted RBT<br/>Unlocks daily<br/>Full at maturity]
+        BONDS[Fixed-Term<br/>Bonds<br/>━━━━━━━━━━━<br/>Discounted RBT<br/>Vesting]
         
         USER_BONDS --> BONDS
-        BONDS --> USER_BONDS_OUT
     end
     
     subgraph "CENTER - TREASURY"
-        TREASURY[TREASURY<br/>═══════════════════<br/>USDM Reserve<br/>MEGA Reserve<br/>POL: RBT-USDM LP<br/>═══════════════════<br/>Backs all RBT<br/>═══════════════════<br/>Deploys to DeFi<br/>Stakes MEGA<br/>Owns POL forever]
+        TREASURY[TREASURY<br/>═══════════════════<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>═══════════════════<br/>RBT is backed<br/>by treasury]
     end
     
     subgraph "RIGHT - LP BONDS"
-        USER_LP[User deposits<br/>━━━━━━━━━━━━━━<br/>RBT-USDM LP token]
+        USER_LP[User<br/>RBT-USDM LP]
         
-        LP_BONDS[LP Bond Aligned<br/>━━━━━━━━━━━━━━<br/>LP locked FOREVER<br/>Becomes POL<br/>Earns rewards]
-        
-        USER_LP_OUT[User receives:<br/>━━━━━━━━━━━━━━<br/>Discounted RBT<br/>Extra rewards<br/>Unlocks daily]
+        LP_BONDS[LP Bond<br/>━━━━━━━━━━━<br/>LP locked FOREVER<br/>POL]
         
         USER_LP --> LP_BONDS
-        LP_BONDS --> USER_LP_OUT
     end
     
-    subgraph "BOTTOM LEFT - RBT SYSTEM"
-        RBT_CIRCLE[RBT Token<br/>━━━━━━━━━━━━━━<br/>Backed by Treasury<br/>Tradeable<br/>Used in MegaETH DeFi]
+    subgraph "BOTTOM - TREASURY INFLOWS"
+        HPN_DEPOSIT[HPN Deposits<br/>USDM/USDMy]
+        BOND_DEPOSIT[Bond Deposits<br/>USDM/MEGA]
+        LP_DEPOSIT[LP Bond<br/>RBT-USDM LP]
         
-        ARBT_CIRCLE[aRBT<br/>━━━━━━━━━━━━━━<br/>Lock RBT 0-2 years<br/>Get protocol fees<br/>Revenue sharing]
-        
-        RBT_CIRCLE --> ARBT_CIRCLE
+        YIELD_INCOME[Yield from<br/>MegaETH DeFi]
+        POL_FEES[Trading Fees<br/>from POL]
+        MEGA_REWARDS[MEGA Points<br/>Sequencer rewards]
+        EXIT_FEES[Exit Fees<br/>2-3 percent HPN<br/>3.3 percent Bonds]
+        FORFEIT[Forfeited Rewards<br/>Early exits]
     end
     
-    subgraph "BOTTOM RIGHT - VALUE GENERATION"
-        POL_GEN[POL<br/>━━━━━━━━━━━━━━<br/>RBT-USDM Pool<br/>LP locked forever<br/>Trading fees]
+    subgraph "RIGHT BOTTOM - OUTPUTS"
+        RBT_OUT[RBT<br/>━━━━━━━━━━━<br/>Reserve-Backed<br/>Minted by Treasury]
         
-        DEFI_GEN[MegaETH DeFi<br/>━━━━━━━━━━━━━━<br/>Lending<br/>Yield strategies<br/>Returns]
+        USER_GETS[Users receive<br/>━━━━━━━━━━━<br/>RBT daily unlock<br/>or instant convert]
         
-        MEGA_GEN[MEGA<br/>━━━━━━━━━━━━━━<br/>Sequencer staking<br/>MEGA Points<br/>Proximity Markets]
+        RBT_OUT --> USER_GETS
     end
     
-    HPN -->|deposits| TREASURY
-    BONDS -->|deposits| TREASURY
-    LP_BONDS -->|deposits| TREASURY
-    LP_BONDS -->|LP locked forever| POL_GEN
+    HPN --> HPN_DEPOSIT
+    BONDS --> BOND_DEPOSIT
+    LP_BONDS --> LP_DEPOSIT
     
-    TREASURY -->|mints| RBT_CIRCLE
+    HPN_DEPOSIT --> TREASURY
+    BOND_DEPOSIT --> TREASURY
+    LP_DEPOSIT --> TREASURY
     
-    POL_GEN -->|fees| TREASURY
-    DEFI_GEN -->|yields| TREASURY
-    MEGA_GEN -->|rewards| TREASURY
+    YIELD_INCOME --> TREASURY
+    POL_FEES --> TREASURY
+    MEGA_REWARDS --> TREASURY
+    EXIT_FEES --> TREASURY
+    FORFEIT --> TREASURY
     
-    TREASURY -.->|deploys| DEFI_GEN
-    TREASURY -.->|stakes| MEGA_GEN
+    TREASURY -->|mints proportionally| RBT_OUT
+    
+    ARBT_STAKED -.->|receives protocol fees| TREASURY
 ```
 
 ---
