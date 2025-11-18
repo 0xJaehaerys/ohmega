@@ -428,7 +428,7 @@ graph LR
     TREASURY_CORE -->|deploys to| DEFI_PROTOCOLS
     ORACLES -->|price feeds| TREASURY_CORE
     
-    SHVN_STAKING --> HVN_GOVERNANCE
+    HVN_GOVERNANCE -->|stake to get| SHVN_STAKING
     RBT_SYSTEM -->|used in| DEFI_PROTOCOLS
     ARBT_SYSTEM -->|strengthens| RBT_SYSTEM
     
