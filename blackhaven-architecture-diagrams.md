@@ -26,7 +26,7 @@ graph TB
     subgraph "Value Generation"
         SEQUENCER[MegaETH<br/>Sequencer<br/>100 percent MEGA staked]
         DEFI_STRAT[Whitelisted<br/>MegaETH DeFi<br/>USDM/USDMy only]
-        POL_FEES[Trading Fees<br/>0.3 percent per swap]
+        POL_FEES[Trading Fees<br/>from POL swaps]
     end
     
     subgraph "RBT Minting"
@@ -154,7 +154,7 @@ graph LR
     LP_POOL -->|receive LP token| USER
     USER -->|deposit LP token<br/>select vesting period<br/>receive discount + rewards| LP_BOND
     LP_BOND -->|LP locked FOREVER<br/>becomes POL| POL
-    POL -->|generates 0.3 percent trading fees<br/>to treasury| LP_BOND
+    POL -->|generates trading fees<br/>to treasury| LP_BOND
     LP_BOND -->|create vested position<br/>linear daily unlock| VESTING
     VESTING -->|claim vested RBT<br/>+ rewards| RBT
     RBT -->|receive RBT| USER
@@ -241,7 +241,7 @@ graph TB
         MEGA_POINTS[MEGA Points<br/>from TVL]
         EXIT_FEES[Exit Fees<br/>HPN: 2-3 percent<br/>Bonds: 3.3 percent]
         FORFEITS[Forfeited Rewards<br/>Early exits]
-        POL_FEES[POL Trading Fees<br/>0.3 percent per swap]
+        POL_FEES[POL Trading Fees<br/>from swaps]
         PRM[Premium Range<br/>Mechanism<br/>Coming Soon]
     end
     
