@@ -4,65 +4,70 @@
 
 ```mermaid
 graph TB
-    subgraph "LEFT - DEPOSITS"
-        USER_HPN[User<br/>USDM/USDMy]
-        USER_USDM[User<br/>USDM]
-        USER_MEGA[User<br/>MEGA]
-        USER_LP[User<br/>RBT-USDM LP]
-        
-        HPN[HPN<br/>Principal Protected<br/>ERC-721]
-        BOND_USDM[USDM<br/>Bond]
-        BOND_MEGA[MEGA<br/>Bond]
-        LP_BOND[LP Bond<br/>POL Forever]
+    subgraph "TOP - HPN"
+        USER_HPN[User deposits<br/>USDM or USDMy]
+        HPN[HPN<br/>━━━━━━━━━━━━━━<br/>ERC-721 NFT<br/>Principal Protected<br/>Earns Yield<br/>Earns MEGA Points]
+        USER_HPN_OUT[User receives:<br/>NFT<br/>Yield<br/>MEGA Points<br/>━━━━━━━━━━━━━━<br/>OR instant RBT]
         
         USER_HPN --> HPN
-        USER_USDM --> BOND_USDM
-        USER_MEGA --> BOND_MEGA
-        USER_LP --> LP_BOND
+        HPN --> USER_HPN_OUT
+    end
+    
+    subgraph "LEFT - BONDS"
+        USER_BONDS[User deposits<br/>━━━━━━━━━━━━━━<br/>USDM or MEGA]
+        
+        BONDS[Fixed-Term Bonds<br/>━━━━━━━━━━━━━━<br/>Discounted RBT<br/>Linear vesting<br/>Daily unlock]
+        
+        USER_BONDS_OUT[User receives:<br/>━━━━━━━━━━━━━━<br/>Discounted RBT<br/>Unlocks daily<br/>Full at maturity]
+        
+        USER_BONDS --> BONDS
+        BONDS --> USER_BONDS_OUT
     end
     
     subgraph "CENTER - TREASURY"
-        TREASURY[TREASURY<br/>═════════════<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>═════════════<br/>RBT Backing]
+        TREASURY[TREASURY<br/>═══════════════════<br/>USDM Reserve<br/>MEGA Reserve<br/>POL: RBT-USDM LP<br/>═══════════════════<br/>Backs all RBT<br/>═══════════════════<br/>Deploys to DeFi<br/>Stakes MEGA<br/>Owns POL forever]
     end
     
-    subgraph "RIGHT - OUTPUTS"
-        RBT[RBT<br/>Reserve-Backed]
-        ARBT[aRBT<br/>Lock 0-2yr<br/>Revenue Share]
+    subgraph "RIGHT - LP BONDS"
+        USER_LP[User deposits<br/>━━━━━━━━━━━━━━<br/>RBT-USDM LP token]
         
-        DEFI_USE[MegaETH<br/>DeFi Usage]
+        LP_BONDS[LP Bond Aligned<br/>━━━━━━━━━━━━━━<br/>LP locked FOREVER<br/>Becomes POL<br/>Earns rewards]
         
-        RBT --> ARBT
-        RBT --> DEFI_USE
+        USER_LP_OUT[User receives:<br/>━━━━━━━━━━━━━━<br/>Discounted RBT<br/>Extra rewards<br/>Unlocks daily]
+        
+        USER_LP --> LP_BONDS
+        LP_BONDS --> USER_LP_OUT
     end
     
-    subgraph "BOTTOM - VALUE GENERATION"
-        POL_VAULT[Protocol Owned Liquidity<br/>━━━━━━━━━━━━━━━━━━━━━━<br/>RBT-USDM Pool<br/>LP locked FOREVER<br/>Trading fees → Treasury]
+    subgraph "BOTTOM LEFT - RBT SYSTEM"
+        RBT_CIRCLE[RBT Token<br/>━━━━━━━━━━━━━━<br/>Backed by Treasury<br/>Tradeable<br/>Used in MegaETH DeFi]
         
-        DEFI_YIELD[MegaETH DeFi Strategies<br/>━━━━━━━━━━━━━━━━━━━━━━<br/>Whitelisted protocols<br/>Yields → Treasury]
+        ARBT_CIRCLE[aRBT<br/>━━━━━━━━━━━━━━<br/>Lock RBT 0-2 years<br/>Get protocol fees<br/>Revenue sharing]
         
-        MEGA_SYS[MEGA System<br/>━━━━━━━━━━━━━━━━━━━━━━<br/>Points from TVL<br/>Sequencer staking<br/>Proximity Markets]
+        RBT_CIRCLE --> ARBT_CIRCLE
     end
     
-    HPN --> TREASURY
-    BOND_USDM --> TREASURY
-    BOND_MEGA --> TREASURY
-    LP_BOND --> TREASURY
+    subgraph "BOTTOM RIGHT - VALUE GENERATION"
+        POL_GEN[POL<br/>━━━━━━━━━━━━━━<br/>RBT-USDM Pool<br/>LP locked forever<br/>Trading fees]
+        
+        DEFI_GEN[MegaETH DeFi<br/>━━━━━━━━━━━━━━<br/>Lending<br/>Yield strategies<br/>Returns]
+        
+        MEGA_GEN[MEGA<br/>━━━━━━━━━━━━━━<br/>Sequencer staking<br/>MEGA Points<br/>Proximity Markets]
+    end
     
-    LP_BOND -.->|LP locked forever| POL_VAULT
+    HPN -->|deposits| TREASURY
+    BONDS -->|deposits| TREASURY
+    LP_BONDS -->|deposits| TREASURY
+    LP_BONDS -->|LP locked forever| POL_GEN
     
-    TREASURY --> RBT
+    TREASURY -->|mints| RBT_CIRCLE
     
-    HPN -.->|can convert| RBT
-    BOND_USDM -.->|vests to| RBT
-    BOND_MEGA -.->|vests to| RBT
-    LP_BOND -.->|vests to| RBT
+    POL_GEN -->|fees| TREASURY
+    DEFI_GEN -->|yields| TREASURY
+    MEGA_GEN -->|rewards| TREASURY
     
-    POL_VAULT -->|fees| TREASURY
-    DEFI_YIELD -->|yields| TREASURY
-    MEGA_SYS -->|rewards| TREASURY
-    
-    TREASURY -.->|deploys| DEFI_YIELD
-    TREASURY -.->|stakes| MEGA_SYS
+    TREASURY -.->|deploys| DEFI_GEN
+    TREASURY -.->|stakes| MEGA_GEN
 ```
 
 ---
