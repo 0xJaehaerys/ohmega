@@ -24,9 +24,9 @@ graph TB
     end
     
     subgraph "Value Generation"
-        SEQUENCER[MegaETH<br/>Sequencer<br/>100% MEGA staked]
+        SEQUENCER[MegaETH<br/>Sequencer<br/>100 percent MEGA staked]
         DEFI_STRAT[Whitelisted<br/>MegaETH DeFi<br/>USDM/USDMy only]
-        POL_FEES[Trading Fees<br/>0.3% per swap]
+        POL_FEES[Trading Fees<br/>0.3 percent per swap]
     end
     
     subgraph "RBT Minting"
@@ -99,7 +99,7 @@ graph TB
     
     subgraph "Exit Options"
         MATURITY[Hold to Maturity<br/>7-day cooldown<br/>Principal + ALL Rewards]
-        EARLY_EXIT[Early Exit<br/>7-day cooldown<br/>Principal - 2-3% fee<br/>Forfeit rewards]
+        EARLY_EXIT[Early Exit<br/>7-day cooldown<br/>Principal - 2-3 percent fee<br/>Forfeit rewards]
         RBT_CONVERT[Convert to RBT<br/>NO cooldown<br/>Instant conversion<br/>Forfeit rewards]
     end
     
@@ -155,7 +155,7 @@ graph TB
     subgraph "Treasury"
         TREASURY[Treasury Vault]
         USDM_RES[USDM Reserve]
-        MEGA_RES[MEGA Reserve<br/>100% to Sequencer]
+        MEGA_RES[MEGA Reserve<br/>100 percent to Sequencer]
         POL_VAULT[POL Vault<br/>LP Locked FOREVER]
     end
     
@@ -172,7 +172,7 @@ graph TB
     
     subgraph "Exit Mechanisms"
         MATURITY[Hold to Maturity<br/>Claim all vested RBT]
-        EARLY_EXIT[Early Exit<br/>3.3% fee<br/>Forfeit unvested]
+        EARLY_EXIT[Early Exit<br/>3.3 percent fee<br/>Forfeit unvested]
     end
     
     USER_USDM -->|deposit USDM| USDM_BOND
@@ -191,7 +191,7 @@ graph TB
     
     USDM_RES --> TREASURY
     MEGA_RES --> TREASURY
-    POL_VAULT -->|trading fees 0.3%| TREASURY
+    POL_VAULT -->|trading fees 0.3 percent| TREASURY
     
     TREASURY --> BACKING
     BACKING --> MINTER
@@ -205,7 +205,7 @@ graph TB
     CLAIMABLE -->|exit early| EARLY_EXIT
     
     MATURITY -->|full vested RBT| USER_USDM
-    EARLY_EXIT -->|vested - 3.3% fee<br/>forfeit unvested| USER_USDM
+    EARLY_EXIT -->|vested - 3.3 percent fee<br/>forfeit unvested| USER_USDM
 ```
 
 ## 4. RBT & aRBT System
@@ -272,7 +272,7 @@ graph TB
     
     subgraph "HVN Token"
         HVN[HVN Token<br/>100M Total Supply<br/>1 HVN = 1 vote]
-        ALLOCATION[Token Allocation<br/>22% Public (no vesting)<br/>12.5% Core (1yr+2yr)<br/>7.5% Private (1yr+3mo)<br/>18% Ecosystem (1yr)<br/>40% Future Emissions]
+        ALLOCATION[Token Allocation<br/>22 percent Public no vesting<br/>12.5 percent Core 1yr+2yr<br/>7.5 percent Private 1yr+3mo<br/>18 percent Ecosystem 1yr<br/>40 percent Future Emissions]
     end
     
     subgraph "Staking"
@@ -290,7 +290,7 @@ graph TB
     
     subgraph "Proximity Markets"
         PROXIMITY[Proximity Markets<br/>Sequencer-adjacent<br/>floorspace bidding]
-        MEGA_STAKING[MEGA Staking<br/>100% of treasury MEGA]
+        MEGA_STAKING[MEGA Staking<br/>100 percent of treasury MEGA]
     end
     
     subgraph "Treasury"
@@ -339,9 +339,9 @@ graph TB
         YIELD[Strategy Yields]
         SEQ_REWARDS[Sequencer Rewards<br/>MEGA staking]
         MEGA_POINTS[MEGA Points<br/>from TVL]
-        EXIT_FEES[Exit Fees<br/>HPN: 2-3%<br/>Bonds: 3.3%]
+        EXIT_FEES[Exit Fees<br/>HPN: 2-3 percent<br/>Bonds: 3.3 percent]
         FORFEITS[Forfeited Rewards<br/>Early exits]
-        POL_FEES[POL Trading Fees<br/>0.3% per swap]
+        POL_FEES[POL Trading Fees<br/>0.3 percent per swap]
         PRM[Premium Range<br/>Mechanism<br/>Coming Soon]
     end
     
@@ -351,7 +351,7 @@ graph TB
     end
     
     subgraph "Deployment"
-        MEGA_SEQ[MEGA Sequencer<br/>100% of MEGA]
+        MEGA_SEQ[MEGA Sequencer<br/>100 percent of MEGA]
         DEFI_STRAT[MegaETH DeFi<br/>Whitelisted strategies<br/>USDM/USDMy only]
         POL_MGMT[POL Management<br/>LP locked forever]
     end
