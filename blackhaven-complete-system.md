@@ -29,9 +29,9 @@ graph TB
     
     subgraph "RBT SYSTEM"
         RBT[RBT<br/>Reserve-Backed]
-        ARBT[aRBT<br/>Locked RBT]
+        ARBT[aRBT<br/>Non-transferable<br/>aRBT = RBT × T/2yr<br/>Revenue sharing]
         
-        RBT --> ARBT
+        RBT -->|lock up to 2 years| ARBT
     end
     
     HPN --> TREASURY
