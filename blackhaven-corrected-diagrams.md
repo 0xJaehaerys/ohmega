@@ -16,9 +16,15 @@ graph LR
     end
     
     subgraph "RBT Mechanics"
-        RBT[RBT Contract]
+        RBT[RBT Contract<br/>Reserve-Backed Token]
         RATIO[Reserve Ratio<br/>Backing = Treasury Value / RBT Supply]
         MINT[Proportional Minting<br/>Preserves ratio]
+    end
+    
+    subgraph "aRBT System"
+        LOCK[Lock RBT<br/>Select T_lock duration]
+        ARBT_FORMULA[aRBT Formula<br/>aRBT = RBT_locked × T_lock / T_max<br/>T_max = 2 years]
+        ARBT[aRBT Token<br/>Non-transferable<br/>Pure utility]
     end
     
     subgraph "Value Sources"
@@ -41,7 +47,12 @@ graph LR
     RATIO --> MINT
     MINT --> RBT
     
+    RBT -->|Lock| LOCK
+    LOCK --> ARBT_FORMULA
+    ARBT_FORMULA --> ARBT
+    
     RBT -->|Used in| DEFI[MegaETH DeFi<br/>Ecosystem]
+    ARBT -->|Value chain| DEFI
 ```
 
 ## Treasury Operations
@@ -200,10 +211,22 @@ graph TD
     end
     
     subgraph "Token System"
-        RBT[RBT<br/>Treasury-backed]
-        ARBT[aRBT<br/>Aligned RBT<br/>Lock RBT → aRBT]
-        HVN[HVN<br/>Governance]
-        sHVN[sHVN<br/>Staked HVN]
+        RBT[RBT<br/>Reserve-Backed Token<br/>Treasury-backed]
+        ARBT_LOCK[Lock RBT<br/>Select T_lock<br/>0 < T_lock ≤ 2 years]
+        ARBT_FORMULA[aRBT Formula<br/>aRBT = RBT_locked × T_lock / T_max<br/>T_max = 2 years]
+        ARBT[aRBT<br/>Aligned RBT<br/>Non-transferable<br/>Pure utility]
+        HVN[HVN<br/>Governance Token]
+        sHVN[sHVN<br/>Staked HVN<br/>Receives rewards]
+    end
+    
+    subgraph "aRBT Value Chain"
+        CHAIN1[Lock RBT]
+        CHAIN2[creates]
+        CHAIN3[aRBT/Stability]
+        CHAIN4[leads to]
+        CHAIN5[Demand]
+        CHAIN6[for]
+        CHAIN7[MegaETH Use]
     end
     
     HPN --> TREASURY
@@ -225,9 +248,23 @@ graph TD
     FEES --> TREASURY
     
     TREASURY -->|Issues proportionally| RBT
-    RBT -->|Lock with formula| ARBT
+    RBT -->|User locks| ARBT_LOCK
+    ARBT_LOCK --> ARBT_FORMULA
+    ARBT_FORMULA --> ARBT
+    
+    CHAIN1 --> CHAIN2
+    CHAIN2 --> CHAIN3
+    CHAIN3 --> CHAIN4
+    CHAIN4 --> CHAIN5
+    CHAIN5 --> CHAIN6
+    CHAIN6 --> CHAIN7
+    
+    ARBT --> CHAIN3
+    CHAIN7 --> DEFI
+    
     HVN -->|Stake| sHVN
     TREASURY -->|Growth rewards| sHVN
+    ARBT -->|Revenue sharing| ARBT
 ```
 
 ---

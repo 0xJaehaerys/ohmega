@@ -41,9 +41,11 @@ graph TB
     end
     
     subgraph "RBT System"
-        RBT_TOKEN[RBT Token<br/>Reserve-Backed]
-        ARBT_TOKEN[aRBT Token<br/>Non-transferable<br/>Locked RBT]
-        BACKING[Backing Calculator<br/>Treasury Value / RBT Supply]
+        RBT_TOKEN[RBT Token<br/>Reserve-Backed<br/>Transferable]
+        LOCK_MECH[Lock RBT<br/>Select T_lock<br/>0 < T_lock ≤ 2 years]
+        ARBT_FORMULA[aRBT Formula<br/>aRBT = RBT_locked × T_lock / T_max<br/>T_max = 2 years]
+        ARBT_TOKEN[aRBT Token<br/>Non-transferable<br/>Pure utility]
+        BACKING[Backing Calculator<br/>Backing = Treasury Value / RBT Supply]
     end
     
     subgraph "Protocol Owned Liquidity"
@@ -100,7 +102,9 @@ graph TB
     %% RBT Minting
     TREASURY --> BACKING
     BACKING -->|Proportional Minting| RBT_TOKEN
-    RBT_TOKEN -->|Lock| ARBT_TOKEN
+    RBT_TOKEN -->|User locks| LOCK_MECH
+    LOCK_MECH --> ARBT_FORMULA
+    ARBT_FORMULA --> ARBT_TOKEN
     
     %% HPN to RBT Conversion
     HPN_USDM -.->|Can convert to| RBT_TOKEN
@@ -158,7 +162,12 @@ graph TB
 
 ### RBT System
 - **RBT**: Reserve-Backed Token, proportional minting preserves reserve ratio
-- **aRBT**: Non-transferable token from locking RBT (formula: RBT_locked × T_lock / T_max, T_max = 2 years)
+- **aRBT**: Non-transferable token from locking RBT
+  - Formula: aRBT_balance = RBT_locked × T_lock / T_max
+  - RBT_locked = amount of RBT tokens committed
+  - T_lock = selected lock duration (0 < T_lock ≤ 2 years)
+  - T_max = maximum lock duration, fixed at 2 years
+  - Value chain: Lock RBT → creates → aRBT/Stability → leads to → Demand → for → MegaETH Use
 - **Backing**: Treasury Value / RBT Supply
 
 ### Protocol Owned Liquidity

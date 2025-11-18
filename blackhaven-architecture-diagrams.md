@@ -220,40 +220,58 @@ graph TB
 graph LR
     subgraph "RBT System"
         RBT_CONTRACT[RBT Contract<br/>Reserve-Backed Token<br/>Transferable]
-        BACKING_CALC[Backing Calculator<br/>Treasury Value / RBT Supply]
+        BACKING_CALC[Backing Calculator<br/>Backing = Treasury Value / RBT Supply]
         PROPORTIONAL_MINT[Proportional Minting<br/>Preserves Reserve Ratio]
     end
     
     subgraph "aRBT System"
-        ARBT_CONTRACT[aRBT Contract<br/>Aligned RBT<br/>Non-transferable]
-        LOCK_MECHANISM[Lock Mechanism<br/>RBT locked for period]
-        FORMULA[aRBT Formula<br/>aRBT_balance = RBT_locked × T_lock / T_max<br/>T_max = 2 years<br/>T_lock = selected lock duration]
+        LOCK_MECHANISM[Lock Mechanism<br/>User locks RBT<br/>Selects T_lock duration]
+        FORMULA[aRBT Formula<br/>aRBT_balance = RBT_locked × T_lock / T_max<br/><br/>Where:<br/>RBT_locked = amount committed<br/>T_lock = selected lock duration<br/>T_max = 2 years maximum]
+        ARBT_CONTRACT[aRBT Contract<br/>Aligned RBT<br/>Non-transferable<br/>Pure utility token]
+    end
+    
+    subgraph "Value Chain"
+        STEP1[Lock RBT]
+        STEP2[creates]
+        STEP3[aRBT/Stability]
+        STEP4[leads to]
+        STEP5[Demand]
+        STEP6[for]
+        STEP7[MegaETH Use]
     end
     
     subgraph "Benefits"
-        STABILITY[RBT Stability<br/>Locked RBT strengthens liquidity]
-        REVENUE_SHARE[Revenue Sharing<br/>Protocol fees to aRBT holders]
-        ECOSYSTEM_UTILITY[Ecosystem Utility<br/>Trust for MegaETH DeFi]
+        STABILITY_BENEFIT[RBT Stability<br/>Locked RBT strengthens<br/>token liquidity]
+        REVENUE_SHARE[Revenue Sharing<br/>Protocol fees distributed<br/>to aRBT holders]
+        ECOSYSTEM_UTILITY[Ecosystem Utility<br/>Enhanced trust facilitates<br/>RBT acceptance in MegaETH DeFi]
     end
     
     subgraph "User Actions"
         USER_RBT[RBT Holder]
-        USER_LOCK[Lock RBT]
         USER_ARBT[aRBT Holder]
     end
     
     USER_RBT -->|locks RBT| LOCK_MECHANISM
-    LOCK_MECHANISM -->|creates| ARBT_CONTRACT
-    LOCK_MECHANISM -->|uses| FORMULA
+    LOCK_MECHANISM --> FORMULA
+    FORMULA --> ARBT_CONTRACT
+    
+    STEP1 --> STEP2
+    STEP2 --> STEP3
+    STEP3 --> STEP4
+    STEP4 --> STEP5
+    STEP5 --> STEP6
+    STEP6 --> STEP7
+    
+    ARBT_CONTRACT --> STEP3
+    STEP3 --> STABILITY_BENEFIT
+    STEP5 --> ECOSYSTEM_UTILITY
+    STEP7 --> ECOSYSTEM_UTILITY
+    
+    ARBT_CONTRACT --> REVENUE_SHARE
     
     BACKING_CALC --> PROPORTIONAL_MINT
     PROPORTIONAL_MINT --> RBT_CONTRACT
     
-    ARBT_CONTRACT --> STABILITY
-    ARBT_CONTRACT --> REVENUE_SHARE
-    ARBT_CONTRACT --> ECOSYSTEM_UTILITY
-    
-    USER_LOCK --> LOCK_MECHANISM
     LOCK_MECHANISM --> USER_ARBT
     
     RBT_CONTRACT -->|used in| DEFI[MegaETH DeFi Ecosystem]
