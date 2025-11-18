@@ -1,331 +1,407 @@
-# Blackhaven Protocol - User Flows
+# Blackhaven Protocol Architecture
 
-## 1. HVN Token Flow
-
-```mermaid
-sequenceDiagram
-    actor User
-    participant Baseline as Baseline Markets
-    participant Wallet as User's Wallet
-    participant Staking as Staking Contract
-    participant Governance as Governance Portal
-    
-    Note over User,Baseline: Step 1: Acquire HVN
-    User->>Baseline: 1. Buy HVN tokens
-    Baseline-->>User: HVN received + BLV protection
-    Note over User: You are protected by BLV floor<br/>Price cannot go below BLV
-    
-    Note over User,Staking: Step 2: Stake for sHVN (Optional)
-    User->>Staking: 2. Stake HVN
-    Staking-->>User: Receive sHVN (non-transferable)
-    Note over User: Earn treasury growth rewards<br/>Configured via governance
-    
-    Note over User,Governance: Step 3: Participate in Governance
-    User->>Governance: 3. Vote with HVN (1 HVN = 1 vote)
-    Note over Governance: Vote on:<br/>- Treasury strategy<br/>- DeFi whitelisting<br/>- MEGA allocation<br/>- Reward rates
-    
-    Note over User: Step 4: Additional Options
-    User->>Baseline: 4a. Borrow against HVN (up to BLV)
-    Note over Baseline: No liquidation risk<br/>BLV only goes up
-    User->>Wallet: 4b. Hold and watch BLV grow
-```
-
-## 2. Haven Protected Notes (HPN) Flow
-
-```mermaid
-sequenceDiagram
-    actor User
-    participant HPN as HPN dApp
-    participant NFT as Your HPN NFT
-    participant Treasury as Treasury
-    participant Dashboard as Your Dashboard
-    
-    Note over User,HPN: Step 1: Deposit
-    User->>HPN: 1. Connect wallet with USDM/USDMy
-    User->>HPN: 2. Select lock period (custom duration)
-    User->>HPN: 3. Enter deposit amount
-    User->>HPN: 4. Click "Deposit"
-    HPN-->>User: Mint HPN NFT to your wallet
-    HPN->>Treasury: Forward USDM/USDMy to treasury
-    Note over User: NFT represents your position<br/>with principal + terms
-    
-    Note over User,Dashboard: Step 2: Track Earnings
-    loop Daily
-        Treasury->>NFT: Accrue yield
-        Treasury->>NFT: Accrue MEGA Points (amplified)
-    end
-    User->>Dashboard: Check dashboard anytime
-    Dashboard-->>User: Shows: Principal, Accrued Rewards, Days Left
-    
-    Note over User,Dashboard: Step 3: Exit (Choose 1 of 3 options)
-    
-    alt Option A: Hold to Maturity
-        User->>HPN: Click "Claim at Maturity"
-        HPN->>HPN: Initiate 7-day cooldown
-        Note over User: Wait 7 days
-        User->>HPN: Click "Claim" after cooldown
-        HPN-->>User: Principal + ALL Rewards
-    else Option B: Early Exit
-        User->>HPN: Click "Early Exit"
-        Note over HPN: Charge 2-3% fee<br/>Forfeit ALL rewards
-        HPN->>HPN: Initiate 7-day cooldown
-        Note over User: Wait 7 days
-        User->>HPN: Click "Claim" after cooldown
-        HPN-->>User: Principal - Fee
-    else Option C: Convert to RBT
-        User->>HPN: Click "Convert to RBT"
-        Note over HPN: Burn NFT<br/>Forfeit ALL rewards
-        HPN-->>User: RBT INSTANTLY (no cooldown)
-    end
-```
-
-## 3. Regular Bonds Flow (USDM/MEGA)
-
-```mermaid
-sequenceDiagram
-    actor User
-    participant Bonds as Bonds dApp
-    participant Treasury as Treasury
-    participant Vesting as Vesting Contract
-    participant Dashboard as Your Dashboard
-    
-    Note over User,Bonds: Step 1: View Bond Options
-    User->>Bonds: 1. Visit Bonds page
-    Bonds-->>User: Show available bonds:<br/>- USDM Bond<br/>- MEGA Bond
-    Bonds-->>User: Display for each:<br/>• Discount % vs market<br/>• Vesting periods available<br/>• MEGA rewards multiplier
-    
-    Note over User,Bonds: Step 2: Select & Purchase
-    User->>Bonds: 2. Select bond type (USDM or MEGA)
-    User->>Bonds: 3. Choose vesting period<br/>(1 week, 1 month, 3 months, etc.)
-    Bonds-->>User: Calculate: You will receive X RBT<br/>Vesting: Y RBT per day
-    User->>Bonds: 4. Approve token spending
-    User->>Bonds: 5. Click "Purchase Bond"
-    Bonds->>Treasury: Send USDM/MEGA to treasury
-    Bonds->>Vesting: Create vesting position
-    Note over User: Bond purchase complete<br/>Vesting starts immediately
-    
-    Note over User,Dashboard: Step 3: Track & Claim
-    loop Daily
-        Vesting->>Vesting: Unlock RBT portion
-    end
-    User->>Dashboard: Check vesting dashboard
-    Dashboard-->>User: Shows:<br/>• Total RBT bonded<br/>• Vested (claimable now)<br/>• Unvested (locked)<br/>• Days remaining
-    User->>Vesting: Click "Claim Vested RBT" (anytime)
-    Vesting-->>User: Transfer vested RBT to wallet
-    
-    Note over User,Vesting: Optional: Early Exit
-    User->>Vesting: Click "Early Exit"
-    Note over Vesting: Charge 3.3% fee<br/>Forfeit ALL unvested RBT
-    Vesting-->>User: Return vested RBT - 3.3% fee
-```
-
-## 4. LP Bonds Flow (Aligned Bonds)
-
-```mermaid
-sequenceDiagram
-    actor User
-    participant DEX as RBT-USDM DEX Pool
-    participant LPBonds as LP Bonds dApp
-    participant Treasury as Treasury (POL)
-    participant Vesting as Vesting Contract
-    participant Dashboard as Your Dashboard
-    
-    Note over User,DEX: Step 1: Create LP Token
-    User->>DEX: 1. Go to RBT-USDM pool
-    User->>DEX: 2. Add liquidity:<br/>- Deposit RBT<br/>- Deposit USDM
-    DEX-->>User: Receive LP token
-    Note over User: You now have RBT-USDM LP token
-    
-    Note over User,LPBonds: Step 2: Bond LP Token
-    User->>LPBonds: 3. Visit LP Bonds page
-    LPBonds-->>User: Show available terms:<br/>• Discount %<br/>• Vesting periods<br/>• MEGA rewards
-    User->>LPBonds: 4. Select vesting period
-    LPBonds-->>User: Calculate: You will receive X RBT<br/>Your LP locked FOREVER in treasury
-    User->>LPBonds: 5. Approve LP token
-    User->>LPBonds: 6. Click "Bond LP"
-    LPBonds->>Treasury: Lock LP token PERMANENTLY (POL)
-    LPBonds->>Vesting: Create vesting position
-    Note over Treasury: LP generates trading fees<br/>0.3% per swap → treasury forever
-    
-    Note over User,Dashboard: Step 3: Track & Claim
-    loop Daily
-        Vesting->>Vesting: Unlock RBT portion
-    end
-    User->>Dashboard: Check vesting dashboard
-    Dashboard-->>User: Shows:<br/>• Total RBT bonded<br/>• Vested (claimable now)<br/>• Unvested (locked)<br/>• Days remaining
-    User->>Vesting: Click "Claim Vested RBT" (anytime)
-    Vesting-->>User: Transfer vested RBT to wallet
-    
-    Note over User,Vesting: Optional: Early Exit
-    User->>Vesting: Click "Early Exit"
-    Note over Vesting: Charge 3.3% fee<br/>Forfeit ALL unvested RBT<br/>LP stays locked forever
-    Vesting-->>User: Return vested RBT - 3.3% fee
-```
-
-## 5. RBT & aRBT Flow
-
-```mermaid
-sequenceDiagram
-    actor User
-    participant Wallet as Your Wallet
-    participant aRBT as aRBT Contract
-    participant Dashboard as Your Dashboard
-    
-    Note over User,Wallet: Step 1: Acquire RBT (3 ways)
-    Note over User: Option 1: From HPN conversion
-    Note over User: Option 2: From claiming vested bonds
-    Note over User: Option 3: Buy on market
-    User->>Wallet: RBT now in wallet
-    Note over User: RBT is treasury-backed<br/>Can use in MegaETH DeFi
-    
-    Note over User,aRBT: Step 2: Lock RBT for aRBT (Optional)
-    User->>aRBT: 1. Go to aRBT locking page
-    User->>aRBT: 2. Enter RBT amount to lock
-    User->>aRBT: 3. Select lock duration (up to 2 years)
-    aRBT-->>User: Calculate aRBT you'll receive:<br/>aRBT = RBT × T_lock / T_max<br/>(T_max = 2 years)
-    Note over User: Example:<br/>Lock 100 RBT for 1 year<br/>= 50 aRBT
-    User->>aRBT: 4. Click "Lock RBT"
-    aRBT-->>User: Receive aRBT (non-transferable)
-    
-    Note over User,Dashboard: Step 3: aRBT Benefits
-    User->>Dashboard: View aRBT dashboard
-    Dashboard-->>User: Shows:<br/>• aRBT balance<br/>• Protocol fees earned<br/>• Revenue share from treasury<br/>• Lock expiration date
-    Note over User: Benefits:<br/>• Revenue sharing<br/>• Protocol fees<br/>• Enhanced ecosystem trust<br/>• RBT stability support
-```
-
-## 6. Complete User Dashboard
+## 1. Complete Blackhaven System Architecture
 
 ```mermaid
 graph TB
-    DASHBOARD[BLACKHAVEN DASHBOARD]
-    
-    subgraph "Portfolio Summary"
-        TOTAL[Total Portfolio Value: $X]
-        HVN_VALUE[HVN Holdings: $Y]
-        HPN_VALUE[Active HPNs: $Z]
-        BONDS_VALUE[Active Bonds: $W]
-        RBT_VALUE[RBT Balance: $V]
+    subgraph "User Entry Points"
+        USER1[User with<br/>USDM/USDMy]
+        USER2[User with<br/>MEGA]
+        USER3[User with<br/>RBT-USDM LP]
     end
     
-    subgraph "HVN & sHVN"
-        HVN_BAL[HVN: 1000 tokens]
-        SHVN_BAL[sHVN: 500 tokens]
-        REWARDS[Claimable Rewards: 50 tokens]
-        BLV_INFO[BLV Floor: $0.85]
-        HVN_BTN1[Button: Stake HVN]
-        HVN_BTN2[Button: Vote on Proposals]
-        HVN_BTN3[Button: Claim Rewards]
+    subgraph "Product Layer"
+        HPN[Haven Protected<br/>Notes<br/>ERC-721 NFTs]
+        REGULAR_BONDS[Regular Bonds<br/>USDM/MEGA → RBT]
+        LP_BONDS[LP Bonds<br/>Aligned Bonds]
     end
     
-    subgraph "Haven Protected Notes"
-        HPN_TITLE[Your HPNs: 2 active]
-        HPN1[HPN #1234<br/>Principal: 1000 USDM<br/>Accrued: 50 USDM + 100 Points<br/>Days left: 15]
-        HPN2[HPN #5678<br/>Principal: 5000 USDMy<br/>Accrued: 200 USDMy + 500 Points<br/>Matured - Ready to claim]
-        HPN_BTN1[Button: Convert to RBT]
-        HPN_BTN2[Button: Early Exit]
-        HPN_BTN3[Button: Claim at Maturity]
+    subgraph "Treasury Core"
+        TREASURY[Treasury<br/>Contract]
+        USDM_RESERVE[USDM<br/>Reserve]
+        MEGA_RESERVE[MEGA<br/>Reserve]
+        POL[Protocol Owned<br/>Liquidity<br/>LP Locked Forever]
     end
     
-    subgraph "Bonds"
-        BONDS_TITLE[Your Bonds: 3 active]
-        BOND1[USDM Bond<br/>Total: 1000 RBT<br/>Vested: 400 RBT<br/>Unvested: 600 RBT<br/>Days left: 20]
-        BOND2[LP Bond<br/>Total: 5000 RBT<br/>Vested: 2000 RBT<br/>Unvested: 3000 RBT<br/>Days left: 45]
-        BONDS_BTN1[Button: Claim Vested RBT]
-        BONDS_BTN2[Button: Early Exit]
+    subgraph "Value Generation"
+        SEQUENCER[MegaETH<br/>Sequencer<br/>100% MEGA staked]
+        DEFI_STRAT[Whitelisted<br/>MegaETH DeFi<br/>USDM/USDMy only]
+        POL_FEES[Trading Fees<br/>0.3% per swap]
     end
     
-    subgraph "RBT & aRBT"
-        RBT_BAL[RBT Balance: 500 tokens]
-        ARBT_BAL[aRBT Balance: 250 tokens<br/>Locked until: Jan 2026<br/>Revenue earned: 25 tokens]
-        RBT_BTN1[Button: Lock for aRBT]
-        RBT_BTN2[Button: Use in DeFi]
+    subgraph "RBT Minting"
+        RBT_MINTER[RBT Minter<br/>Proportional to<br/>Treasury Value]
+        BACKING[Backing Ratio<br/>Treasury Value /<br/>RBT Supply]
     end
     
-    subgraph "Quick Actions"
-        ACTION1[+ New HPN Deposit]
-        ACTION2[+ Purchase Bond]
-        ACTION3[+ Create LP Bond]
+    subgraph "Token System"
+        RBT[RBT Token<br/>Reserve-Backed<br/>Transferable]
+        ARBT[aRBT Token<br/>Non-transferable<br/>Locked RBT]
     end
     
-    DASHBOARD --> TOTAL
-    TOTAL --> HVN_VALUE
-    TOTAL --> HPN_VALUE
-    TOTAL --> BONDS_VALUE
-    TOTAL --> RBT_VALUE
+    subgraph "Governance"
+        HVN[HVN Token<br/>100M Supply<br/>Governance]
+        SHVN[sHVN<br/>Staked HVN<br/>Treasury Rewards]
+        BASELINE[Baseline Markets<br/>BLV Floor<br/>No Liquidation]
+    end
     
-    DASHBOARD --> HVN_BAL
-    HVN_BAL --> SHVN_BAL
-    HVN_BAL --> REWARDS
-    HVN_BAL --> BLV_INFO
-    HVN_BAL --> HVN_BTN1
-    HVN_BAL --> HVN_BTN2
-    HVN_BAL --> HVN_BTN3
+    USER1 -->|deposits USDM/USDMy<br/>select lock period| HPN
+    USER2 -->|deposits USDM/MEGA<br/>select vesting period| REGULAR_BONDS
+    USER3 -->|deposits LP token<br/>locked forever| LP_BONDS
     
-    DASHBOARD --> HPN_TITLE
-    HPN_TITLE --> HPN1
-    HPN_TITLE --> HPN2
-    HPN1 --> HPN_BTN1
-    HPN2 --> HPN_BTN3
+    HPN -->|forwards deposits| TREASURY
+    REGULAR_BONDS -->|forwards deposits| TREASURY
+    LP_BONDS -->|locks LP permanently| POL
     
-    DASHBOARD --> BONDS_TITLE
-    BONDS_TITLE --> BOND1
-    BONDS_TITLE --> BOND2
-    BOND1 --> BONDS_BTN1
-    BOND2 --> BONDS_BTN1
+    TREASURY --> USDM_RESERVE
+    TREASURY --> MEGA_RESERVE
     
-    DASHBOARD --> RBT_BAL
-    RBT_BAL --> ARBT_BAL
-    RBT_BAL --> RBT_BTN1
-    RBT_BAL --> RBT_BTN2
+    USDM_RESERVE -->|deploys capital| DEFI_STRAT
+    MEGA_RESERVE -->|stakes ALL MEGA| SEQUENCER
+    POL -->|generates fees| POL_FEES
     
-    DASHBOARD --> ACTION1
-    DASHBOARD --> ACTION2
-    DASHBOARD --> ACTION3
+    SEQUENCER -->|sequencer rewards| TREASURY
+    DEFI_STRAT -->|lending/yield| TREASURY
+    POL_FEES -->|trading fees| TREASURY
+    
+    TREASURY -->|calculates backing| BACKING
+    BACKING -->|mints proportionally| RBT_MINTER
+    RBT_MINTER --> RBT
+    
+    RBT -->|users lock RBT<br/>aRBT = RBT × T/2yrs| ARBT
+    
+    HPN -->|can convert to RBT<br/>instant, forfeit rewards| RBT
+    REGULAR_BONDS -->|vests to RBT<br/>daily unlock| RBT
+    LP_BONDS -->|vests to RBT<br/>daily unlock| RBT
+    
+    HVN -->|launched on| BASELINE
+    HVN -->|stake to receive| SHVN
+    SHVN -->|earns rewards from| TREASURY
+    
+    HVN -->|governs| TREASURY
+    HVN -->|governs| DEFI_STRAT
 ```
 
-## 7. Baseline Markets - HVN Launch Experience
+## 2. HPN (Haven Protected Notes) Architecture
 
 ```mermaid
-sequenceDiagram
-    actor User
-    participant Baseline as Baseline Markets
-    participant HVN as HVN Token
-    participant BLV as BLV Mechanism
-    
-    Note over User,Baseline: Before Launch
-    User->>User: 1. Prepare USDM/ETH in wallet
-    User->>Baseline: 2. Visit Baseline Markets
-    Baseline-->>User: Learn about BLV:<br/>• Guaranteed price floor<br/>• BLV only goes up<br/>• No liquidation borrowing
-    Note over User: Wait for HVN launch announcement
-    
-    Note over User,Baseline: Launch Day
-    User->>Baseline: 3. Navigate to HVN launch page
-    Baseline-->>User: Display:<br/>• Current HVN price: $X<br/>• BLV floor: $Y<br/>• Your protection: Price can't go below $Y
-    User->>Baseline: 4. Enter purchase amount
-    Baseline-->>User: Calculate:<br/>• HVN you'll receive<br/>• Your BLV protection level
-    User->>Baseline: 5. Click "Buy HVN"
-    Baseline-->>User: HVN tokens received
-    Note over User: You are now protected by BLV floor
-    
-    Note over User,BLV: Post-Purchase Tracking
-    User->>Baseline: 6. Monitor HVN dashboard
-    Baseline-->>User: Shows:<br/>• HVN balance<br/>• Current price<br/>• BLV floor (rising)<br/>• Borrowing capacity
-    loop As Trading Increases
-        BLV->>BLV: BLV floor rises
-        Note over BLV: More trading = Higher BLV<br/>Your protection increases
+graph TB
+    subgraph "User Actions"
+        USER[User]
+        WALLET[User Wallet<br/>USDM/USDMy]
     end
     
-    Note over User,Baseline: Advanced Options
-    User->>Baseline: 7a. Borrow against HVN
-    Baseline-->>User: Borrow up to BLV value<br/>NO liquidation risk
-    Note over User: If price drops to BLV,<br/>protocol buys & burns tokens<br/>→ BLV increases again
+    subgraph "HPN Contract"
+        DEPOSIT_HANDLER[Deposit Handler<br/>Mints ERC-721 NFT]
+        NFT_STORAGE[NFT Storage<br/>Principal + Terms<br/>+ Accrued Rewards]
+        EXIT_HANDLER[Exit Handler<br/>3 Options]
+    end
     
-    User->>User: 7b. Stake HVN → Get sHVN
-    User->>User: 7c. Vote on governance
-    Note over User: All actions transparent<br/>on-chain
+    subgraph "Exit Options"
+        MATURITY[Hold to Maturity<br/>7-day cooldown<br/>Principal + ALL Rewards]
+        EARLY_EXIT[Early Exit<br/>7-day cooldown<br/>Principal - 2-3% fee<br/>Forfeit rewards]
+        RBT_CONVERT[Convert to RBT<br/>NO cooldown<br/>Instant conversion<br/>Forfeit rewards]
+    end
+    
+    subgraph "Treasury Integration"
+        TREASURY[Treasury]
+        DEFI[MegaETH DeFi<br/>Strategies]
+        YIELD[Yield Accrual<br/>MEGA Points<br/>Amplified]
+    end
+    
+    subgraph "RBT System"
+        RBT[RBT Token]
+        BURN[Burn NFT<br/>on conversion]
+    end
+    
+    USER -->|1. Connect wallet| WALLET
+    WALLET -->|2. Deposit USDM/USDMy<br/>select lock period| DEPOSIT_HANDLER
+    DEPOSIT_HANDLER -->|3. Mint NFT| NFT_STORAGE
+    DEPOSIT_HANDLER -->|4. Forward funds| TREASURY
+    
+    TREASURY -->|5. Deploy capital| DEFI
+    DEFI -->|6. Generate yield + points| YIELD
+    YIELD -->|7. Accrue to NFT| NFT_STORAGE
+    
+    NFT_STORAGE -->|8a. At maturity| MATURITY
+    NFT_STORAGE -->|8b. Before maturity| EARLY_EXIT
+    NFT_STORAGE -->|8c. Anytime| RBT_CONVERT
+    
+    MATURITY -->|wait 7 days| USER
+    EARLY_EXIT -->|charge fee, wait 7 days| USER
+    RBT_CONVERT -->|immediate| BURN
+    BURN -->|instant RBT| RBT
+    RBT --> USER
+```
+
+## 3. Fixed-Term Bonds Architecture
+
+```mermaid
+graph TB
+    subgraph "Bond Entry"
+        USER_USDM[User with USDM]
+        USER_MEGA[User with MEGA]
+        USER_LP[User with<br/>RBT-USDM LP]
+    end
+    
+    subgraph "Bond Depository"
+        USDM_BOND[USDM Bond]
+        MEGA_BOND[MEGA Bond]
+        LP_BOND[LP Bond<br/>Aligned]
+        PRICING[Bond Pricing<br/>Discount Calculator]
+        TERMS[Vesting Terms<br/>User-selected period]
+    end
+    
+    subgraph "Treasury"
+        TREASURY[Treasury Vault]
+        USDM_RES[USDM Reserve]
+        MEGA_RES[MEGA Reserve<br/>100% to Sequencer]
+        POL_VAULT[POL Vault<br/>LP Locked FOREVER]
+    end
+    
+    subgraph "Vesting System"
+        VESTING[Vesting Contract<br/>Linear Release]
+        DAILY_UNLOCK[Daily RBT Unlock]
+        CLAIMABLE[Claimable RBT<br/>User Dashboard]
+    end
+    
+    subgraph "RBT Minting"
+        BACKING[Treasury Value /<br/>RBT Supply]
+        MINTER[RBT Minter<br/>Discounted RBT]
+    end
+    
+    subgraph "Exit Mechanisms"
+        MATURITY[Hold to Maturity<br/>Claim all vested RBT]
+        EARLY_EXIT[Early Exit<br/>3.3% fee<br/>Forfeit unvested]
+    end
+    
+    USER_USDM -->|deposit USDM| USDM_BOND
+    USER_MEGA -->|deposit MEGA| MEGA_BOND
+    USER_LP -->|deposit LP token| LP_BOND
+    
+    USDM_BOND --> PRICING
+    MEGA_BOND --> PRICING
+    LP_BOND --> PRICING
+    
+    PRICING -->|calculate discount<br/>vs market price| TERMS
+    
+    USDM_BOND -->|to treasury| USDM_RES
+    MEGA_BOND -->|to treasury| MEGA_RES
+    LP_BOND -->|LOCKED FOREVER| POL_VAULT
+    
+    USDM_RES --> TREASURY
+    MEGA_RES --> TREASURY
+    POL_VAULT -->|trading fees 0.3%| TREASURY
+    
+    TREASURY --> BACKING
+    BACKING --> MINTER
+    TERMS --> MINTER
+    
+    MINTER -->|create position| VESTING
+    VESTING -->|unlock daily| DAILY_UNLOCK
+    DAILY_UNLOCK --> CLAIMABLE
+    
+    CLAIMABLE -->|wait to maturity| MATURITY
+    CLAIMABLE -->|exit early| EARLY_EXIT
+    
+    MATURITY -->|full vested RBT| USER_USDM
+    EARLY_EXIT -->|vested - 3.3% fee<br/>forfeit unvested| USER_USDM
+```
+
+## 4. RBT & aRBT System
+
+```mermaid
+graph LR
+    subgraph "RBT Sources"
+        HPN_CONVERT[HPN Conversion<br/>Instant<br/>at principal value]
+        BOND_VEST[Bond Vesting<br/>Daily unlock]
+        MARKET_BUY[Market Purchase<br/>DEX/CEX]
+    end
+    
+    subgraph "RBT Token"
+        RBT[RBT Token<br/>Reserve-Backed<br/>Transferable]
+        BACKING[Backing Ratio<br/>Treasury Value /<br/>RBT Supply]
+    end
+    
+    subgraph "aRBT Locking"
+        LOCK_UI[Lock Interface<br/>Select duration<br/>up to 2 years]
+        FORMULA[aRBT Formula<br/>aRBT = RBT × T_lock / T_max<br/>T_max = 2 years]
+        ARBT[aRBT Token<br/>Non-transferable<br/>Pure utility]
+    end
+    
+    subgraph "aRBT Benefits"
+        REVENUE[Revenue Sharing<br/>Protocol fees]
+        STABILITY[RBT Stability<br/>Strengthens liquidity]
+        TRUST[Ecosystem Trust<br/>MegaETH DeFi integration]
+    end
+    
+    subgraph "Treasury"
+        TREASURY[Treasury]
+        RESERVE[Reserve Assets]
+    end
+    
+    HPN_CONVERT --> RBT
+    BOND_VEST --> RBT
+    MARKET_BUY --> RBT
+    
+    TREASURY --> BACKING
+    RESERVE --> BACKING
+    BACKING -->|proportional minting| RBT
+    
+    RBT -->|user locks RBT| LOCK_UI
+    LOCK_UI --> FORMULA
+    FORMULA --> ARBT
+    
+    ARBT --> REVENUE
+    ARBT --> STABILITY
+    ARBT --> TRUST
+    
+    STABILITY -->|locked RBT<br/>creates stability| RBT
+    TRUST -->|facilitates acceptance| RBT
+```
+
+## 5. HVN & sHVN Governance System
+
+```mermaid
+graph TB
+    subgraph "Baseline Markets Launch"
+        BASELINE[Baseline Markets<br/>HVN Launch Platform]
+        BLV[BLV Floor<br/>Guaranteed price floor<br/>Only goes up]
+        LIQUIDITY[Autonomous Liquidity<br/>No liquidation borrowing]
+    end
+    
+    subgraph "HVN Token"
+        HVN[HVN Token<br/>100M Total Supply<br/>1 HVN = 1 vote]
+        ALLOCATION[Token Allocation<br/>22% Public (no vesting)<br/>12.5% Core (1yr+2yr)<br/>7.5% Private (1yr+3mo)<br/>18% Ecosystem (1yr)<br/>40% Future Emissions]
+    end
+    
+    subgraph "Staking"
+        STAKE[Stake HVN]
+        SHVN[sHVN<br/>Non-transferable<br/>Staked HVN]
+        REWARDS[Treasury Rewards<br/>Configured via governance]
+    end
+    
+    subgraph "Governance Actions"
+        TREASURY_GOV[Treasury Strategy<br/>Deployment params<br/>Reserve ratios]
+        DEFI_GOV[DeFi Whitelisting<br/>Strategy selection]
+        MEGA_GOV[MEGA Allocation<br/>Proximity Market usage]
+        REWARDS_GOV[Reward Distribution<br/>Emission schedules]
+    end
+    
+    subgraph "Proximity Markets"
+        PROXIMITY[Proximity Markets<br/>Sequencer-adjacent<br/>floorspace bidding]
+        MEGA_STAKING[MEGA Staking<br/>100% of treasury MEGA]
+    end
+    
+    subgraph "Treasury"
+        TREASURY[Treasury Contract]
+        GROWTH[Treasury Growth<br/>Yields + Fees + Forfeits]
+    end
+    
+    BASELINE -->|launch platform| HVN
+    HVN --> BLV
+    BLV --> LIQUIDITY
+    
+    HVN --> ALLOCATION
+    
+    HVN -->|users stake| STAKE
+    STAKE --> SHVN
+    
+    HVN -->|vote on| TREASURY_GOV
+    HVN -->|vote on| DEFI_GOV
+    HVN -->|vote on| MEGA_GOV
+    HVN -->|vote on| REWARDS_GOV
+    
+    TREASURY_GOV --> TREASURY
+    DEFI_GOV --> TREASURY
+    REWARDS_GOV --> REWARDS
+    
+    MEGA_GOV -->|controls allocation| PROXIMITY
+    PROXIMITY --> MEGA_STAKING
+    MEGA_STAKING --> TREASURY
+    
+    TREASURY --> GROWTH
+    GROWTH -->|distributes rewards| SHVN
+    REWARDS -->|distributes rewards| SHVN
+```
+
+## 6. Treasury Flywheel & Value Accrual
+
+```mermaid
+graph TB
+    subgraph "User Deposits"
+        HPN_DEP[HPN Deposits<br/>USDM/USDMy]
+        BOND_DEP[Bond Deposits<br/>USDM/MEGA/LP]
+    end
+    
+    subgraph "Treasury Inflows"
+        DEPOSITS[User Deposits]
+        YIELD[Strategy Yields]
+        SEQ_REWARDS[Sequencer Rewards<br/>MEGA staking]
+        MEGA_POINTS[MEGA Points<br/>from TVL]
+        EXIT_FEES[Exit Fees<br/>HPN: 2-3%<br/>Bonds: 3.3%]
+        FORFEITS[Forfeited Rewards<br/>Early exits]
+        POL_FEES[POL Trading Fees<br/>0.3% per swap]
+        PRM[Premium Range<br/>Mechanism<br/>Coming Soon]
+    end
+    
+    subgraph "Treasury Core"
+        TREASURY[Treasury Contract<br/>Reserve Management]
+        RESERVES[Reserve Assets<br/>Growing continuously]
+    end
+    
+    subgraph "Deployment"
+        MEGA_SEQ[MEGA Sequencer<br/>100% of MEGA]
+        DEFI_STRAT[MegaETH DeFi<br/>Whitelisted strategies<br/>USDM/USDMy only]
+        POL_MGMT[POL Management<br/>LP locked forever]
+    end
+    
+    subgraph "Value Distribution"
+        RBT_BACKING[RBT Backing Growth<br/>Stronger reserve ratio]
+        SHVN_REWARDS[sHVN Rewards<br/>Treasury growth distribution]
+        LIQUIDITY[Deeper Liquidity<br/>RBT-USDM pool]
+    end
+    
+    subgraph "Flywheel Loop"
+        MORE_USERS[Attracts More Users<br/>Stronger backing]
+        MORE_DEPOSITS[More Deposits<br/>Cycle continues]
+    end
+    
+    HPN_DEP --> DEPOSITS
+    BOND_DEP --> DEPOSITS
+    
+    DEPOSITS --> TREASURY
+    YIELD --> TREASURY
+    SEQ_REWARDS --> TREASURY
+    MEGA_POINTS --> TREASURY
+    EXIT_FEES --> TREASURY
+    FORFEITS --> TREASURY
+    POL_FEES --> TREASURY
+    PRM -.->|future| TREASURY
+    
+    TREASURY --> RESERVES
+    
+    RESERVES --> MEGA_SEQ
+    RESERVES --> DEFI_STRAT
+    RESERVES --> POL_MGMT
+    
+    MEGA_SEQ -->|sequencer rewards| YIELD
+    DEFI_STRAT -->|lending/yield| YIELD
+    POL_MGMT -->|trading fees| POL_FEES
+    
+    RESERVES --> RBT_BACKING
+    RESERVES --> SHVN_REWARDS
+    RESERVES --> LIQUIDITY
+    
+    RBT_BACKING --> MORE_USERS
+    SHVN_REWARDS --> MORE_USERS
+    LIQUIDITY --> MORE_USERS
+    
+    MORE_USERS --> MORE_DEPOSITS
+    MORE_DEPOSITS --> HPN_DEP
+    MORE_DEPOSITS --> BOND_DEP
 ```
 
 ---
 
-*User-focused sequence diagrams for Blackhaven Protocol frontend*
-
+*Blackhaven Protocol Architecture - System Component Diagrams*
