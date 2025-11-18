@@ -227,7 +227,7 @@ graph LR
     subgraph "aRBT System"
         ARBT_CONTRACT[aRBT Contract<br/>Aligned RBT<br/>Non-transferable]
         LOCK_MECHANISM[Lock Mechanism<br/>RBT locked for period]
-        FORMULA[aRBT Formula<br/>RBT_locked × T_lock / T_max<br/>T_max = 2 years]
+        FORMULA[aRBT Formula<br/>aRBT_balance = RBT_locked × T_lock / T_max<br/>T_max = 2 years<br/>T_lock = selected lock duration]
     end
     
     subgraph "Benefits"

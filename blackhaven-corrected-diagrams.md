@@ -201,6 +201,7 @@ graph TD
     
     subgraph "Token System"
         RBT[RBT<br/>Treasury-backed]
+        ARBT[aRBT<br/>Aligned RBT<br/>Lock RBT → aRBT]
         HVN[HVN<br/>Governance]
         sHVN[sHVN<br/>Staked HVN]
     end
@@ -224,6 +225,7 @@ graph TD
     FEES --> TREASURY
     
     TREASURY -->|Issues proportionally| RBT
+    RBT -->|Lock with formula| ARBT
     HVN -->|Stake| sHVN
     TREASURY -->|Growth rewards| sHVN
 ```
