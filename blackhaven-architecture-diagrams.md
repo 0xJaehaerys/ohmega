@@ -289,18 +289,23 @@ graph LR
         DEPOSIT_HANDLER[Deposit Handler<br/>USDM/USDMy only]
         POSITION_TRACKER[Position Tracker<br/>Principal + Terms]
         REWARD_ACCRUAL[Reward Accrual<br/>Yield + MEGA Points]
-        EXIT_HANDLER[Exit Handler<br/>3 Options]
+    end
+    
+    subgraph "Exit Options"
+        MATURITY_EXIT[Hold to Maturity<br/>Principal + All Rewards]
+        EARLY_EXIT[Early Exit<br/>Principal - 2-3% fee<br/>Forfeit all rewards]
+        RBT_CONVERSION[RBT Conversion<br/>Convert at principal value<br/>Forfeit all rewards<br/>Burn NFT]
     end
     
     subgraph "State Management"
         POSITIONS[(Position Storage<br/>Principal, Terms)]
         REWARDS[(Reward Storage<br/>Yield, Points)]
-        COOLDOWNS[(Cooldown Storage<br/>7-day period)]
+        COOLDOWNS[(Cooldown Storage<br/>7-day period<br/>Maturity & Early Exit ONLY)]
     end
     
     subgraph "Integration Layer"
         TREASURY_INT[Treasury Interface<br/>Forward deposits]
-        RBT_INT[RBT Interface<br/>Convert to RBT]
+        RBT_INT[RBT Interface<br/>Immediate Conversion<br/>NO cooldown]
         ORACLE[Price Oracle<br/>For conversions]
     end
     
@@ -314,18 +319,24 @@ graph LR
     POSITION_TRACKER -->|5. Track rewards| REWARD_ACCRUAL
     REWARD_ACCRUAL --> REWARDS
     
-    USER -->|Option A: Hold to maturity| EXIT_HANDLER
-    USER -->|Option B: Early exit 2-3% fee| EXIT_HANDLER
-    USER -->|Option C: Convert to RBT| EXIT_HANDLER
+    USER -->|Option A| MATURITY_EXIT
+    USER -->|Option B| EARLY_EXIT
+    USER -->|Option C| RBT_CONVERSION
     
-    EXIT_HANDLER -->|check position| POSITIONS
-    EXIT_HANDLER -->|check rewards| REWARDS
-    EXIT_HANDLER -->|initiate cooldown| COOLDOWNS
-    
-    EXIT_HANDLER -->|if converting| RBT_INT
-    EXIT_HANDLER -->|get pricing| ORACLE
-    
+    MATURITY_EXIT -->|check position| POSITIONS
+    MATURITY_EXIT -->|check rewards| REWARDS
+    MATURITY_EXIT -->|initiate cooldown| COOLDOWNS
     COOLDOWNS -->|after 7 days| USER
+    
+    EARLY_EXIT -->|check position| POSITIONS
+    EARLY_EXIT -->|forfeit rewards| REWARDS
+    EARLY_EXIT -->|initiate cooldown| COOLDOWNS
+    
+    RBT_CONVERSION -->|burn NFT| NFT
+    RBT_CONVERSION -->|forfeit rewards| REWARDS
+    RBT_CONVERSION -->|immediate conversion| RBT_INT
+    RBT_CONVERSION -->|get pricing| ORACLE
+    RBT_INT -->|RBT instantly| USER
 ```
 
 ## Fixed-Term Bonds Architecture (Olympus DAO Style)
