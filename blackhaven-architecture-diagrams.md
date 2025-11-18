@@ -210,8 +210,6 @@ graph TB
     POL_REGISTRY -->|12. Generates| TRADING_FEES
     POL_REGISTRY -->|13. Provides| LIQUIDITY_DEPTH
     TRADING_FEES --> TREASURY[Treasury Forever]
-    
-    style FORFEIT fill:#f00,stroke-width:2px
 ```
 
 ## RBT and aRBT System
@@ -328,8 +326,6 @@ graph LR
     EXIT_HANDLER -->|get pricing| ORACLE
     
     COOLDOWNS -->|after 7 days| USER
-    
-    style COOLDOWNS fill:#f00,stroke-width:2px
 ```
 
 ## Fixed-Term Bonds Architecture
@@ -390,8 +386,6 @@ graph TB
     
     EARLY_EXIT -->|3.3% fee + forfeit| TREASURY_DEPOSITS
     POL_MANAGER -->|trading fees| TREASURY_DEPOSITS
-    
-    style EARLY_EXIT fill:#f00,stroke-width:2px
 ```
 
 ## Complete System Integration
@@ -427,7 +421,6 @@ graph LR
     MEGAETH --> TREASURY_CORE
     TREASURY_CORE -->|stakes 100% MEGA| SEQUENCER
     HVN_GOVERNANCE -->|controls MEGA allocation| PROXIMITY
-    Note over PROXIMITY: HVN governance controls<br/>how staked MEGA is used<br/>in Proximity Markets
     
     HPN_PRODUCT --> TREASURY_CORE
     REGULAR_BONDS_PRODUCT --> TREASURY_CORE
