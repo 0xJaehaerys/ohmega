@@ -18,7 +18,7 @@ graph TB
         LP_BOND[LP Bond<br/>RBT-USDM]
     end
     
-    subgraph "TREASURY"
+    subgraph "TREASURY CORE"
         TREASURY[TREASURY<br/>━━━━━━━━━━━━━━━<br/>USDM Reserve<br/>MEGA Reserve<br/>POL<br/>━━━━━━━━━━━━━━━]
     end
     
