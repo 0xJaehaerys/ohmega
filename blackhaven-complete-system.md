@@ -12,8 +12,8 @@ graph TB
         
         RBT_TOP -->|choose lock duration<br/>0 months to 2 years| LOCK_BTN
         LOCK_BTN -->|receive aRBT<br/>start earning fees| ARBT_LOCKED
-        ARBT_LOCKED -->|unlock anytime<br/>receive RBT back| UNLOCK_BTN
-        UNLOCK_BTN -->|get locked RBT| RBT_TOP
+        ARBT_LOCKED -->|unlock after period ends<br/>wait for lock expiry| UNLOCK_BTN
+        UNLOCK_BTN -->|get locked RBT back| RBT_TOP
     end
     
     subgraph "LEFT TOP - HPN"
