@@ -18,73 +18,76 @@ graph TB
     
     subgraph "LEFT TOP - HPN"
         USER_HPN[User<br/>USDM/USDMy]
-        HPN[HPN<br/>━━━━━━━━━━━<br/>NFT<br/>Principal Protected]
+        HPN[HPN<br/>━━━━━━━━━━━<br/>ERC-721 NFT<br/>Principal Protected<br/>Earns Yield<br/>Earns MEGA Points]
         
-        USER_HPN --> HPN
+        USER_HPN -->|deposit stablecoins<br/>select lock period| HPN
     end
     
     subgraph "LEFT BOTTOM - BONDS"
         USER_BONDS[User<br/>USDM or MEGA]
         
-        BONDS[Fixed-Term<br/>Bonds<br/>━━━━━━━━━━━<br/>Discounted RBT<br/>Vesting]
+        BONDS[Fixed-Term Bonds<br/>━━━━━━━━━━━<br/>Discounted RBT<br/>Linear vesting<br/>Daily unlock]
         
-        USER_BONDS --> BONDS
+        USER_BONDS -->|deposit for<br/>discounted RBT| BONDS
     end
     
     subgraph "CENTER - TREASURY"
-        TREASURY[TREASURY<br/>═══════════════════<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>═══════════════════<br/>RBT is backed<br/>by treasury]
+        TREASURY[TREASURY<br/>═══════════════════<br/>USDM Reserve → DeFi<br/>MEGA Reserve → Sequencer<br/>POL: RBT-USDM Pool<br/>═══════════════════<br/>Backs all RBT<br/>proportionally]
     end
     
     subgraph "RIGHT - LP BONDS"
-        USER_LP[User<br/>RBT-USDM LP]
+        USER_LP[User<br/>RBT-USDM LP token]
         
-        LP_BONDS[LP Bond<br/>━━━━━━━━━━━<br/>LP locked FOREVER<br/>POL]
+        LP_BONDS[LP Bond Aligned<br/>━━━━━━━━━━━<br/>LP locked FOREVER<br/>Becomes POL<br/>Extra rewards]
         
-        USER_LP --> LP_BONDS
+        USER_LP -->|deposit LP token<br/>for discounted RBT| LP_BONDS
     end
     
     subgraph "BOTTOM LEFT - USER DEPOSITS TO TREASURY"
-        HPN_DEPOSIT[HPN Deposits<br/>USDM/USDMy]
-        BOND_DEPOSIT[Bond Deposits<br/>USDM/MEGA]
-        LP_DEPOSIT[LP Bond<br/>RBT-USDM LP]
+        HPN_DEPOSIT[HPN Deposits<br/>━━━━━━━━━━━<br/>USDM/USDMy]
+        BOND_DEPOSIT[Bond Deposits<br/>━━━━━━━━━━━<br/>USDM/MEGA]
+        LP_DEPOSIT[LP Bond<br/>━━━━━━━━━━━<br/>RBT-USDM LP]
     end
     
     subgraph "BOTTOM CENTER - PROTOCOL REVENUE"
-        YIELD_INCOME[Yield from<br/>MegaETH DeFi]
-        POL_FEES[Trading Fees<br/>from POL]
-        MEGA_REWARDS[MEGA Points<br/>Sequencer rewards]
+        YIELD_INCOME[MegaETH DeFi<br/>━━━━━━━━━━━<br/>Lending yields<br/>Strategy returns]
+        POL_FEES[POL Trading Fees<br/>━━━━━━━━━━━<br/>RBT-USDM Pool<br/>LP locked forever<br/>Swap fees]
+        MEGA_REWARDS[MEGA System<br/>━━━━━━━━━━━<br/>MEGA Points from TVL<br/>Sequencer staking<br/>Proximity Markets]
     end
     
     subgraph "BOTTOM RIGHT - FEES & PENALTIES"
-        EXIT_FEES[Exit Fees<br/>2-3 percent HPN<br/>3.3 percent Bonds]
-        FORFEIT[Forfeited Rewards<br/>Early exits]
+        EXIT_FEES[Exit Fees<br/>━━━━━━━━━━━<br/>HPN early: 2-3 percent<br/>Bonds early: 3.3 percent]
+        FORFEIT[Forfeited Rewards<br/>━━━━━━━━━━━<br/>Early exits<br/>Lose all rewards<br/>Goes to treasury]
     end
     
     subgraph "RIGHT BOTTOM - OUTPUTS"
-        RBT_OUT[RBT<br/>━━━━━━━━━━━<br/>Reserve-Backed<br/>Minted by Treasury]
+        RBT_OUT[RBT Token<br/>━━━━━━━━━━━<br/>Reserve-Backed<br/>Tradeable<br/>Used in MegaETH DeFi]
         
-        USER_GETS[Users receive<br/>━━━━━━━━━━━<br/>RBT daily unlock<br/>or instant convert]
+        USER_GETS[Users receive RBT<br/>━━━━━━━━━━━<br/>Bonds: daily unlock<br/>HPN: instant convert<br/>At maturity: full amount]
         
-        RBT_OUT --> USER_GETS
+        RBT_OUT -->|users claim| USER_GETS
     end
     
-    HPN --> HPN_DEPOSIT
-    BONDS --> BOND_DEPOSIT
-    LP_BONDS --> LP_DEPOSIT
+    HPN -->|forwards deposits| HPN_DEPOSIT
+    BONDS -->|forwards deposits| BOND_DEPOSIT
+    LP_BONDS -->|forwards LP<br/>locked forever| LP_DEPOSIT
     
-    HPN_DEPOSIT --> TREASURY
-    BOND_DEPOSIT --> TREASURY
-    LP_DEPOSIT --> TREASURY
+    HPN_DEPOSIT -->|USDM/USDMy| TREASURY
+    BOND_DEPOSIT -->|USDM/MEGA| TREASURY
+    LP_DEPOSIT -->|RBT-USDM LP<br/>permanent POL| TREASURY
     
-    YIELD_INCOME --> TREASURY
-    POL_FEES --> TREASURY
-    MEGA_REWARDS --> TREASURY
-    EXIT_FEES --> TREASURY
-    FORFEIT --> TREASURY
+    YIELD_INCOME -->|lending returns| TREASURY
+    POL_FEES -->|swap fees from<br/>RBT-USDM trades| TREASURY
+    MEGA_REWARDS -->|converted MEGA| TREASURY
+    EXIT_FEES -->|penalty fees| TREASURY
+    FORFEIT -->|forfeited yield<br/>and points| TREASURY
     
-    TREASURY -->|mints proportionally| RBT_OUT
+    TREASURY -->|mints proportionally<br/>maintains reserve ratio| RBT_OUT
     
-    ARBT_LOCKED -.->|receives protocol fees| TREASURY
+    TREASURY -.->|deploys USDM| YIELD_INCOME
+    TREASURY -.->|deploys MEGA| MEGA_REWARDS
+    
+    ARBT_LOCKED -.->|earns protocol fees<br/>revenue sharing| TREASURY
 ```
 
 ---
