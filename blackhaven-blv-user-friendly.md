@@ -11,9 +11,9 @@ graph TB
     end
     
     subgraph "What BLV Means For You"
-        PROTECTION[🛡️ Price Protection<br/>HVN can NEVER go below BLV<br/>Even in worst case]
-        BORROW[💰 Safe Borrowing<br/>Borrow up to BLV value<br/>NO liquidation risk]
-        GROWTH[📈 BLV Only Goes Up<br/>More trading = Higher BLV<br/>Your floor rises]
+        PROTECTION[Price Protection<br/>HVN can NEVER go below BLV<br/>Even in worst case]
+        BORROW[Safe Borrowing<br/>Borrow up to BLV value<br/>NO liquidation risk]
+        GROWTH[BLV Only Goes Up<br/>More trading = Higher BLV<br/>Your floor rises]
     end
     
     subgraph "Example: 6 Months Later"
@@ -24,8 +24,8 @@ graph TB
     
     subgraph "Why This Matters"
         COMPARE[Compare to Normal Tokens]
-        NORMAL[❌ Normal Token<br/>Price can crash to $0<br/>Loans get liquidated]
-        HVN_BLV[✅ HVN with BLV<br/>Price protected at $3.50<br/>Loans never liquidated]
+        NORMAL[Normal Token<br/>Price can crash to $0<br/>Loans get liquidated]
+        HVN_BLV[HVN with BLV<br/>Price protected at $3.50<br/>Loans never liquidated]
     end
     
     LAUNCH --> BLV_START
@@ -42,12 +42,6 @@ graph TB
     COMPARE --> NORMAL
     COMPARE --> HVN_BLV
     
-    style BLV_START fill:#4caf50,stroke-width:3px
-    style BLV_NOW fill:#4caf50,stroke-width:3px
-    style PROTECTION fill:#2196f3,stroke-width:3px
-    style BORROW fill:#ff9800,stroke-width:3px
-    style HVN_BLV fill:#4caf50,stroke-width:3px
-    style NORMAL fill:#f44336,stroke-width:2px
 ```
 
 ## BLV Growth Over Time - Visual Timeline
@@ -56,25 +50,25 @@ graph TB
 graph LR
     subgraph "Month 1"
         M1_PRICE[Market: $2.50]
-        M1_BLV[BLV: $1.20<br/>🛡️ Protected]
+        M1_BLV[BLV: $1.20<br/>Protected]
         M1_BORROW[Borrow: $1.20<br/>Safe]
     end
     
     subgraph "Month 3"
         M3_PRICE[Market: $5.00]
-        M3_BLV[BLV: $2.10<br/>🛡️ Protected]
+        M3_BLV[BLV: $2.10<br/>Protected]
         M3_BORROW[Borrow: $2.10<br/>Safe]
     end
     
     subgraph "Month 6"
         M6_PRICE[Market: $8.00]
-        M6_BLV[BLV: $3.50<br/>🛡️ Protected]
+        M6_BLV[BLV: $3.50<br/>Protected]
         M6_BORROW[Borrow: $3.50<br/>Safe]
     end
     
     subgraph "Year 1"
         Y1_PRICE[Market: $15.00]
-        Y1_BLV[BLV: $7.00<br/>🛡️ Protected]
+        Y1_BLV[BLV: $7.00<br/>Protected]
         Y1_BORROW[Borrow: $7.00<br/>Safe]
     end
     
@@ -86,10 +80,6 @@ graph LR
     M3_BORROW -->|More Safe Borrowing| M6_BORROW
     M6_BORROW -->|More Safe Borrowing| Y1_BORROW
     
-    style M1_BLV fill:#4caf50,stroke-width:2px
-    style M3_BLV fill:#4caf50,stroke-width:2px
-    style M6_BLV fill:#4caf50,stroke-width:2px
-    style Y1_BLV fill:#4caf50,stroke-width:2px
 ```
 
 ## BLV vs Traditional Tokens - Side by Side
@@ -99,7 +89,7 @@ graph TB
     subgraph "Traditional Token (No BLV)"
         TRAD_USER[You Buy Token<br/>$1.00]
         TRAD_DROP[Market Crashes<br/>Price: $0.20]
-        TRAD_LOAN[Your Loan<br/>Liquidated ❌]
+        TRAD_LOAN[Your Loan<br/>Liquidated]
         TRAD_LOSS[You Lose Everything]
     end
     
@@ -107,7 +97,7 @@ graph TB
         HVN_USER[You Buy HVN<br/>$1.00]
         HVN_BLV[BLV Floor<br/>$0.90 Protected]
         HVN_DROP[Market Crashes<br/>Price: $0.20]
-        HVN_SAFE[BLV Still $0.90<br/>You're Protected ✅]
+        HVN_SAFE[BLV Still $0.90<br/>You're Protected]
         HVN_BORROW[You Can Still Borrow<br/>Up to $0.90<br/>No Liquidation]
     end
     
@@ -120,9 +110,6 @@ graph TB
     HVN_DROP --> HVN_SAFE
     HVN_SAFE --> HVN_BORROW
     
-    style TRAD_LOSS fill:#f44336,stroke-width:3px
-    style HVN_SAFE fill:#4caf50,stroke-width:3px
-    style HVN_BORROW fill:#4caf50,stroke-width:3px
 ```
 
 ## How BLV Protects You - Step by Step
@@ -138,26 +125,26 @@ sequenceDiagram
     
     You->>Baseline: Buy HVN at $1.00
     Baseline->>BLV: Set initial floor at $0.90
-    BLV-->>You: 🛡️ You're protected!
+    BLV-->>You: You're protected!
     
     Note over You,Market: Market goes up and down...
     
     Market->>You: Price drops to $0.50
     You->>BLV: Check my protection
-    BLV-->>You: Still protected at $0.90!<br/>Price can't go below BLV
+    BLV-->>You: Still protected at $0.90<br/>Price can't go below BLV
     
     Note over You,Market: You want to borrow safely
     
     You->>Baseline: Can I borrow against my HVN?
     Baseline->>BLV: Check current BLV
     BLV-->>Baseline: BLV = $1.50
-    Baseline-->>You: Yes! Borrow up to $1.50<br/>NO liquidation risk ✅
+    Baseline-->>You: Yes! Borrow up to $1.50<br/>NO liquidation risk
     
     Note over You,Market: Even if market crashes
     
     Market->>You: Price crashes to $0.30
     You->>BLV: Am I still safe?
-    BLV-->>You: Yes! BLV still $1.50<br/>Your loan is safe ✅
+    BLV-->>You: Yes! BLV still $1.50<br/>Your loan is safe
 ```
 
 ## Key Benefits Visual
@@ -165,10 +152,10 @@ sequenceDiagram
 ```mermaid
 graph TD
     subgraph "BLV Benefits"
-        BENEFIT1[🛡️ Protected Entry<br/>You know the worst case<br/>BLV = minimum price]
-        BENEFIT2[💰 Safe Leverage<br/>Borrow up to BLV<br/>Never get liquidated]
-        BENEFIT3[📈 Rising Floor<br/>BLV only goes UP<br/>More trading = Higher BLV]
-        BENEFIT4[🔒 Locked Liquidity<br/>Can't be pulled<br/>Permanent protection]
+        BENEFIT1[Protected Entry<br/>You know the worst case<br/>BLV = minimum price]
+        BENEFIT2[Safe Leverage<br/>Borrow up to BLV<br/>Never get liquidated]
+        BENEFIT3[Rising Floor<br/>BLV only goes UP<br/>More trading = Higher BLV]
+        BENEFIT4[Locked Liquidity<br/>Can't be pulled<br/>Permanent protection]
     end
     
     subgraph "What This Means"
@@ -183,10 +170,6 @@ graph TD
     BENEFIT3 --> MEANING3
     BENEFIT4 --> MEANING4
     
-    style BENEFIT1 fill:#2196f3,stroke-width:2px
-    style BENEFIT2 fill:#ff9800,stroke-width:2px
-    style BENEFIT3 fill:#4caf50,stroke-width:2px
-    style BENEFIT4 fill:#9c27b0,stroke-width:2px
 ```
 
 ## Simple Example: Your HVN Journey
@@ -209,7 +192,7 @@ graph LR
     
     subgraph "Worst Case Scenario"
         CRASH[Market Crashes<br/>Price: $0.50]
-        PROTECTED[You're Still Protected<br/>BLV: $3.50<br/>Value: $350<br/>Loan Safe ✅]
+        PROTECTED[You're Still Protected<br/>BLV: $3.50<br/>Value: $350<br/>Loan Safe]
     end
     
     BUY --> BLV_INIT
@@ -220,10 +203,6 @@ graph LR
     MARKET --> CRASH
     CRASH --> PROTECTED
     
-    style BLV_INIT fill:#4caf50,stroke-width:3px
-    style BLV_NOW fill:#4caf50,stroke-width:3px
-    style PROTECTED fill:#4caf50,stroke-width:3px
-    style CRASH fill:#f44336,stroke-width:2px
 ```
 
 ---
