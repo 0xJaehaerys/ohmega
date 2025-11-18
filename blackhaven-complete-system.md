@@ -8,12 +8,12 @@ graph TB
         RBT_TOP[RBT]
         LOCK_BTN[LOCK]
         UNLOCK_BTN[UNLOCK]
-        ARBT_LOCKED[aRBT<br/>locked RBT<br/>0-2 years]
+        ARBT_LOCKED[aRBT<br/>━━━━━━━━━━━<br/>aRBT = RBT × T_lock / T_max<br/>T_max = 2 years<br/>━━━━━━━━━━━<br/>Non-transferable<br/>Earns protocol fees<br/>Revenue sharing]
         
-        RBT_TOP --> LOCK_BTN
-        LOCK_BTN --> ARBT_LOCKED
-        ARBT_LOCKED --> UNLOCK_BTN
-        UNLOCK_BTN --> RBT_TOP
+        RBT_TOP -->|choose lock duration<br/>0 months to 2 years| LOCK_BTN
+        LOCK_BTN -->|receive aRBT<br/>start earning fees| ARBT_LOCKED
+        ARBT_LOCKED -->|unlock anytime<br/>receive RBT back| UNLOCK_BTN
+        UNLOCK_BTN -->|get locked RBT| RBT_TOP
     end
     
     subgraph "LEFT TOP - HPN"
