@@ -91,9 +91,9 @@ graph LR
     NFT[HPN NFT]
     TREASURY[Treasury]
     
-    USER -->|deposit USDM/USDMy<br/>select lock period| HPN
+    USER -->|deposit USDM or USDMy<br/>select lock period| HPN
     HPN -->|mint NFT<br/>tracks principal + rewards| USER
-    HPN -->|forward deposits| TREASURY
+    HPN -->|forward stablecoins| TREASURY
     TREASURY -->|deploy to MegaETH DeFi<br/>earn yield + MEGA Points| NFT
 ```
 
