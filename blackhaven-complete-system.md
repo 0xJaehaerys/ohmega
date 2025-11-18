@@ -4,15 +4,15 @@
 
 ```mermaid
 graph TB
-    subgraph "TOP - RBT STAKING"
+    subgraph "TOP - RBT LOCKING"
         RBT_TOP[RBT]
         LOCK_BTN[LOCK]
         UNLOCK_BTN[UNLOCK]
-        ARBT_STAKED[aRBT<br/>locked RBT<br/>0-2 years]
+        ARBT_LOCKED[aRBT<br/>locked RBT<br/>0-2 years]
         
         RBT_TOP --> LOCK_BTN
-        LOCK_BTN --> ARBT_STAKED
-        ARBT_STAKED --> UNLOCK_BTN
+        LOCK_BTN --> ARBT_LOCKED
+        ARBT_LOCKED --> UNLOCK_BTN
         UNLOCK_BTN --> RBT_TOP
     end
     
@@ -79,7 +79,7 @@ graph TB
     
     TREASURY -->|mints proportionally| RBT_OUT
     
-    ARBT_STAKED -.->|receives protocol fees| TREASURY
+    ARBT_LOCKED -.->|receives protocol fees| TREASURY
 ```
 
 ---
