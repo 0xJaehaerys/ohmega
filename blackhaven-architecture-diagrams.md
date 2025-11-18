@@ -90,10 +90,6 @@ graph LR
     RBT_CONTRACT -->|trades on| MARKET
     RBT_CONTRACT -->|lock to get| ARBT_CONTRACT
     
-    style TREASURY fill:#fff,stroke:#000,stroke-width:2px
-    style RBT_CONTRACT fill:#fff,stroke:#000,stroke-width:2px
-    style POL_REGISTRY fill:#fff,stroke:#000,stroke-width:3px
-    style LP_LOCKER fill:#fff,stroke:#000,stroke-width:3px
 ```
 
 ## Treasury Operations Architecture
@@ -215,9 +211,7 @@ graph TB
     POL_REGISTRY -->|13. Provides| LIQUIDITY_DEPTH
     TRADING_FEES --> TREASURY[Treasury Forever]
     
-    style LP_LOCKER fill:#fff,stroke:#000,stroke-width:3px
-    style POL_REGISTRY fill:#fff,stroke:#000,stroke-width:3px
-    style FORFEIT fill:#fff,stroke:#f00,stroke-width:2px
+    style FORFEIT fill:#f00,stroke-width:2px
 ```
 
 ## RBT and aRBT System
@@ -317,8 +311,7 @@ graph LR
     
     COOLDOWNS -->|after 7 days| USER
     
-    style NFT fill:#fff,stroke:#000,stroke-width:2px
-    style COOLDOWNS fill:#fff,stroke:#f00,stroke-width:2px
+    style COOLDOWNS fill:#f00,stroke-width:2px
 ```
 
 ## Fixed-Term Bonds Architecture
@@ -380,9 +373,7 @@ graph TB
     EARLY_EXIT -->|3.3% fee + forfeit| TREASURY_DEPOSITS
     POL_MANAGER -->|trading fees| TREASURY_DEPOSITS
     
-    style POL_MANAGER fill:#fff,stroke:#000,stroke-width:3px
-    style LP_LOCKER fill:#fff,stroke:#000,stroke-width:3px
-    style EARLY_EXIT fill:#fff,stroke:#f00,stroke-width:2px
+    style EARLY_EXIT fill:#f00,stroke-width:2px
 ```
 
 ## Complete System Integration

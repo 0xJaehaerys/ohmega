@@ -41,10 +41,10 @@ graph TB
     ORACLE --> TREASURY
     PRM -.->|Future| TREASURY
     
-    classDef core fill:#1a237e,stroke:#fff,stroke-width:2px,color:#fff
-    classDef product fill:#d32f2f,stroke:#fff,stroke-width:2px,color:#fff
-    classDef integration fill:#388e3c,stroke:#fff,stroke-width:2px,color:#fff
-    classDef governance fill:#f57c00,stroke:#fff,stroke-width:2px,color:#fff
+    classDef core fill:#1a237e,stroke-width:2px
+    classDef product fill:#d32f2f,stroke-width:2px
+    classDef integration fill:#388e3c,stroke-width:2px
+    classDef governance fill:#f57c00,stroke-width:2px
     
     class TREASURY,RBT,HVN,sHVN core
     class HPN,BONDS,PRM product
@@ -380,8 +380,8 @@ graph TB
     COMPOUND --> STABLE_BACKING
     COMPOUND --> MEGA_ALIGN
     
-    style HPN_USDM fill:#4a148c,stroke:#fff,stroke-width:2px,color:#fff
-    style COMPOUND fill:#ff6f00,stroke:#fff,stroke-width:2px,color:#fff
+    style HPN_USDM fill:#4a148c,stroke-width:2px
+    style COMPOUND fill:#ff6f00,stroke-width:2px
 ```
 
 ---

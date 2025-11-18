@@ -24,9 +24,9 @@ graph TB
     MARKET -->|Price Discovery| RBT
     sHVN -->|Earns From| TREASURY
     
-    style HVN fill:#e91e63,stroke:#fff,stroke-width:3px,color:#fff
-    style RBT fill:#3f51b5,stroke:#fff,stroke-width:3px,color:#fff
-    style sHVN fill:#009688,stroke:#fff,stroke-width:3px,color:#fff
+    style HVN fill:#e91e63,stroke-width:3px
+    style RBT fill:#3f51b5,stroke-width:3px
+    style sHVN fill:#009688,stroke-width:3px
 ```
 
 ## 2. HVN Launch Economics on Baseline
@@ -126,8 +126,8 @@ graph TD
     OLD_DEATH -.-|"❌ Unsustainable"| FAIL[" "]
     NEW_COMPOUND -.-|"✅ Perpetual"| WIN[" "]
     
-    style OLD_DEATH fill:#d32f2f,stroke:#fff
-    style NEW_COMPOUND fill:#388e3c,stroke:#fff
+    style OLD_DEATH fill:#d32f2f
+    style NEW_COMPOUND fill:#388e3c
     style FAIL fill:none,stroke:none
     style WIN fill:none,stroke:none
 ```
@@ -325,9 +325,9 @@ graph TD
     Y5_MATURE --> NETWORK
     Y5_MATURE --> MOAT
     
-    style Y1_LAUNCH fill:#ff6b6b,stroke:#fff
-    style Y3_GROWTH fill:#4ecdc4,stroke:#fff
-    style Y5_MATURE fill:#45b7d1,stroke:#fff
+    style Y1_LAUNCH fill:#ff6b6b
+    style Y3_GROWTH fill:#4ecdc4
+    style Y5_MATURE fill:#45b7d1
 ```
 
 ---

@@ -307,8 +307,8 @@ graph TD
     OLD_SAD --> OLD_RESULT
     NEW_HAPPY --> NEW_RESULT
     
-    style OLD_SAD fill:#f44336,color:#fff
-    style NEW_HAPPY fill:#4caf50,color:#fff
+    style OLD_SAD fill:#f44336
+    style NEW_HAPPY fill:#4caf50
 ```
 
 ## 🎭 The Personas Summary

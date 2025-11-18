@@ -89,7 +89,7 @@ graph TD
     POOL --> OUT3
     POOL --> OUT4
     
-    style POOL fill:#4CAF50,stroke:#fff,stroke-width:3px,color:#fff
+    style POOL fill:#4CAF50,stroke-width:3px
 ```
 
 ### Treasury математика:
@@ -178,7 +178,7 @@ graph LR
         VESTING2 --> USER2
     end
     
-    style TREASURY fill:#FF5252,stroke:#fff,stroke-width:3px,color:#fff
+    style TREASURY fill:#FF5252,stroke-width:3px
 ```
 
 ### Bonds математика:

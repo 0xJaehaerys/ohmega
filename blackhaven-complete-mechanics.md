@@ -120,11 +120,7 @@ graph TB
     PROXIMITY -.->|Yield opportunities<br/>Network utility| TREASURY
     
     %% Styling
-    style TREASURY fill:#fff,stroke:#000,stroke-width:3px
-    style RBT_TOKEN fill:#fff,stroke:#000,stroke-width:2px
-    style POL_REGISTRY fill:#fff,stroke:#000,stroke-width:3px
-    style SEQUENCER fill:#fff,stroke:#533483,stroke-width:2px
-    style SHVN_GRID fill:#f9f9f9,stroke:#000,stroke-width:2px
+    style SEQUENCER stroke:#533483,stroke-width:2px
 ```
 
 ## Detailed Annotations

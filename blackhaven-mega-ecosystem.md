@@ -72,9 +72,9 @@ graph TB
     YIELD_GEN --> REWARDS_DIST
     REWARDS_DIST --> ECOSYSTEM_GROWTH
     
-    style MEGA_CHAIN fill:#1a237e,stroke:#fff,stroke-width:3px,color:#fff
-    style TREASURY_ENGINE fill:#d32f2f,stroke:#fff,stroke-width:3px,color:#fff
-    style HVN_TOKEN fill:#ff6f00,stroke:#fff,stroke-width:3px,color:#fff
+    style MEGA_CHAIN fill:#1a237e,stroke-width:3px
+    style TREASURY_ENGINE fill:#d32f2f,stroke-width:3px
+    style HVN_TOKEN fill:#ff6f00,stroke-width:3px
 ```
 
 ## 🔄 The Synergy Loops
@@ -244,9 +244,9 @@ graph TB
     INSTITUTION --> ECOSYSTEM
     ECOSYSTEM --> SUSTAINABLE
     
-    style LAUNCH fill:#e91e63,stroke:#fff
-    style SCALE fill:#3f51b5,stroke:#fff
-    style SUSTAINABLE fill:#4caf50,stroke:#fff
+    style LAUNCH fill:#e91e63
+    style SCALE fill:#3f51b5
+    style SUSTAINABLE fill:#4caf50
 ```
 
 ---
