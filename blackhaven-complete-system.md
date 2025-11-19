@@ -319,5 +319,56 @@ graph TB
 
 ---
 
+## MegaETH Integration - Proximity Markets & Sequencer
+
+```mermaid
+graph TB
+    subgraph "BLACKHAVEN TREASURY"
+        TREASURY_MEGA[Treasury<br/>━━━━━━━━━━━━━━━<br/>MEGA Reserve<br/>100 percent to Sequencer<br/>━━━━━━━━━━━━━━━<br/>Controlled by HVN governance]
+        
+        MEGA_SOURCES[MEGA Sources:<br/>• Bond deposits<br/>• MEGA Points from TVL<br/>• Forfeits & penalties]
+    end
+    
+    subgraph "HVN GOVERNANCE CONTROL"
+        HVN_GOV[HVN Governance<br/>━━━━━━━━━━━━━━━<br/>Decides MEGA allocation<br/>Controls bidding strategy<br/>Optimizes yield]
+        
+        VOTE_PROXIMITY[Vote on:<br/>• Proximity slot selection<br/>• Bidding amounts<br/>• Optimization strategy]
+    end
+    
+    subgraph "MEGAETH SEQUENCER"
+        SEQUENCER[MegaETH Sequencer<br/>━━━━━━━━━━━━━━━<br/>100 percent MEGA staked<br/>━━━━━━━━━━━━━━━<br/>10ms blocks<br/>100k TPS<br/>Real-time execution]
+        
+        SEQ_REWARDS[Sequencer Rewards<br/>Staking returns]
+    end
+    
+    subgraph "PROXIMITY MARKETS"
+        PROXIMITY[Proximity Markets<br/>━━━━━━━━━━━━━━━<br/>Sequencer-adjacent<br/>floorspace bidding<br/>━━━━━━━━━━━━━━━<br/>Better execution speed<br/>Liquidity efficiency<br/>Priority access]
+        
+        PROXIMITY_BENEFITS[Benefits:<br/>• Improved execution<br/>• Yield opportunities<br/>• Network utility<br/>• Performance gains]
+    end
+    
+    subgraph "VALUE BACK TO TREASURY"
+        RETURNS[Returns to Treasury:<br/>━━━━━━━━━━━━━━━<br/>• Sequencer staking rewards<br/>• Yield from proximity<br/>• Network performance gains<br/>━━━━━━━━━━━━━━━<br/>Strengthens RBT backing]
+    end
+    
+    MEGA_SOURCES --> TREASURY_MEGA
+    
+    HVN_GOV -->|controls allocation| VOTE_PROXIMITY
+    VOTE_PROXIMITY -->|decides usage| TREASURY_MEGA
+    
+    TREASURY_MEGA -->|stakes 100 percent MEGA| SEQUENCER
+    TREASURY_MEGA -->|allocates per governance| PROXIMITY
+    
+    SEQUENCER --> SEQ_REWARDS
+    PROXIMITY --> PROXIMITY_BENEFITS
+    
+    SEQ_REWARDS -->|rewards back| RETURNS
+    PROXIMITY_BENEFITS -->|yield & utility| RETURNS
+    
+    RETURNS --> TREASURY_MEGA
+```
+
+---
+
 *Blackhaven Protocol - Complete System with User Flows and Integrations*
 
