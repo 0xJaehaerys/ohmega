@@ -106,7 +106,7 @@ graph LR
         NFT[HPN<br/>━━━━━━━━━━━━━━━<br/>ERC-721 NFT<br/>Principal Protected<br/>━━━━━━━━━━━━━━━<br/>Deposit: USDM/USDMy<br/>Lock: User-selected duration<br/>━━━━━━━━━━━━━━━<br/>Tracks:<br/>• Principal amount<br/>• Lock end date<br/>• Accrued yield<br/>• Accrued MEGA Points<br/>━━━━━━━━━━━━━━━<br/>Not market-priced]
     end
     
-    subgraph "TREASURY"
+    subgraph "TREASURY DEPLOYMENT"
         TREASURY[Treasury<br/>Deploys to<br/>MegaETH DeFi]
     end
     
