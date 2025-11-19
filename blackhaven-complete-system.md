@@ -208,78 +208,63 @@ graph TB
 
 ---
 
-## HVN & sHVN - Governance System
+## HVN Governance - How Users Control Treasury
 
 ```mermaid
 graph TB
-    subgraph "HVN HOLDERS - USERS"
-        USER1[User 1<br/>1000 HVN<br/>= 1000 votes]
-        USER2[User 2<br/>5000 HVN<br/>= 5000 votes]
-        USER3[User 3<br/>500 HVN<br/>= 500 votes]
+    subgraph "TOP - HVN HOLDERS"
+        USER1[User 1: 1000 HVN]
+        USER2[User 2: 5000 HVN]
+        USER3[User 3: 500 HVN]
         
-        USER1 -.->|can stake| SHVN_USERS[sHVN holders<br/>earn treasury rewards<br/>NO vote rights]
-        USER2 -.->|can stake| SHVN_USERS
-        USER3 -.->|can stake| SHVN_USERS
+        SHVN_OPTION[Can stake → sHVN<br/>Earn treasury rewards<br/>NO governance rights]
     end
     
-    subgraph "GOVERNANCE PROPOSALS"
-        CONTRIBUTOR[Contributors<br/>propose]
+    subgraph "MIDDLE - GOVERNANCE PROPOSALS"
+        BIP1[BIP-1: Treasury Strategy<br/>━━━━━━━━━━━━━━━<br/>Adjust DeFi allocations<br/>Set reserve ratios<br/>Change deployment]
         
-        BIP1[BIP-1: Treasury Strategy<br/>Adjust DeFi allocations]
-        BIP2[BIP-2: Whitelist DeFi<br/>Add new protocol]
-        BIP3[BIP-3: MEGA Allocation<br/>Proximity Markets usage]
-        BIP4[BIP-4: sHVN Rewards<br/>Distribution rates]
+        BIP2[BIP-2: Whitelist DeFi<br/>━━━━━━━━━━━━━━━<br/>Add MegaETH protocol<br/>Remove risky strategy<br/>Update limits]
         
-        CONTRIBUTOR --> BIP1
-        CONTRIBUTOR --> BIP2
-        CONTRIBUTOR --> BIP3
-        CONTRIBUTOR --> BIP4
+        BIP3[BIP-3: MEGA Allocation<br/>━━━━━━━━━━━━━━━<br/>Proximity Market bidding<br/>Sequencer participation<br/>Yield optimization]
+        
+        BIP4[BIP-4: sHVN Rewards<br/>━━━━━━━━━━━━━━━<br/>Reward distribution rates<br/>Emission schedules<br/>Treasury share]
     end
     
-    subgraph "VOTING"
-        VOTE_BIP1[Vote BIP-1<br/>Yes/No]
-        VOTE_BIP2[Vote BIP-2<br/>Yes/No]
-        VOTE_BIP3[Vote BIP-3<br/>Yes/No]
-        VOTE_BIP4[Vote BIP-4<br/>Yes/No]
-    end
-    
-    subgraph "TREASURY EXECUTION"
-        TREASURY_CTRL[TREASURY<br/>━━━━━━━━━━━━━━━<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>━━━━━━━━━━━━━━━<br/>Controlled by votes]
+    subgraph "BOTTOM - TREASURY CONTROLLED"
+        TREASURY[TREASURY<br/>═══════════════════<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>═══════════════════<br/>Controlled by governance]
         
-        DEFI_STRAT[MegaETH DeFi<br/>Whitelisted strategies]
-        MEGA_ALLOC[MEGA System<br/>Proximity + Sequencer]
-        REWARD_DIST[Rewards to sHVN<br/>Treasury distribution]
+        CONTROL1[Controls DeFi deployment<br/>Whitelisted strategies<br/>Risk parameters]
+        
+        CONTROL2[Controls MEGA usage<br/>Proximity Markets<br/>Sequencer staking]
+        
+        CONTROL3[Controls sHVN rewards<br/>Distribution from treasury<br/>Reward pool config]
+        
+        TREASURY --> CONTROL1
+        TREASURY --> CONTROL2
+        TREASURY --> CONTROL3
     end
     
-    USER1 -->|vote with HVN| VOTE_BIP1
-    USER1 -->|vote with HVN| VOTE_BIP2
-    USER1 -->|vote with HVN| VOTE_BIP3
-    USER1 -->|vote with HVN| VOTE_BIP4
+    USER1 -.->|1000 votes| BIP1
+    USER1 -.->|1000 votes| BIP2
+    USER1 -.->|1000 votes| BIP3
+    USER1 -.->|1000 votes| BIP4
     
-    USER2 -->|vote with HVN| VOTE_BIP1
-    USER2 -->|vote with HVN| VOTE_BIP2
-    USER2 -->|vote with HVN| VOTE_BIP3
-    USER2 -->|vote with HVN| VOTE_BIP4
+    USER2 -.->|5000 votes| BIP1
+    USER2 -.->|5000 votes| BIP2
+    USER2 -.->|5000 votes| BIP3
+    USER2 -.->|5000 votes| BIP4
     
-    USER3 -->|vote with HVN| VOTE_BIP1
-    USER3 -->|vote with HVN| VOTE_BIP2
-    USER3 -->|vote with HVN| VOTE_BIP3
-    USER3 -->|vote with HVN| VOTE_BIP4
+    USER3 -.->|500 votes| BIP1
+    USER3 -.->|500 votes| BIP2
+    USER3 -.->|500 votes| BIP3
+    USER3 -.->|500 votes| BIP4
     
-    BIP1 --> VOTE_BIP1
-    BIP2 --> VOTE_BIP2
-    BIP3 --> VOTE_BIP3
-    BIP4 --> VOTE_BIP4
+    BIP1 -->|if approved<br/>governs| CONTROL1
+    BIP2 -->|if approved<br/>governs| CONTROL1
+    BIP3 -->|if approved<br/>governs| CONTROL2
+    BIP4 -->|if approved<br/>governs| CONTROL3
     
-    VOTE_BIP1 -->|if approved| TREASURY_CTRL
-    VOTE_BIP2 -->|if approved| DEFI_STRAT
-    VOTE_BIP3 -->|if approved| MEGA_ALLOC
-    VOTE_BIP4 -->|if approved| REWARD_DIST
-    
-    TREASURY_CTRL --> DEFI_STRAT
-    TREASURY_CTRL --> MEGA_ALLOC
-    
-    REWARD_DIST --> SHVN_USERS
+    CONTROL3 -->|rewards flow| SHVN_OPTION
 ```
 
 ---
