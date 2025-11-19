@@ -133,7 +133,9 @@ graph LR
     
     OPT_A -->|after 7 days| USER_OUT
     OPT_B -->|after 7 days| USER_OUT
+    OPT_B -.->|forfeited rewards<br/>to treasury| TREASURY
     OPT_C -->|instant| USER_OUT
+    OPT_C -.->|forfeited rewards<br/>to treasury| TREASURY
 ```
 
 ---
