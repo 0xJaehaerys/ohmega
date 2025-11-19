@@ -242,15 +242,14 @@ graph TB
         EXECUTE[Approved: Execute<br/>Rejected: No action]
     end
     
-    subgraph "CONTROLLED SYSTEMS"
-        TREASURY_CTRL[Treasury<br/>Strategy & params]
-        DEFI_CTRL[MegaETH DeFi<br/>Whitelisted protocols]
-        MEGA_CTRL[MEGA System<br/>Proximity Markets<br/>Sequencer allocation]
-        REWARDS_CTRL[Rewards System<br/>sHVN distributions]
+    subgraph "TREASURY CONTROLLED BY GOVERNANCE"
+        TREASURY_GOV[TREASURY<br/>━━━━━━━━━━━━━━━<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>━━━━━━━━━━━━━━━<br/>Governed by HVN holders<br/>━━━━━━━━━━━━━━━<br/>Controls:<br/>• DeFi strategy selection<br/>• Reserve ratios<br/>• Deployment parameters<br/>• MEGA allocation to Proximity<br/>• Reward distribution to sHVN]
     end
     
-    subgraph "BASELINE MARKETS"
-        BASELINE[Baseline Markets<br/>━━━━━━━━━━━━━━━<br/>HVN Launch platform<br/>━━━━━━━━━━━━━━━<br/>BLV = Locked Reserve / Supply<br/>Guaranteed price floor<br/>Rises with trading<br/>━━━━━━━━━━━━━━━<br/>Non-liquidatable borrowing<br/>Capital-efficient leverage<br/>Autonomous liquidity]
+    subgraph "GOVERNANCE EXECUTION"
+        DEFI_EXEC[MegaETH DeFi<br/>Whitelisted protocols<br/>Strategy limits]
+        MEGA_EXEC[MEGA Allocation<br/>Proximity Markets<br/>Sequencer staking]
+        REWARDS_EXEC[Rewards Distribution<br/>sHVN reward pool<br/>Emission rates]
     end
     
     HVN -->|propose & vote| PROPOSE
@@ -266,14 +265,13 @@ graph TB
     
     VOTE --> EXECUTE
     
-    EXECUTE -->|if approved| TREASURY_CTRL
-    EXECUTE -->|if approved| DEFI_CTRL
-    EXECUTE -->|if approved| MEGA_CTRL
-    EXECUTE -->|if approved| REWARDS_CTRL
+    EXECUTE -->|approved proposals<br/>control treasury| TREASURY_GOV
     
-    REWARDS_CTRL -->|distributes rewards| SHVN
+    TREASURY_GOV -->|deploys to| DEFI_EXEC
+    TREASURY_GOV -->|allocates| MEGA_EXEC
+    TREASURY_GOV -->|configures| REWARDS_EXEC
     
-    HVN -.->|launched on| BASELINE
+    REWARDS_EXEC -->|distributes treasury rewards| SHVN
 ```
 
 ---
