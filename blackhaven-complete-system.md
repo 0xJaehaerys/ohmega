@@ -269,5 +269,55 @@ graph TB
 
 ---
 
+## BLV (Baseline Value) - HVN Price Floor
+
+```mermaid
+graph TB
+    subgraph "HVN ON BASELINE MARKETS"
+        HVN_LAUNCH[HVN Launch<br/>on Baseline Markets]
+        INITIAL_BLV[Initial BLV Set<br/>BLV = Locked Reserve / Supply]
+        RESERVES[Locked Reserves<br/>Back every HVN token]
+    end
+    
+    subgraph "BLV MECHANISM"
+        BLV_FLOOR[BLV Price Floor<br/>━━━━━━━━━━━━━━━<br/>Guaranteed minimum price<br/>Can NEVER go down<br/>Only rises<br/>━━━━━━━━━━━━━━━<br/>Formula: BLV = Reserve / Supply<br/>━━━━━━━━━━━━━━━<br/>Every trade increases reserve<br/>Buyback & burn when price = BLV]
+        
+        TRADING[Trading Activity<br/>Increases reserves<br/>BLV rises]
+        
+        BUYBACK[Price hits BLV<br/>━━━━━━━━━━━━━━━<br/>Protocol buys HVN<br/>Burns tokens<br/>Supply decreases<br/>BLV increases]
+    end
+    
+    subgraph "USER BENEFITS"
+        PROTECTION[Price Protection<br/>━━━━━━━━━━━━━━━<br/>Know worst case<br/>Price can't go below BLV<br/>Clear downside]
+        
+        BORROW[Safe Borrowing<br/>━━━━━━━━━━━━━━━<br/>Borrow up to BLV value<br/>NO liquidation risk<br/>BLV only goes up]
+        
+        LEVERAGE[Capital-Efficient<br/>━━━━━━━━━━━━━━━<br/>Leverage without liquidation<br/>Scales with demand<br/>Autonomous liquidity]
+    end
+    
+    subgraph "LIQUIDITY SYSTEM"
+        AUTO_LIQ[Autonomous Liquidity<br/>━━━━━━━━━━━━━━━<br/>System-managed<br/>No market makers needed<br/>Can't be pulled<br/>Permanent protection]
+    end
+    
+    HVN_LAUNCH --> INITIAL_BLV
+    INITIAL_BLV --> RESERVES
+    RESERVES --> BLV_FLOOR
+    
+    BLV_FLOOR --> TRADING
+    TRADING -->|reserve grows| BLV_FLOOR
+    
+    BLV_FLOOR --> BUYBACK
+    BUYBACK -->|BLV increases| BLV_FLOOR
+    
+    BLV_FLOOR --> PROTECTION
+    BLV_FLOOR --> BORROW
+    BLV_FLOOR --> LEVERAGE
+    
+    RESERVES --> AUTO_LIQ
+    AUTO_LIQ --> PROTECTION
+```
+
+---
+
 *Blackhaven Protocol - Complete System with User Flows and Integrations*
 
