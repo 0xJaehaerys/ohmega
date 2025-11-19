@@ -149,7 +149,7 @@ graph TB
     end
     
     subgraph "REGULAR BONDS"
-        BOND[Fixed-Term Bond<br/>━━━━━━━━━━━━━━━<br/>Quote: USDM or MEGA<br/>Payout: RBT discounted<br/>━━━━━━━━━━━━━━━<br/>Vesting: User-selected period<br/>Daily unlock: Linear release<br/>━━━━━━━━━━━━━━━<br/>Maturity: Full RBT + rewards<br/>Early exit: 3.3 percent fee]
+        BOND[Fixed-Term Bond<br/>━━━━━━━━━━━━━━━<br/>Quote: USDM or MEGA<br/>━━━━━━━━━━━━━━━<br/>Payout: RBT at DISCOUNT<br/>Below market price<br/>More appealing than market buy<br/>━━━━━━━━━━━━━━━<br/>Vesting: User-selected period<br/>Linear daily unlock<br/>━━━━━━━━━━━━━━━<br/>Maturity: Full RBT + rewards<br/>Early exit: 3.3 percent fee]
     end
     
     subgraph "USER ENTRY - LP BONDS"
@@ -158,7 +158,7 @@ graph TB
     end
     
     subgraph "LP BONDS ALIGNED"
-        LP_BOND[LP Bond Aligned<br/>━━━━━━━━━━━━━━━<br/>Deposit: RBT-USDM LP token<br/>LP locked FOREVER<br/>Becomes POL<br/>━━━━━━━━━━━━━━━<br/>Payout: RBT discounted<br/>Bonus: Extra MEGA rewards<br/>Vesting: User-selected period<br/>Daily unlock: Linear release<br/>━━━━━━━━━━━━━━━<br/>LP stays locked forever<br/>Even after full RBT claim]
+        LP_BOND[LP Bond Aligned<br/>━━━━━━━━━━━━━━━<br/>Deposit: RBT-USDM LP token<br/>LP locked FOREVER<br/>Becomes POL<br/>━━━━━━━━━━━━━━━<br/>Payout: RBT at DISCOUNT<br/>Below market price<br/>Bonus: Extra MEGA rewards<br/>━━━━━━━━━━━━━━━<br/>Vesting: User-selected period<br/>Linear daily unlock<br/>━━━━━━━━━━━━━━━<br/>LP stays locked forever<br/>Even after full RBT claim]
     end
     
     subgraph "TREASURY VAULT"
