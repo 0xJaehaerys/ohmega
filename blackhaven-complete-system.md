@@ -370,5 +370,70 @@ graph TB
 
 ---
 
+## Treasury Revenue Generation - How Blackhaven Earns
+
+```mermaid
+graph TB
+    subgraph "CENTER - TREASURY"
+        TREASURY[TREASURY<br/>═══════════════════<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>═══════════════════<br/>Total Value Growing<br/>Backs all RBT]
+    end
+    
+    subgraph "TOP LEFT - USER DEPOSITS"
+        HPN_DEP[HPN Deposits<br/>━━━━━━━━━━━━━━━<br/>USDM/USDMy<br/>Principal inflow<br/>Deploys to DeFi]
+        
+        BOND_DEP[Bond Deposits<br/>━━━━━━━━━━━━━━━<br/>USDM/MEGA<br/>Capital inflow<br/>To reserves]
+        
+        LP_DEP[LP Bond Deposits<br/>━━━━━━━━━━━━━━━<br/>RBT-USDM LP<br/>Locked FOREVER<br/>Becomes POL]
+    end
+    
+    subgraph "TOP RIGHT - DEFI YIELDS"
+        DEFI_YIELD[MegaETH DeFi Returns<br/>━━━━━━━━━━━━━━━<br/>Lending yields<br/>LP fees<br/>Strategy returns<br/>━━━━━━━━━━━━━━━<br/>From USDM deployment<br/>Conservative strategies<br/>Risk-adjusted]
+    end
+    
+    subgraph "LEFT - MEGA SYSTEM"
+        SEQ_REWARDS[Sequencer Rewards<br/>━━━━━━━━━━━━━━━<br/>100 percent MEGA staked<br/>Staking returns<br/>Cycles back to treasury]
+        
+        MEGA_PTS[MEGA Points<br/>━━━━━━━━━━━━━━━<br/>From TVL contributions<br/>Amplified via HPN<br/>Converted to MEGA<br/>Then staked]
+        
+        PROXIMITY_YIELD[Proximity Markets<br/>━━━━━━━━━━━━━━━<br/>Yield opportunities<br/>Network utility<br/>Performance gains<br/>Controlled by governance]
+    end
+    
+    subgraph "RIGHT - FEES & PENALTIES"
+        EXIT_FEES_DETAIL[Exit Fees<br/>━━━━━━━━━━━━━━━<br/>HPN early exit: 2-3 percent<br/>Bond early exit: 3.3 percent<br/>━━━━━━━━━━━━━━━<br/>Charged on principal<br/>Goes to reserves]
+        
+        FORFEIT_DETAIL[Forfeited Rewards<br/>━━━━━━━━━━━━━━━<br/>HPN: yield + MEGA Points<br/>Bonds: unvested RBT + rewards<br/>━━━━━━━━━━━━━━━<br/>From early exits<br/>Increases treasury surplus]
+    end
+    
+    subgraph "BOTTOM - POL REVENUE"
+        POL_TRADING[POL Trading Fees<br/>━━━━━━━━━━━━━━━<br/>RBT-USDM Pool<br/>LP locked forever<br/>━━━━━━━━━━━━━━━<br/>Every swap generates fees<br/>No sell pressure<br/>Permanent revenue stream]
+    end
+    
+    subgraph "FUTURE - PCB"
+        PCB_FUTURE[Premium Capture Band<br/>━━━━━━━━━━━━━━━<br/>Coming Soon<br/>━━━━━━━━━━━━━━━<br/>Captures RBT price premiums<br/>Surplus value to reserves<br/>Stronger backing]
+    end
+    
+    HPN_DEP -->|principal deposits| TREASURY
+    BOND_DEP -->|capital deposits| TREASURY
+    LP_DEP -->|LP becomes POL| TREASURY
+    
+    DEFI_YIELD -->|lending & strategy returns| TREASURY
+    
+    SEQ_REWARDS -->|staking rewards| TREASURY
+    MEGA_PTS -->|converted MEGA<br/>then staked| TREASURY
+    PROXIMITY_YIELD -->|yield & performance| TREASURY
+    
+    EXIT_FEES_DETAIL -->|penalty fees| TREASURY
+    FORFEIT_DETAIL -->|forfeited amounts| TREASURY
+    
+    POL_TRADING -->|swap fees<br/>permanent stream| TREASURY
+    
+    PCB_FUTURE -.->|future revenue<br/>price premiums| TREASURY
+    
+    TREASURY -.->|deploys USDM| DEFI_YIELD
+    TREASURY -.->|stakes MEGA| SEQ_REWARDS
+```
+
+---
+
 *Blackhaven Protocol - Complete System with User Flows and Integrations*
 
