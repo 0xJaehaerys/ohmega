@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLV (Baseline Value) Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        canvas {
+            max-width: 100%;
+        }
+        .legend {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .legend-item {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .green { color: #4caf50; font-weight: bold; }
+        .blue { color: #2196f3; font-weight: bold; }
+        .red { color: #f44336; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BLV (Baseline Value) - HVN Price Floor Protection</h1>
+        <canvas id="blvChart"></canvas>
+        
+        <div class="legend">
+            <div class="legend-item"><span class="green">● BLV Floor</span> - Guaranteed minimum price (can NEVER go down)</div>
+            <div class="legend-item"><span class="blue">● Market Price</span> - Actual trading price (volatile but protected by BLV)</div>
+            <div class="legend-item"><span class="red">▲ Buyback Zone</span> - When price approaches BLV, protocol buys & burns tokens</div>
+            <div class="legend-item"><strong>Formula:</strong> BLV = Locked Reserve / Token Supply</div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('blvChart').getContext('2d');
+        
+        const data = {
+            labels: ['Day 0\nLaunch', 'Month 1', 'Month 3', 'Month 6', 'Year 1'],
+            datasets: [
+                {
+                    label: 'BLV Floor (Guaranteed)',
+                    data: [1.00, 1.20, 2.10, 3.50, 7.00],
+                    borderColor: '#4caf50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                },
+                {
+                    label: 'Market Price (Volatile)',
+                    data: [1.00, 2.50, 5.00, 8.00, 15.00],
+                    borderColor: '#2196f3',
+                    backgroundColor: 'rgba(33, 150, 243, 0.05)',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    borderDash: [5, 5]
+                }
+            ]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'BLV Growth Over Time - Price Floor Protection',
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        padding: 20
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14
+                            },
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': $';
+                                }
+                                label += context.parsed.y.toFixed(2);
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Price ($)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toFixed(2);
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+</body>
+</html>
+
