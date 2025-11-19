@@ -378,15 +378,7 @@ graph TB
         TREASURY[TREASURY<br/>═══════════════════<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>═══════════════════<br/>Total Value Growing<br/>Backs all RBT]
     end
     
-    subgraph "TOP LEFT - USER DEPOSITS"
-        HPN_DEP[HPN Deposits<br/>━━━━━━━━━━━━━━━<br/>USDM/USDMy<br/>Principal inflow<br/>Deploys to DeFi]
-        
-        BOND_DEP[Bond Deposits<br/>━━━━━━━━━━━━━━━<br/>USDM/MEGA<br/>Capital inflow<br/>To reserves]
-        
-        LP_DEP[LP Bond Deposits<br/>━━━━━━━━━━━━━━━<br/>RBT-USDM LP<br/>Locked FOREVER<br/>Becomes POL]
-    end
-    
-    subgraph "TOP RIGHT - DEFI YIELDS"
+    subgraph "TOP - DEFI YIELDS"
         DEFI_YIELD[MegaETH DeFi Returns<br/>━━━━━━━━━━━━━━━<br/>Lending yields<br/>LP fees<br/>Strategy returns<br/>━━━━━━━━━━━━━━━<br/>From USDM deployment<br/>Conservative strategies<br/>Risk-adjusted]
     end
     
@@ -411,10 +403,6 @@ graph TB
     subgraph "FUTURE - PCB"
         PCB_FUTURE[Premium Capture Band<br/>━━━━━━━━━━━━━━━<br/>Coming Soon<br/>━━━━━━━━━━━━━━━<br/>Captures RBT price premiums<br/>Surplus value to reserves<br/>Stronger backing]
     end
-    
-    HPN_DEP -->|principal deposits| TREASURY
-    BOND_DEP -->|capital deposits| TREASURY
-    LP_DEP -->|LP becomes POL| TREASURY
     
     DEFI_YIELD -->|lending & strategy returns| TREASURY
     
