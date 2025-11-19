@@ -140,5 +140,73 @@ graph LR
 
 ---
 
+## Fixed-Term Bonds - Complete Flow
+
+```mermaid
+graph TB
+    subgraph "USER ENTRY - REGULAR BONDS"
+        USER_REG[User<br/>USDM or MEGA]
+    end
+    
+    subgraph "REGULAR BONDS"
+        BOND[Fixed-Term Bond<br/>━━━━━━━━━━━━━━━<br/>Quote: USDM or MEGA<br/>Payout: RBT discounted<br/>━━━━━━━━━━━━━━━<br/>Vesting: User-selected period<br/>Daily unlock: Linear release<br/>━━━━━━━━━━━━━━━<br/>Maturity: Full RBT + rewards<br/>Early exit: 3.3 percent fee]
+    end
+    
+    subgraph "USER ENTRY - LP BONDS"
+        USER_LP_START[User creates<br/>RBT-USDM LP]
+        LP_TOKEN[LP Token]
+    end
+    
+    subgraph "LP BONDS ALIGNED"
+        LP_BOND[LP Bond Aligned<br/>━━━━━━━━━━━━━━━<br/>Deposit: RBT-USDM LP token<br/>LP locked FOREVER<br/>Becomes POL<br/>━━━━━━━━━━━━━━━<br/>Payout: RBT discounted<br/>Bonus: Extra MEGA rewards<br/>Vesting: User-selected period<br/>Daily unlock: Linear release<br/>━━━━━━━━━━━━━━━<br/>LP stays locked forever<br/>Even after full RBT claim]
+    end
+    
+    subgraph "TREASURY VAULT"
+        TREASURY_BONDS[Treasury<br/>Receives deposits<br/>Backs RBT]
+    end
+    
+    subgraph "POL SYSTEM"
+        POL[POL Vault<br/>━━━━━━━━━━━━━━━<br/>RBT-USDM Pool<br/>LP locked FOREVER<br/>━━━━━━━━━━━━━━━<br/>Generates trading fees<br/>No sell pressure]
+    end
+    
+    subgraph "VESTING POSITIONS"
+        VESTING_REG[Regular Bond Vesting<br/>━━━━━━━━━━━━━━━<br/>Total RBT owed<br/>Vested: claimable now<br/>Unvested: locked]
+        
+        VESTING_LP[LP Bond Vesting<br/>━━━━━━━━━━━━━━━<br/>Total RBT owed<br/>Vested: claimable now<br/>Unvested: locked]
+    end
+    
+    subgraph "EXIT OPTIONS BONDS"
+        MAT_BOND[Hold to Maturity<br/>━━━━━━━━━━━━━━━<br/>Wait full period<br/>Claim all RBT<br/>+ All rewards]
+        
+        EARLY_BOND[Early Exit<br/>━━━━━━━━━━━━━━━<br/>Exit anytime<br/>Fee: 3.3 percent<br/>━━━━━━━━━━━━━━━<br/>Receive:<br/>✓ Vested RBT minus fee<br/>✗ Lose unvested RBT]
+    end
+    
+    subgraph "USER RECEIVES BONDS"
+        USER_OUT_BOND[User Receives<br/>RBT]
+    end
+    
+    USER_REG -->|deposit USDM or MEGA<br/>select vesting period| BOND
+    BOND -->|forward to reserves| TREASURY_BONDS
+    BOND -->|create vesting position<br/>linear daily unlock| VESTING_REG
+    
+    USER_LP_START -->|provide liquidity| LP_TOKEN
+    LP_TOKEN -->|deposit LP token<br/>select vesting period| LP_BOND
+    LP_BOND -->|LP locked FOREVER| POL
+    LP_BOND -->|create vesting position<br/>linear daily unlock| VESTING_LP
+    
+    POL -->|trading fees| TREASURY_BONDS
+    
+    VESTING_REG --> MAT_BOND
+    VESTING_REG --> EARLY_BOND
+    VESTING_LP --> MAT_BOND
+    VESTING_LP --> EARLY_BOND
+    
+    MAT_BOND -->|full RBT| USER_OUT_BOND
+    EARLY_BOND -->|vested RBT minus fee| USER_OUT_BOND
+    EARLY_BOND -.->|unvested RBT forfeited<br/>to treasury| TREASURY_BONDS
+```
+
+---
+
 *Blackhaven Protocol - Complete System with User Flows and Integrations*
 
