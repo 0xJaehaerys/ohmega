@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLV Chart - Excalidraw Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #1e1e1e;
+            color: #e0e0e0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background: #2a2a2a;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .info {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .info-box {
+            background: #2a2a2a;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+        }
+        .info-box h3 {
+            color: #4caf50;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .info-box p {
+            color: #ccc;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+        .formula {
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 24px;
+            color: #4caf50;
+            font-family: monospace;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BLV (Baseline Value)</h1>
+        <div class="subtitle">HVN Price Floor Protection</div>
+        
+        <canvas id="blvChart" width="1200" height="700"></canvas>
+        
+        <div class="formula">
+            BLV = Locked Reserve / Token Supply
+        </div>
+        
+        <div class="info">
+            <div class="info-box">
+                <h3>BLV Floor (Green)</h3>
+                <p>• Guaranteed minimum price</p>
+                <p>• Can NEVER go down</p>
+                <p>• Rises with trading activity</p>
+                <p>• Backed by locked reserves</p>
+            </div>
+            <div class="info-box">
+                <h3>Market Price (Blue)</h3>
+                <p>• Actual trading price</p>
+                <p>• Volatile but protected</p>
+                <p>• Always above BLV floor</p>
+                <p>• When price = BLV: buyback & burn</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('blvChart');
+        const ctx = canvas.getContext('2d');
+        
+        // Data points
+        const timeLabels = ['Day 0\nLaunch', 'Month 1', 'Month 3', 'Month 6', 'Year 1'];
+        const blvData = [1.00, 1.20, 2.10, 3.50, 7.00];
+        const marketData = [1.00, 2.50, 5.00, 8.00, 15.00];
+        
+        const padding = {top: 80, right: 80, bottom: 100, left: 80};
+        const chartWidth = canvas.width - padding.left - padding.right;
+        const chartHeight = canvas.height - padding.top - padding.bottom;
+        
+        const maxY = Math.max(...marketData) * 1.1;
+        const stepX = chartWidth / (timeLabels.length - 1);
+        
+        function yToCanvas(value) {
+            return canvas.height - padding.bottom - (value / maxY * chartHeight);
+        }
+        
+        function xToCanvas(index) {
+            return padding.left + (index * stepX);
+        }
+        
+        // Hand-drawn style helper
+        function drawHandLine(x1, y1, x2, y2, color, width) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            // Add slight wobble for hand-drawn effect
+            const segments = 20;
+            const dx = (x2 - x1) / segments;
+            const dy = (y2 - y1) / segments;
+            
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            
+            for (let i = 1; i <= segments; i++) {
+                const wobble = (Math.random() - 0.5) * 2;
+                const x = x1 + dx * i + wobble;
+                const y = y1 + dy * i + wobble;
+                ctx.lineTo(x, y);
+            }
+            
+            ctx.stroke();
+        }
+        
+        // Clear canvas
+        ctx.fillStyle = '#2a2a2a';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw grid
+        ctx.strokeStyle = '#3a3a3a';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 5; i++) {
+            const y = padding.top + (chartHeight / 5 * i);
+            ctx.beginPath();
+            ctx.moveTo(padding.left, y);
+            ctx.lineTo(canvas.width - padding.right, y);
+            ctx.stroke();
+        }
+        
+        // Draw axes
+        ctx.strokeStyle = '#666';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, padding.top);
+        ctx.lineTo(padding.left, canvas.height - padding.bottom);
+        ctx.lineTo(canvas.width - padding.right, canvas.height - padding.bottom);
+        ctx.stroke();
+        
+        // Draw BLV line (green, hand-drawn style)
+        ctx.fillStyle = 'rgba(76, 175, 80, 0.1)';
+        ctx.beginPath();
+        ctx.moveTo(xToCanvas(0), canvas.height - padding.bottom);
+        for (let i = 0; i < blvData.length; i++) {
+            ctx.lineTo(xToCanvas(i), yToCanvas(blvData[i]));
+        }
+        ctx.lineTo(xToCanvas(blvData.length - 1), canvas.height - padding.bottom);
+        ctx.closePath();
+        ctx.fill();
+        
+        for (let i = 0; i < blvData.length - 1; i++) {
+            drawHandLine(
+                xToCanvas(i), yToCanvas(blvData[i]),
+                xToCanvas(i + 1), yToCanvas(blvData[i + 1]),
+                '#4caf50', 4
+            );
+        }
+        
+        // Draw Market Price line (blue, hand-drawn style)
+        for (let i = 0; i < marketData.length - 1; i++) {
+            drawHandLine(
+                xToCanvas(i), yToCanvas(marketData[i]),
+                xToCanvas(i + 1), yToCanvas(marketData[i + 1]),
+                '#2196f3', 3
+            );
+        }
+        
+        // Draw points
+        blvData.forEach((value, i) => {
+            ctx.fillStyle = '#4caf50';
+            ctx.beginPath();
+            ctx.arc(xToCanvas(i), yToCanvas(value), 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#2a2a2a';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        });
+        
+        marketData.forEach((value, i) => {
+            ctx.fillStyle = '#2196f3';
+            ctx.beginPath();
+            ctx.arc(xToCanvas(i), yToCanvas(value), 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#2a2a2a';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        });
+        
+        // Labels
+        ctx.fillStyle = '#ccc';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        
+        timeLabels.forEach((label, i) => {
+            const lines = label.split('\n');
+            lines.forEach((line, j) => {
+                ctx.fillText(line, xToCanvas(i), canvas.height - padding.bottom + 25 + (j * 18));
+            });
+        });
+        
+        // Y-axis labels
+        ctx.textAlign = 'right';
+        for (let i = 0; i <= 5; i++) {
+            const value = (maxY / 5 * (5 - i)).toFixed(2);
+            const y = padding.top + (chartHeight / 5 * i);
+            ctx.fillText('$' + value, padding.left - 15, y + 5);
+        }
+        
+        // Axis titles
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Time', canvas.width / 2, canvas.height - 20);
+        
+        ctx.save();
+        ctx.translate(30, canvas.height / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText('Price ($)', 0, 0);
+        ctx.restore();
+        
+        // Title
+        ctx.font = 'bold 22px Arial';
+        ctx.fillText('BLV Growth Over Time - Price Floor Protection', canvas.width / 2, 35);
+        
+        // Legend
+        ctx.textAlign = 'left';
+        ctx.font = '16px Arial';
+        
+        ctx.fillStyle = '#4caf50';
+        ctx.fillRect(canvas.width - 300, 20, 20, 20);
+        ctx.fillStyle = '#ccc';
+        ctx.fillText('BLV Floor (Guaranteed)', canvas.width - 270, 35);
+        
+        ctx.fillStyle = '#2196f3';
+        ctx.fillRect(canvas.width - 300, 50, 20, 20);
+        ctx.fillStyle = '#ccc';
+        ctx.fillText('Market Price (Volatile)', canvas.width - 270, 65);
+    </script>
+</body>
+</html>
