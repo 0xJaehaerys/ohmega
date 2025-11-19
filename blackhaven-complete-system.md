@@ -208,5 +208,75 @@ graph TB
 
 ---
 
+## HVN & sHVN - Governance System
+
+```mermaid
+graph TB
+    subgraph "HVN TOKEN"
+        HVN[HVN Token<br/>━━━━━━━━━━━━━━━<br/>Supply: 100M<br/>1 HVN = 1 vote<br/>━━━━━━━━━━━━━━━<br/>Launched on Baseline<br/>BLV price floor<br/>No liquidation leverage]
+        
+        STAKE_HVN[STAKE]
+        UNSTAKE_HVN[UNSTAKE]
+        
+        SHVN[sHVN<br/>━━━━━━━━━━━━━━━<br/>Staked HVN<br/>Non-transferable<br/>━━━━━━━━━━━━━━━<br/>Earns treasury rewards<br/>Configured via governance<br/>━━━━━━━━━━━━━━━<br/>NO governance rights<br/>Only HVN votes]
+        
+        HVN --> STAKE_HVN
+        STAKE_HVN --> SHVN
+        SHVN --> UNSTAKE_HVN
+        UNSTAKE_HVN --> HVN
+    end
+    
+    subgraph "GOVERNANCE PROPOSALS - Examples"
+        BIP1[BIP-1: Treasury Strategy<br/>━━━━━━━━━━━━━━━<br/>Adjust DeFi allocations<br/>Set reserve ratios<br/>Change deployment params]
+        
+        BIP2[BIP-2: Whitelist DeFi<br/>━━━━━━━━━━━━━━━<br/>Add new MegaETH protocol<br/>Remove risky strategy<br/>Update strategy limits]
+        
+        BIP3[BIP-3: MEGA Allocation<br/>━━━━━━━━━━━━━━━<br/>Proximity Market bidding<br/>Sequencer participation<br/>Yield optimization]
+        
+        BIP4[BIP-4: Reward Distribution<br/>━━━━━━━━━━━━━━━<br/>sHVN reward rates<br/>Emission schedules<br/>Treasury share split]
+    end
+    
+    subgraph "VOTING PROCESS"
+        PROPOSE[Contributors propose]
+        VOTE[HVN holders vote<br/>1 HVN = 1 vote]
+        EXECUTE[Approved: Execute<br/>Rejected: No action]
+    end
+    
+    subgraph "CONTROLLED SYSTEMS"
+        TREASURY_CTRL[Treasury<br/>Strategy & params]
+        DEFI_CTRL[MegaETH DeFi<br/>Whitelisted protocols]
+        MEGA_CTRL[MEGA System<br/>Proximity Markets<br/>Sequencer allocation]
+        REWARDS_CTRL[Rewards System<br/>sHVN distributions]
+    end
+    
+    subgraph "BASELINE MARKETS"
+        BASELINE[Baseline Markets<br/>━━━━━━━━━━━━━━━<br/>HVN Launch platform<br/>━━━━━━━━━━━━━━━<br/>BLV = Locked Reserve / Supply<br/>Guaranteed price floor<br/>Rises with trading<br/>━━━━━━━━━━━━━━━<br/>Non-liquidatable borrowing<br/>Capital-efficient leverage<br/>Autonomous liquidity]
+    end
+    
+    HVN -->|propose & vote| PROPOSE
+    PROPOSE --> BIP1
+    PROPOSE --> BIP2
+    PROPOSE --> BIP3
+    PROPOSE --> BIP4
+    
+    BIP1 --> VOTE
+    BIP2 --> VOTE
+    BIP3 --> VOTE
+    BIP4 --> VOTE
+    
+    VOTE --> EXECUTE
+    
+    EXECUTE -->|if approved| TREASURY_CTRL
+    EXECUTE -->|if approved| DEFI_CTRL
+    EXECUTE -->|if approved| MEGA_CTRL
+    EXECUTE -->|if approved| REWARDS_CTRL
+    
+    REWARDS_CTRL -->|distributes rewards| SHVN
+    
+    HVN -.->|launched on| BASELINE
+```
+
+---
+
 *Blackhaven Protocol - Complete System with User Flows and Integrations*
 
