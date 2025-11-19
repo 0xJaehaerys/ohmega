@@ -212,66 +212,74 @@ graph TB
 
 ```mermaid
 graph TB
-    subgraph "HVN TOKEN"
-        HVN[HVN Token<br/>━━━━━━━━━━━━━━━<br/>Supply: 100M<br/>1 HVN = 1 vote<br/>━━━━━━━━━━━━━━━<br/>Launched on Baseline<br/>BLV price floor<br/>No liquidation leverage]
+    subgraph "HVN HOLDERS - USERS"
+        USER1[User 1<br/>1000 HVN<br/>= 1000 votes]
+        USER2[User 2<br/>5000 HVN<br/>= 5000 votes]
+        USER3[User 3<br/>500 HVN<br/>= 500 votes]
         
-        STAKE_HVN[STAKE]
-        UNSTAKE_HVN[UNSTAKE]
-        
-        SHVN[sHVN<br/>━━━━━━━━━━━━━━━<br/>Staked HVN<br/>Non-transferable<br/>━━━━━━━━━━━━━━━<br/>Earns treasury rewards<br/>Configured via governance<br/>━━━━━━━━━━━━━━━<br/>NO governance rights<br/>Only HVN votes]
-        
-        HVN --> STAKE_HVN
-        STAKE_HVN --> SHVN
-        SHVN --> UNSTAKE_HVN
-        UNSTAKE_HVN --> HVN
+        USER1 -.->|can stake| SHVN_USERS[sHVN holders<br/>earn treasury rewards<br/>NO vote rights]
+        USER2 -.->|can stake| SHVN_USERS
+        USER3 -.->|can stake| SHVN_USERS
     end
     
-    subgraph "GOVERNANCE PROPOSALS - Examples"
-        BIP1[BIP-1: Treasury Strategy<br/>━━━━━━━━━━━━━━━<br/>Adjust DeFi allocations<br/>Set reserve ratios<br/>Change deployment params]
+    subgraph "GOVERNANCE PROPOSALS"
+        CONTRIBUTOR[Contributors<br/>propose]
         
-        BIP2[BIP-2: Whitelist DeFi<br/>━━━━━━━━━━━━━━━<br/>Add new MegaETH protocol<br/>Remove risky strategy<br/>Update strategy limits]
+        BIP1[BIP-1: Treasury Strategy<br/>Adjust DeFi allocations]
+        BIP2[BIP-2: Whitelist DeFi<br/>Add new protocol]
+        BIP3[BIP-3: MEGA Allocation<br/>Proximity Markets usage]
+        BIP4[BIP-4: sHVN Rewards<br/>Distribution rates]
         
-        BIP3[BIP-3: MEGA Allocation<br/>━━━━━━━━━━━━━━━<br/>Proximity Market bidding<br/>Sequencer participation<br/>Yield optimization]
+        CONTRIBUTOR --> BIP1
+        CONTRIBUTOR --> BIP2
+        CONTRIBUTOR --> BIP3
+        CONTRIBUTOR --> BIP4
+    end
+    
+    subgraph "VOTING"
+        VOTE_BIP1[Vote BIP-1<br/>Yes/No]
+        VOTE_BIP2[Vote BIP-2<br/>Yes/No]
+        VOTE_BIP3[Vote BIP-3<br/>Yes/No]
+        VOTE_BIP4[Vote BIP-4<br/>Yes/No]
+    end
+    
+    subgraph "TREASURY EXECUTION"
+        TREASURY_CTRL[TREASURY<br/>━━━━━━━━━━━━━━━<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>━━━━━━━━━━━━━━━<br/>Controlled by votes]
         
-        BIP4[BIP-4: Reward Distribution<br/>━━━━━━━━━━━━━━━<br/>sHVN reward rates<br/>Emission schedules<br/>Treasury share split]
+        DEFI_STRAT[MegaETH DeFi<br/>Whitelisted strategies]
+        MEGA_ALLOC[MEGA System<br/>Proximity + Sequencer]
+        REWARD_DIST[Rewards to sHVN<br/>Treasury distribution]
     end
     
-    subgraph "VOTING PROCESS"
-        PROPOSE[Contributors propose]
-        VOTE[HVN holders vote<br/>1 HVN = 1 vote]
-        EXECUTE[Approved: Execute<br/>Rejected: No action]
-    end
+    USER1 -->|vote with HVN| VOTE_BIP1
+    USER1 -->|vote with HVN| VOTE_BIP2
+    USER1 -->|vote with HVN| VOTE_BIP3
+    USER1 -->|vote with HVN| VOTE_BIP4
     
-    subgraph "TREASURY CONTROLLED BY GOVERNANCE"
-        TREASURY_GOV[TREASURY<br/>━━━━━━━━━━━━━━━<br/>USDM Reserve<br/>MEGA Reserve<br/>POL RBT-USDM<br/>━━━━━━━━━━━━━━━<br/>Governed by HVN holders<br/>━━━━━━━━━━━━━━━<br/>Controls:<br/>• DeFi strategy selection<br/>• Reserve ratios<br/>• Deployment parameters<br/>• MEGA allocation to Proximity<br/>• Reward distribution to sHVN]
-    end
+    USER2 -->|vote with HVN| VOTE_BIP1
+    USER2 -->|vote with HVN| VOTE_BIP2
+    USER2 -->|vote with HVN| VOTE_BIP3
+    USER2 -->|vote with HVN| VOTE_BIP4
     
-    subgraph "GOVERNANCE EXECUTION"
-        DEFI_EXEC[MegaETH DeFi<br/>Whitelisted protocols<br/>Strategy limits]
-        MEGA_EXEC[MEGA Allocation<br/>Proximity Markets<br/>Sequencer staking]
-        REWARDS_EXEC[Rewards Distribution<br/>sHVN reward pool<br/>Emission rates]
-    end
+    USER3 -->|vote with HVN| VOTE_BIP1
+    USER3 -->|vote with HVN| VOTE_BIP2
+    USER3 -->|vote with HVN| VOTE_BIP3
+    USER3 -->|vote with HVN| VOTE_BIP4
     
-    HVN -->|propose & vote| PROPOSE
-    PROPOSE --> BIP1
-    PROPOSE --> BIP2
-    PROPOSE --> BIP3
-    PROPOSE --> BIP4
+    BIP1 --> VOTE_BIP1
+    BIP2 --> VOTE_BIP2
+    BIP3 --> VOTE_BIP3
+    BIP4 --> VOTE_BIP4
     
-    BIP1 --> VOTE
-    BIP2 --> VOTE
-    BIP3 --> VOTE
-    BIP4 --> VOTE
+    VOTE_BIP1 -->|if approved| TREASURY_CTRL
+    VOTE_BIP2 -->|if approved| DEFI_STRAT
+    VOTE_BIP3 -->|if approved| MEGA_ALLOC
+    VOTE_BIP4 -->|if approved| REWARD_DIST
     
-    VOTE --> EXECUTE
+    TREASURY_CTRL --> DEFI_STRAT
+    TREASURY_CTRL --> MEGA_ALLOC
     
-    EXECUTE -->|approved proposals<br/>control treasury| TREASURY_GOV
-    
-    TREASURY_GOV -->|deploys to| DEFI_EXEC
-    TREASURY_GOV -->|allocates| MEGA_EXEC
-    TREASURY_GOV -->|configures| REWARDS_EXEC
-    
-    REWARDS_EXEC -->|distributes treasury rewards| SHVN
+    REWARD_DIST --> SHVN_USERS
 ```
 
 ---
