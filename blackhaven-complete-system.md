@@ -178,7 +178,7 @@ graph TB
     subgraph "EXIT OPTIONS BONDS"
         MAT_BOND[Hold to Maturity<br/>━━━━━━━━━━━━━━━<br/>Wait full vesting period<br/>NO cooldown<br/>━━━━━━━━━━━━━━━<br/>Claim all RBT<br/>+ All rewards]
         
-        EARLY_BOND[Early Exit<br/>━━━━━━━━━━━━━━━<br/>Exit anytime<br/>Fee: 3.3 percent<br/>NO cooldown<br/>━━━━━━━━━━━━━━━<br/>Receive:<br/>✓ Vested RBT minus fee<br/>✗ Lose unvested RBT]
+        EARLY_BOND[Early Exit<br/>━━━━━━━━━━━━━━━<br/>Exit anytime<br/>Fee: 3.3 percent of bond<br/>NO cooldown<br/>━━━━━━━━━━━━━━━<br/>Receive:<br/>✓ Vested RBT<br/>✓ After paying fee<br/>━━━━━━━━━━━━━━━<br/>Forfeit to treasury:<br/>✗ Unvested RBT<br/>✗ Unvested rewards]
     end
     
     subgraph "USER RECEIVES BONDS"
@@ -202,8 +202,8 @@ graph TB
     VESTING_LP --> EARLY_BOND
     
     MAT_BOND -->|full RBT| USER_OUT_BOND
-    EARLY_BOND -->|vested RBT minus fee| USER_OUT_BOND
-    EARLY_BOND -.->|unvested RBT forfeited<br/>to treasury| TREASURY_BONDS
+    EARLY_BOND -->|vested RBT<br/>after paying 3.3 percent fee| USER_OUT_BOND
+    EARLY_BOND -.->|unvested RBT +<br/>unvested rewards<br/>forfeited to treasury| TREASURY_BONDS
 ```
 
 ---
