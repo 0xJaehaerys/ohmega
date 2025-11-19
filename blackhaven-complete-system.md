@@ -53,7 +53,7 @@ graph TB
         YIELD_INCOME[MegaETH DeFi<br/>━━━━━━━━━━━<br/>Lending yields<br/>Strategy returns]
         POL_FEES[POL Trading Fees<br/>━━━━━━━━━━━<br/>RBT-USDM Pool<br/>LP locked forever<br/>Swap fees]
         MEGA_REWARDS[MEGA System<br/>━━━━━━━━━━━<br/>MEGA Points from TVL<br/>Sequencer staking<br/>Proximity Markets]
-        PRM[Premium Range<br/>Mechanism<br/>━━━━━━━━━━━<br/>Coming Soon<br/>RBT price premiums]
+        PCB[Premium Capture<br/>Band<br/>━━━━━━━━━━━<br/>Coming Soon<br/>RBT price premiums]
     end
     
     subgraph "BOTTOM RIGHT - FEES & PENALTIES"
@@ -82,7 +82,7 @@ graph TB
     MEGA_REWARDS -->|converted MEGA| TREASURY
     EXIT_FEES -->|penalty fees| TREASURY
     FORFEIT -->|forfeited yield<br/>and points| TREASURY
-    PRM -.->|future revenue<br/>price premiums| TREASURY
+    PCB -.->|future revenue<br/>price premiums| TREASURY
     
     TREASURY -->|mints proportionally<br/>maintains reserve ratio| RBT_OUT
     
@@ -90,6 +90,50 @@ graph TB
     TREASURY -.->|deploys MEGA| MEGA_REWARDS
     
     ARBT_LOCKED -.->|earns protocol fees<br/>revenue sharing| TREASURY
+```
+
+---
+
+## HPN (Haven Protected Notes) - Complete Flow
+
+```mermaid
+graph LR
+    subgraph "USER ENTRY"
+        USER[User<br/>USDM or USDMy]
+    end
+    
+    subgraph "HPN NFT"
+        NFT[HPN<br/>━━━━━━━━━━━━━━━<br/>ERC-721 NFT<br/>Principal Protected<br/>━━━━━━━━━━━━━━━<br/>Deposit: USDM/USDMy<br/>Lock: User-selected duration<br/>━━━━━━━━━━━━━━━<br/>Tracks:<br/>• Principal amount<br/>• Lock end date<br/>• Accrued yield<br/>• Accrued MEGA Points<br/>━━━━━━━━━━━━━━━<br/>Not market-priced]
+    end
+    
+    subgraph "TREASURY"
+        TREASURY[Treasury<br/>Deploys to<br/>MegaETH DeFi]
+    end
+    
+    subgraph "EXIT OPTIONS"
+        OPT_A[Option A: Maturity<br/>━━━━━━━━━━━━━━━<br/>Wait until lock ends<br/>7-day cooldown<br/>━━━━━━━━━━━━━━━<br/>Receive:<br/>✓ Full principal<br/>✓ ALL yield<br/>✓ ALL MEGA Points]
+        
+        OPT_B[Option B: Early Exit<br/>━━━━━━━━━━━━━━━<br/>Exit anytime<br/>Fee: 2-3 percent<br/>7-day cooldown<br/>━━━━━━━━━━━━━━━<br/>Receive:<br/>✓ Principal minus fee<br/>✗ Lose ALL rewards]
+        
+        OPT_C[Option C: Convert RBT<br/>━━━━━━━━━━━━━━━<br/>Anytime<br/>NO cooldown<br/>NFT burns<br/>━━━━━━━━━━━━━━━<br/>Receive:<br/>✓ RBT instantly<br/>✗ Lose ALL rewards]
+    end
+    
+    subgraph "USER RECEIVES"
+        USER_OUT[User Receives]
+    end
+    
+    USER -->|deposit USDM/USDMy<br/>select lock period| NFT
+    NFT -->|mint NFT to user| USER
+    NFT -->|forward deposits| TREASURY
+    TREASURY -->|deploy to strategies<br/>earn yield + MEGA Points| NFT
+    
+    NFT --> OPT_A
+    NFT --> OPT_B
+    NFT --> OPT_C
+    
+    OPT_A -->|after 7 days| USER_OUT
+    OPT_B -->|after 7 days| USER_OUT
+    OPT_C -->|instant| USER_OUT
 ```
 
 ---
